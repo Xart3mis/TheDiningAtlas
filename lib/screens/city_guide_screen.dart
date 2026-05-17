@@ -40,7 +40,7 @@ class CityGuideScreen extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.transparent, Colors.black.withOpacity(0.4)],
+              colors: [Colors.transparent, Colors.black.withValues(alpha: 0.4)],
             ),
           ),
         ),
@@ -55,7 +55,7 @@ class CityGuideScreen extends StatelessWidget {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withValues(alpha: 0.3),
               ),
               child: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 16),
             ),
@@ -78,7 +78,7 @@ class CityGuideScreen extends StatelessWidget {
                   style: GoogleFonts.fraunces(fontSize: 42, fontWeight: FontWeight.w700, color: Colors.white, height: 1.1)),
               const SizedBox(height: 6),
               Text(guide.tagline,
-                  style: GoogleFonts.fraunces(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.white.withOpacity(0.9), height: 1.4)),
+                  style: GoogleFonts.fraunces(fontSize: 14, fontStyle: FontStyle.italic, color: Colors.white.withValues(alpha: 0.9), height: 1.4)),
             ],
           ),
         ),
@@ -105,9 +105,9 @@ class CityGuideScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-          child: const SectionLabel('Curated Guides'),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 12),
+          child: SectionLabel('Curated Guides'),
         ),
         ...guide.guides.map((g) => _GuideRow(guide: g, onTap: () {})),
       ],
@@ -147,7 +147,7 @@ class _GuideRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
         ),
         child: Row(
           children: [

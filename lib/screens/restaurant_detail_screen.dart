@@ -58,7 +58,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         // Gradient
         Container(
           height: 240,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -75,7 +75,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
             child: Container(
               width: 36,
               height: 36,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.9)),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.9)),
               child: const Icon(Icons.arrow_back_ios_new, size: 16, color: AppColors.ink),
             ),
           ),
@@ -132,7 +132,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.cream,
-        border: Border(bottom: BorderSide(color: AppColors.lightGrey.withOpacity(0.6))),
+        border: Border(bottom: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6))),
       ),
       child: Row(
         children: _tabs.map((tab) {
@@ -169,10 +169,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(left: BorderSide(color: AppColors.terracotta, width: 3)),
         color: AppColors.parchment,
-        borderRadius: const BorderRadius.horizontal(right: Radius.circular(8)),
+        borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +218,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
       ),
       child: Row(
         children: [
@@ -313,7 +313,7 @@ class _HeroButton extends StatelessWidget {
       child: Container(
         width: 36,
         height: 36,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withOpacity(0.9)),
+        decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.9)),
         child: Icon(icon, size: 18, color: AppColors.ink),
       ),
     );
@@ -332,7 +332,7 @@ class _InfoCell extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -36,7 +36,7 @@ class StoriesScreen extends StatelessWidget {
                       const SizedBox(width: 24),
                       _TabItem(label: 'Near Me', selected: false, onTap: () {}),
                       const Spacer(),
-                      Icon(Icons.search, color: Colors.white, size: 22),
+                      const Icon(Icons.search, color: Colors.white, size: 22),
                     ],
                   ),
                 ),
@@ -50,8 +50,8 @@ class StoriesScreen extends StatelessWidget {
               height: 64,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.2),
-                border: Border.all(color: Colors.white.withOpacity(0.4), width: 1.5),
+                color: Colors.white.withValues(alpha: 0.2),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 1.5),
               ),
               child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 32),
             ),
@@ -127,9 +127,9 @@ class StoriesScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: Colors.white.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white.withOpacity(0.3)),
+                        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
                       ),
                       child: Text('@noodle.pilgrim',
                           style: GoogleFonts.inter(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500)),
@@ -142,7 +142,7 @@ class StoriesScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.white.withOpacity(0.6)),
+                          border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
                         ),
                         child: Text('Follow',
                             style: GoogleFonts.inter(fontSize: 13, color: Colors.white, fontWeight: FontWeight.w500)),
@@ -188,7 +188,7 @@ class StoriesScreen extends StatelessWidget {
                               style: GoogleFonts.fraunces(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
                           Row(
                             children: [
-                              Icon(Icons.place_outlined, size: 11, color: AppColors.warmGrey),
+                              const Icon(Icons.place_outlined, size: 11, color: AppColors.warmGrey),
                               const SizedBox(width: 2),
                               Text('Tokyo · Ramen',
                                   style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
@@ -223,7 +223,7 @@ class StoriesScreen extends StatelessWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                   ),
                   child: const Icon(Icons.chevron_left, color: Colors.white, size: 20),
                 ),
@@ -242,7 +242,7 @@ class StoriesScreen extends StatelessWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                   ),
                   child: const Icon(Icons.chevron_right, color: Colors.white, size: 20),
                 ),

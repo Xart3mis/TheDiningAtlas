@@ -136,7 +136,7 @@ class _TripsScreenState extends State<TripsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add, size: 16, color: AppColors.warmGrey),
+            const Icon(Icons.add, size: 16, color: AppColors.warmGrey),
             const SizedBox(width: 6),
             Text('Add a spot', style: GoogleFonts.inter(fontSize: 13, color: AppColors.warmGrey)),
           ],
@@ -150,7 +150,7 @@ class _TripsScreenState extends State<TripsScreen> {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       child: Row(
         children: [
-          Icon(Icons.directions_walk, size: 16, color: AppColors.warmGrey),
+          const Icon(Icons.directions_walk, size: 16, color: AppColors.warmGrey),
           const SizedBox(width: 6),
           Text('42 min total walking · 3.1 km today',
               style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
@@ -225,7 +225,7 @@ class _SpotCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+                          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
                         ),
                         child: Row(
                           children: [

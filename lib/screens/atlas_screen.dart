@@ -49,7 +49,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
         children: [
           Row(
             children: [
-              Icon(Icons.language_outlined, size: 22, color: AppColors.ink),
+              const Icon(Icons.language_outlined, size: 22, color: AppColors.ink),
               const SizedBox(width: 8),
               RichText(
                 text: TextSpan(
@@ -84,7 +84,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => CityGuideScreen(guide: tokyoGuide)),
+        MaterialPageRoute(builder: (_) => const CityGuideScreen(guide: tokyoGuide)),
       ),
       child: Container(
         margin: const EdgeInsets.fromLTRB(20, 24, 20, 0),
@@ -233,7 +233,7 @@ class _EditorPickCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
         ),
         clipBehavior: Clip.hardEdge,
         child: Column(
@@ -282,9 +282,9 @@ class _MapPainter extends CustomPainter {
     final bg = Paint()..color = AppColors.parchment;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bg);
 
-    final regionPaint = Paint()..color = AppColors.lightGrey.withOpacity(0.6);
+    final regionPaint = Paint()..color = AppColors.lightGrey.withValues(alpha: 0.6);
     final outlinePaint = Paint()
-      ..color = AppColors.warmGrey.withOpacity(0.3)
+      ..color = AppColors.warmGrey.withValues(alpha: 0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 

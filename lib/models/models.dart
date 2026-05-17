@@ -199,7 +199,7 @@ final sampleRestaurants = [
   ),
 ];
 
-final tokyoGuide = const CityGuide(
+const tokyoGuide = CityGuide(
   city: 'Tokyo',
   country: 'Japan',
   season: 'Spring 2026',

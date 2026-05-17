@@ -14,7 +14,7 @@ class MapSearchScreen extends StatefulWidget {
 
 class _MapSearchScreenState extends State<MapSearchScreen> {
   String _activeFilter = 'Sushi';
-  Restaurant? _selectedRestaurant = sampleRestaurants.first;
+  final Restaurant _selectedRestaurant = sampleRestaurants.first;
 
   final _cuisineFilters = ['All cuisines', 'Sushi', 'Ramen', 'Kaiseki', '¥'];
 
@@ -46,13 +46,12 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
             child: _buildFilterRow(),
           ),
           // Bottom restaurant card
-          if (_selectedRestaurant != null)
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 20,
-              child: _buildRestaurantCard(_selectedRestaurant!),
-            ),
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 20,
+            child: _buildRestaurantCard(_selectedRestaurant),
+          ),
         ],
       ),
     );
@@ -66,7 +65,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
           child: Container(
             width: 36,
             height: 36,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+            decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.white),
             child: const Icon(Icons.arrow_back_ios_new, size: 16, color: AppColors.ink),
           ),
         ),
@@ -77,7 +76,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8, offset: const Offset(0, 2))],
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 8, offset: const Offset(0, 2))],
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Row(
@@ -96,7 +95,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 8)],
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 8)],
           ),
           child: const Icon(Icons.tune, size: 18, color: AppColors.ink),
         ),
@@ -155,8 +154,8 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
                 decoration: BoxDecoration(
                   color: p.$5 ? p.$4 : Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: p.$5 ? Colors.transparent : p.$4.withOpacity(0.3)),
-                  boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.12), blurRadius: 4, offset: const Offset(0, 1))],
+                  border: Border.all(color: p.$5 ? Colors.transparent : p.$4.withValues(alpha: 0.3)),
+                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.12), blurRadius: 4, offset: const Offset(0, 1))],
                 ),
                 child: Text(
                   p.$3 ?? '',
@@ -179,7 +178,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 16, offset: const Offset(0, 4))],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 16, offset: const Offset(0, 4))],
         ),
         child: Row(
           children: [
@@ -258,7 +257,7 @@ class _MapBackgroundPainter extends CustomPainter {
 
     // Grid lines
     final gridPaint = Paint()
-      ..color = const Color(0xFFD9D4CC).withOpacity(0.5)
+      ..color = const Color(0xFFD9D4CC).withValues(alpha: 0.5)
       ..strokeWidth = 0.5;
     for (double x = 0; x < size.width; x += 40) {
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
@@ -269,7 +268,7 @@ class _MapBackgroundPainter extends CustomPainter {
 
     // River
     final riverPaint = Paint()
-      ..color = const Color(0xFFC8D8D8).withOpacity(0.6)
+      ..color = const Color(0xFFC8D8D8).withValues(alpha: 0.6)
       ..strokeWidth = 18
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -279,7 +278,7 @@ class _MapBackgroundPainter extends CustomPainter {
     canvas.drawPath(path, riverPaint);
 
     // City blocks
-    final blockPaint = Paint()..color = const Color(0xFFD4CFC6).withOpacity(0.5);
+    final blockPaint = Paint()..color = const Color(0xFFD4CFC6).withValues(alpha: 0.5);
     canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.55, size.height * 0.6, 80, 50), const Radius.circular(4)), blockPaint);
     canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(size.width * 0.1, size.height * 0.2, 60, 40), const Radius.circular(4)), blockPaint);
   }

@@ -47,9 +47,9 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: AppColors.gold.withOpacity(0.15),
+                    color: AppColors.gold.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: AppColors.gold.withOpacity(0.3)),
+                    border: Border.all(color: AppColors.gold.withValues(alpha: 0.3)),
                   ),
                   child: Text('GOLD ATLAS REVIEWER',
                       style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w700, color: AppColors.gold, letterSpacing: 1.2)),
@@ -75,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
       ),
       child: Row(
         children: stats.map((s) {
@@ -98,9 +98,9 @@ class ProfileScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-          child: const SectionLabel('Dining Passport'),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+          child: SectionLabel('Dining Passport'),
         ),
         SizedBox(
           height: 36,
@@ -183,7 +183,7 @@ class _ListCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
         ),
         clipBehavior: Clip.hardEdge,
         child: Column(
@@ -204,7 +204,7 @@ class _ListCard extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
+                        color: Colors.black.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
