@@ -41,12 +41,12 @@ class _ForYouScreenState extends State<ForYouScreen> {
   }
 
   final _reasons = [
-    _Reason('Cuisine match', '— Because you loved Sukiyabashi Jiro', AppColors.terracotta),
-    _Reason('Nearby', '— Within 5 min walk', AppColors.teal),
-    _Reason('Trending locals', '— Locals rate it 4.9 this week', AppColors.gold),
-    _Reason('Friends saved', '— 3 people you follow', AppColors.dustyBlue),
-    _Reason('Hidden gem', '— Under the radar this season', AppColors.sageGreen),
-    _Reason('Editor pick', '— Featured in Spring 2026 guide', AppColors.warmGrey),
+    const _Reason('Cuisine match', '— Because you loved Sukiyabashi Jiro', AppColors.terracotta),
+    const _Reason('Nearby', '— Within 5 min walk', AppColors.teal),
+    const _Reason('Trending locals', '— Locals rate it 4.9 this week', AppColors.gold),
+    const _Reason('Friends saved', '— 3 people you follow', AppColors.dustyBlue),
+    const _Reason('Hidden gem', '— Under the radar this season', AppColors.sageGreen),
+    const _Reason('Editor pick', '— Featured in Spring 2026 guide', AppColors.warmGrey),
   ];
 
   Widget _buildHeader() {
@@ -86,7 +86,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info_outline, size: 14, color: AppColors.terracotta),
+          const Icon(Icons.info_outline, size: 14, color: AppColors.terracotta),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -164,7 +164,7 @@ class _RecommendationCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
         ),
         clipBehavior: Clip.hardEdge,
         child: IntrinsicHeight(
@@ -223,7 +223,7 @@ class _RecommendationCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: reason.color.withOpacity(0.08),
+                          color: reason.color.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(

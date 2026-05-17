@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'theme/app_theme.dart';
+import 'providers/auth_provider.dart';
+import 'screens/auth_gate.dart';
 import 'screens/atlas_screen.dart';
 import 'screens/for_you_screen.dart';
 import 'screens/stories_screen.dart';
@@ -8,8 +13,11 @@ import 'screens/trips_screen.dart';
 import 'screens/profile_screen.dart';
 import 'widgets/shared_widgets.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
@@ -22,11 +30,14 @@ class DiningAtlasApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'The Dining Atlas',
-      debugShowCheckedModeBanner: false,
-      theme: buildAppTheme(),
-      home: const MainShell(),
+    return ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: MaterialApp(
+        title: 'The Dining Atlas',
+        debugShowCheckedModeBanner: false,
+        theme: buildAppTheme(),
+        home: const AuthGate(mainApp: MainShell()),
+      ),
     );
   }
 }

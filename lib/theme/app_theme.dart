@@ -57,11 +57,10 @@ ThemeData buildAppTheme() {
   return ThemeData(
     useMaterial3: true,
     scaffoldBackgroundColor: AppColors.cream,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: AppColors.terracotta,
       secondary: AppColors.teal,
       surface: AppColors.cream,
-      background: AppColors.cream,
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.cream,

@@ -11,6 +11,12 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.1.0
   cupertino_icons: ^1.0.2
+  firebase_core: ^4.9.0
+  firebase_auth: ^6.5.1
+  cloud_firestore: ^6.4.1
+  firebase_storage: ^13.4.1
+  provider: ^6.1.5+1
+  google_sign_in: 6.2.1
 
 dev_dependencies:
   flutter_test:
