@@ -1,1 +1,34 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"the-dining-atlas","appId":"1:867788434091:android:b3dde503cf316f1966e5ee","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"the-dining-atlas","configurations":{"android":"1:867788434091:android:b3dde503cf316f1966e5ee","ios":"1:867788434091:ios:af21fd4b3229d4af66e5ee","macos":"1:867788434091:ios:af21fd4b3229d4af66e5ee","web":"1:867788434091:web:950d047e5a6f238966e5ee","windows":"1:867788434091:web:460aeee2f93180df66e5ee"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "the-dining-atlas",
+          "appId": "1:867788434091:android:b3dde503cf316f1966e5ee",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "the-dining-atlas",
+          "configurations": {
+            "android": "1:867788434091:android:b3dde503cf316f1966e5ee",
+            "ios": "1:867788434091:ios:af21fd4b3229d4af66e5ee",
+            "macos": "1:867788434091:ios:af21fd4b3229d4af66e5ee",
+            "web": "1:867788434091:web:950d047e5a6f238966e5ee",
+            "windows": "1:867788434091:web:460aeee2f93180df66e5ee"
+          }
+        }
+      }
+    }
+  },
+  "functions": {
+    "source": "functions",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log"
+    ]
+  }
+}
