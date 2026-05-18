@@ -62,6 +62,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     setState(() => _isSubmitting = true);
     try {
       final auth = context.read<AuthProvider>();
+      final isGuest = auth.user == null;
+      
       final restaurant = RestaurantModel(
         id: '',
         name: _nameController.text.trim(),
@@ -76,7 +78,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         tip: _tipController.text.trim(),
         dish: _dishController.text.trim(),
         mediaUrls: [],
-        contributorId: auth.user!.uid,
+        contributorId: isGuest ? 'guest_user' : auth.user!.uid,
         status: 'pending',
         avgRating: 0,
         reviewCount: 0,

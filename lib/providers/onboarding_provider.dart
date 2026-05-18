@@ -8,28 +8,66 @@ class OnboardingProvider extends ChangeNotifier {
   final IAiService _aiService;
   OnboardingProvider(this._userService, this._aiService);
 
-  List<String> vibes = [];
-  String budget = '\$\$';
-  List<String> atmosphere = [];
-  String cityId = 'tokyo';
+  final List<String> _vibes = [];
+  String _budget = '\$\$';
+  final List<String> _atmosphere = [];
+  String _cityId = 'tokyo';
   bool _isLoading = false;
   bool _completed = false;
 
+  List<String> get vibes => List.unmodifiable(_vibes);
+  String get budget => _budget;
+  List<String> get atmosphere => List.unmodifiable(_atmosphere);
+  String get cityId => _cityId;
   bool get isLoading => _isLoading;
   bool get completed => _completed;
+
+  void toggleVibe(String id) {
+    if (_vibes.contains(id)) {
+      _vibes.remove(id);
+    } else {
+      _vibes.add(id);
+    }
+    notifyListeners();
+  }
+
+  void setBudget(String value) {
+    _budget = value;
+    notifyListeners();
+  }
+
+  void toggleAtmosphere(String id) {
+    if (_atmosphere.contains(id)) {
+      _atmosphere.remove(id);
+    } else {
+      _atmosphere.add(id);
+    }
+    notifyListeners();
+  }
+
+  void setCity(String id) {
+    _cityId = id;
+    notifyListeners();
+  }
 
   Future<void> completeOnboarding(String uid) async {
     _isLoading = true;
     notifyListeners();
     try {
       final prefs = OnboardingPrefsModel(
-        vibes: vibes, budget: budget, atmosphere: atmosphere,
-        cityId: cityId, aiWeights: {},
+        vibes: _vibes,
+        budget: _budget,
+        atmosphere: _atmosphere,
+        cityId: _cityId,
+        aiWeights: {},
       );
       final weights = await _aiService.generateTasteWeights(prefs);
       final prefsWithWeights = OnboardingPrefsModel(
-        vibes: vibes, budget: budget, atmosphere: atmosphere,
-        cityId: cityId, aiWeights: weights,
+        vibes: _vibes,
+        budget: _budget,
+        atmosphere: _atmosphere,
+        cityId: _cityId,
+        aiWeights: weights,
       );
       await _userService.savePreferences(uid, prefsWithWeights);
       await _userService.markOnboardingComplete(uid);

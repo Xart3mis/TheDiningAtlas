@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/restaurant_provider.dart';
@@ -16,8 +17,8 @@ class MapSearchScreen extends StatefulWidget {
 }
 
 class _MapSearchScreenState extends State<MapSearchScreen> {
-  GoogleMapController? _mapController;
-  Set<Marker> _markers = {};
+  final MapController _mapController = MapController();
+  List<Marker> _markers = [];
 
   static const _defaultPosition = LatLng(35.6762, 139.6503);
 
@@ -39,6 +40,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
       // Convert geolocator Position to Firestore GeoPoint
       final geoPoint = GeoPoint(pos.latitude, pos.longitude);
       await restaurantProvider.loadNearby(geoPoint);
+      _mapController.move(LatLng(pos.latitude, pos.longitude), 14);
     }
     if (mounted) _buildMarkers();
   }
@@ -49,22 +51,29 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
     setState(() {
       _markers = restaurants.map((r) {
         return Marker(
-          markerId: MarkerId(r.id),
-          position: LatLng(r.geopoint.latitude, r.geopoint.longitude),
-          infoWindow: InfoWindow(title: r.name, snippet: r.priceRange),
-          onTap: () => Navigator.pushNamed(
-            context,
-            RouteNames.kRestaurantDetail,
-            arguments: r,
+          width: 40,
+          height: 40,
+          point: LatLng(r.geopoint.latitude, r.geopoint.longitude),
+          child: GestureDetector(
+            onTap: () => Navigator.pushNamed(
+              context,
+              RouteNames.kRestaurantDetail,
+              arguments: r,
+            ),
+            child: const Icon(
+              Icons.location_on,
+              color: AppColors.terracotta,
+              size: 40,
+            ),
           ),
         );
-      }).toSet();
+      }).toList();
     });
   }
 
   @override
   void dispose() {
-    _mapController?.dispose();
+    _mapController.dispose();
     super.dispose();
   }
 
@@ -73,15 +82,21 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: const CameraPosition(
-              target: _defaultPosition,
-              zoom: 14,
+          FlutterMap(
+            mapController: _mapController,
+            options: const MapOptions(
+              initialCenter: _defaultPosition,
+              initialZoom: 14,
             ),
-            markers: _markers,
-            myLocationEnabled: true,
-            myLocationButtonEnabled: true,
-            onMapCreated: (c) => _mapController = c,
+            children: [
+              TileLayer(
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.dining_atlas',
+              ),
+              MarkerLayer(
+                markers: _markers,
+              ),
+            ],
           ),
           Positioned(
             top: MediaQuery.of(context).padding.top + 8,

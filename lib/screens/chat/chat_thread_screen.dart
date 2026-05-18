@@ -51,7 +51,8 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
     final auth = context.read<AuthProvider>();
-    context.read<ChatProvider>().sendMessage(senderId: auth.user!.uid, text: text);
+    final isGuest = auth.user == null;
+    context.read<ChatProvider>().sendMessage(senderId: isGuest ? 'guest_user' : auth.user!.uid, text: text);
     _controller.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
@@ -68,7 +69,8 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
   Widget build(BuildContext context) {
     final chatProvider = context.watch<ChatProvider>();
     final auth = context.read<AuthProvider>();
-    final myUid = auth.user!.uid;
+    final isGuest = auth.user == null;
+    final myUid = isGuest ? 'guest_user' : auth.user!.uid;
 
     return Scaffold(
       appBar: AppBar(

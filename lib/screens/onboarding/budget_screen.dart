@@ -33,7 +33,7 @@ class BudgetScreen extends StatelessWidget {
             final label = opt.values.first;
             final selected = provider.budget == key;
             return GestureDetector(
-              onTap: () => provider.budget = key,
+              onTap: () => provider.setBudget(key),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 margin: const EdgeInsets.only(bottom: 12),

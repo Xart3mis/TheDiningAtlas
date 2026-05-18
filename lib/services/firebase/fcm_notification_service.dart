@@ -11,16 +11,24 @@ class FcmNotificationService implements INotificationService {
 
   @override
   Future<void> initialize() async {
+    // Register background handler
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    await _fcm.requestPermission();
+    // Request permission — non-blocking, users may deny
+    await _fcm.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
+    // Initialize local notifications (uses named 'settings:' in v18+)
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInit = DarwinInitializationSettings();
     await _localNotifications.initialize(
       settings: const InitializationSettings(android: androidInit, iOS: iosInit),
     );
 
+    // Listen for foreground messages
     FirebaseMessaging.onMessage.listen((msg) {
       if (msg.notification != null) {
         showLocalNotification(
@@ -35,10 +43,16 @@ class FcmNotificationService implements INotificationService {
   Future<String?> getFcmToken() => _fcm.getToken();
 
   @override
-  Future<void> showLocalNotification({required String title, required String body}) async {
+  Future<void> showLocalNotification({
+    required String title,
+    required String body,
+  }) async {
     const androidDetails = AndroidNotificationDetails(
-      'diningatlas_channel', 'DiningAtlas',
-      importance: Importance.high, priority: Priority.high,
+      'diningatlas_channel',
+      'DiningAtlas',
+      channelDescription: 'DiningAtlas notifications',
+      importance: Importance.high,
+      priority: Priority.high,
     );
     await _localNotifications.show(
       id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
@@ -49,9 +63,13 @@ class FcmNotificationService implements INotificationService {
   }
 
   @override
-  Future<void> scheduleGeofenceNotification({required String placeId, required String placeName, required double lat, required double lng}) async {
-    // Geofence notifications triggered by position stream in LocationProvider
-    // When device enters radius, call showLocalNotification directly
+  Future<void> scheduleGeofenceNotification({
+    required String placeId,
+    required String placeName,
+    required double lat,
+    required double lng,
+  }) async {
+    // Triggered by position stream in LocationProvider
   }
 
   @override

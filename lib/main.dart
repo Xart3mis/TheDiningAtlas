@@ -134,6 +134,11 @@ class _MainShellState extends State<MainShell> {
         currentIndex: _currentIndex,
         onTap: (i) => setState(() => _currentIndex = i),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
+        backgroundColor: AppColors.terracotta,
+        child: const Icon(Icons.add_location_alt, color: Colors.white),
+      ),
     );
   }
 }

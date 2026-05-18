@@ -209,7 +209,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       child: AtlasSearchBar(
         hint: 'Ramen, kaiseki, late-night…',
-        onTap: () {},
+        onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
         showVoice: true,
       ),
     );
@@ -227,7 +227,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
         itemBuilder: (_, i) => AtlasPill(
           label: filters[i],
           selected: i == 0,
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
         ),
       ),
     );

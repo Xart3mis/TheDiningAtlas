@@ -42,15 +42,7 @@ class VibeSelectorScreen extends StatelessWidget {
               children: _kVibes.map((vibe) {
                 final selected = provider.vibes.contains(vibe['id']);
                 return GestureDetector(
-                  onTap: () {
-                    final current = List<String>.from(provider.vibes);
-                    if (selected) {
-                      current.remove(vibe['id']);
-                    } else {
-                      current.add(vibe['id']!);
-                    }
-                    provider.vibes = current;
-                  },
+                  onTap: () => provider.toggleVibe(vibe['id']!),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(

@@ -18,7 +18,9 @@ class UserProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      _user = await _service.fetchUser(uid);
+      _user = await _service
+          .fetchUser(uid)
+          .timeout(const Duration(seconds: 8), onTimeout: () => null);
     } catch (e) {
       _error = e.toString();
     } finally {

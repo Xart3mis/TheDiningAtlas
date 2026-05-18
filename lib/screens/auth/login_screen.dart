@@ -29,14 +29,20 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _onLogin() async {
     if (!_formKey.currentState!.validate()) return;
     final auth = context.read<AuthProvider>();
-    await auth.signIn(
+    final success = await auth.signIn(
       _emailController.text.trim(),
       _passwordController.text,
     );
+    if (success && mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+    }
   }
 
   Future<void> _onGoogleLogin() async {
-    await context.read<AuthProvider>().signInWithGoogle();
+    final success = await context.read<AuthProvider>().signInWithGoogle();
+    if (success && mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+    }
   }
 
   @override

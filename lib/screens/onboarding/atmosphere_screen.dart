@@ -40,15 +40,7 @@ class AtmosphereScreen extends StatelessWidget {
               return FilterChip(
                 label: Text(a['label']!),
                 selected: selected,
-                onSelected: (_) {
-                  final current = List<String>.from(provider.atmosphere);
-                  if (selected) {
-                    current.remove(a['id']);
-                  } else {
-                    current.add(a['id']!);
-                  }
-                  provider.atmosphere = current;
-                },
+                onSelected: (_) => provider.toggleAtmosphere(a['id']!),
                 selectedColor: const Color(0xFFC17B4E),
                 checkmarkColor: Colors.white,
                 labelStyle: TextStyle(
