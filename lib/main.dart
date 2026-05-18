@@ -22,6 +22,8 @@ import 'screens/profile/settings_screen.dart';
 import 'screens/onboarding/onboarding_shell.dart';
 import 'screens/restaurant/restaurant_detail_screen.dart';
 import 'screens/restaurant/write_review_screen.dart';
+import 'screens/restaurant/edit_review_screen.dart';
+import 'models/review_model.dart';
 import 'screens/restaurant/add_place_screen.dart';
 import 'screens/map/map_search_screen.dart';
 import 'screens/chat/chat_thread_screen.dart';
@@ -114,6 +116,10 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case RouteNames.kPremiumUpgrade:
         return MaterialPageRoute(builder: (_) => const PremiumUpgradeScreen());
+      case RouteNames.kEditReview:
+        final review = settings.arguments as ReviewModel;
+        return MaterialPageRoute(
+            builder: (_) => EditReviewScreen(review: review));
       case RouteNames.kPlanTrip:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
