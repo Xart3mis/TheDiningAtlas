@@ -14,6 +14,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     final user = userProvider.user;
+    final currentMode = user?.chatPrivacy.mode ?? 'public';
 
     return Scaffold(
       appBar: AppBar(
@@ -26,29 +27,31 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           const _SectionHeader(title: 'Chat Privacy'),
-          RadioListTile<String>(
-            title: Text('Public — Anyone can message me',
-                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-            value: 'public',
-            groupValue: user?.chatPrivacy.mode ?? 'public',
-            activeColor: AppColors.terracotta,
+          RadioGroup<String>(
+            groupValue: currentMode,
             onChanged: (v) => _updateChatMode(context, v!, user),
-          ),
-          RadioListTile<String>(
-            title: Text('Private — No messages',
-                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-            value: 'private',
-            groupValue: user?.chatPrivacy.mode ?? 'public',
-            activeColor: AppColors.terracotta,
-            onChanged: (v) => _updateChatMode(context, v!, user),
-          ),
-          RadioListTile<String>(
-            title: Text('Scheduled — Set availability hours',
-                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-            value: 'scheduled',
-            groupValue: user?.chatPrivacy.mode ?? 'public',
-            activeColor: AppColors.terracotta,
-            onChanged: (v) => _updateChatMode(context, v!, user),
+            child: Column(
+              children: [
+                RadioListTile<String>(
+                  title: Text('Public — Anyone can message me',
+                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+                  value: 'public',
+                  activeColor: AppColors.terracotta,
+                ),
+                RadioListTile<String>(
+                  title: Text('Private — No messages',
+                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+                  value: 'private',
+                  activeColor: AppColors.terracotta,
+                ),
+                RadioListTile<String>(
+                  title: Text('Scheduled — Set availability hours',
+                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+                  value: 'scheduled',
+                  activeColor: AppColors.terracotta,
+                ),
+              ],
+            ),
           ),
 
           const Divider(),
@@ -70,11 +73,9 @@ class SettingsScreen extends StatelessWidget {
                 style: GoogleFonts.inter(
                     fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red)),
             onTap: () async {
+              final navigator = Navigator.of(context);
               await context.read<AuthProvider>().signOut();
-              if (context.mounted) {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, RouteNames.kLogin, (_) => false);
-              }
+              navigator.pushNamedAndRemoveUntil(RouteNames.kLogin, (_) => false);
             },
           ),
         ],

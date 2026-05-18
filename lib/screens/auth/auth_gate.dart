@@ -49,10 +49,11 @@ class _AuthenticatedGateState extends State<_AuthenticatedGate> {
 
   Future<void> _init() async {
     final userProvider = context.read<UserProvider>();
-    await userProvider.loadUser(widget.userId);
+    final notifProvider = context.read<NotificationProvider>();
 
-    await context.read<NotificationProvider>().initialize();
-    await context.read<NotificationProvider>().getToken();
+    await userProvider.loadUser(widget.userId);
+    await notifProvider.initialize();
+    await notifProvider.getToken();
 
     if (!mounted) return;
 

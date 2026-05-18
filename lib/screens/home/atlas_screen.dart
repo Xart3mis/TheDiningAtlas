@@ -28,8 +28,10 @@ class _AtlasScreenState extends State<AtlasScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => context.read<RestaurantProvider>().loadFeed(cityId: 'tokyo'));
+    Future.microtask(() {
+      if (!mounted) return;
+      context.read<RestaurantProvider>().loadFeed(cityId: 'tokyo');
+    });
   }
 
   @override
@@ -366,7 +368,7 @@ class _MapPainter extends CustomPainter {
       Offset(size.width * 0.48, size.height * 0.4),
       Offset(size.width * 0.72, size.height * 0.32),
     ];
-    for (final b in blobs) canvas.drawCircle(b, 36, regionPaint);
+    for (final b in blobs) { canvas.drawCircle(b, 36, regionPaint); }
     final dotPaint = Paint()..color = AppColors.ink;
     final dots = [
       Offset(size.width * 0.18, size.height * 0.42),
@@ -374,7 +376,7 @@ class _MapPainter extends CustomPainter {
       Offset(size.width * 0.52, size.height * 0.35),
       Offset(size.width * 0.70, size.height * 0.28),
     ];
-    for (final d in dots) canvas.drawCircle(d, 3, dotPaint);
+    for (final d in dots) { canvas.drawCircle(d, 3, dotPaint); }
     canvas.drawCircle(Offset(size.width * 0.78, size.height * 0.5), 4,
         Paint()..color = AppColors.terracotta);
   }

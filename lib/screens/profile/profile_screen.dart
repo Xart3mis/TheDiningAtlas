@@ -20,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      if (!mounted) return;
       final auth = context.read<AuthProvider>();
       if (auth.user != null) {
         context.read<UserProvider>().loadUser(auth.user!.uid);
