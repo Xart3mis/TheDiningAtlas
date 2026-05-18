@@ -12,4 +12,5 @@ abstract class IUserService {
   Future<void> savePlace({required String uid, required String placeId, required bool reminderEnabled});
   Future<void> unsavePlace({required String uid, required String placeId});
   Future<int> savedPlaceCount(String uid);
+  Future<void> updateFcmToken(String uid, String token);
 }
