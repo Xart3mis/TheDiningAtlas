@@ -159,15 +159,21 @@ class _AtlasScreenState extends State<AtlasScreen> {
               ),
               // Chat button
               GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteNames.kChatThread,
-                  arguments: {
-                    'otherUid': 'ai_assistant',
-                    'placeId': '',
-                    'otherName': 'AI Assistant',
-                  },
-                ),
+                onTap: () {
+                  if (context.read<AuthProvider>().user == null) {
+                    Navigator.pushNamed(context, RouteNames.kLogin);
+                    return;
+                  }
+                  Navigator.pushNamed(
+                    context,
+                    RouteNames.kChatThread,
+                    arguments: {
+                      'otherUid': 'ai_assistant',
+                      'placeId': '',
+                      'otherName': 'AI Assistant',
+                    },
+                  );
+                },
                 child: Container(
                   width: 36,
                   height: 36,

@@ -70,15 +70,21 @@ class SettingsScreen extends StatelessWidget {
             subtitle: Text('Chat with locals and AI assistant',
                 style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
             trailing: const Icon(Icons.chevron_right, color: AppColors.warmGrey),
-            onTap: () => Navigator.pushNamed(
-              context,
-              RouteNames.kChatThread,
-              arguments: {
-                'otherUid': 'ai_assistant',
-                'placeId': '',
-                'otherName': 'AI Assistant',
-              },
-            ),
+            onTap: () {
+              if (context.read<AuthProvider>().user == null) {
+                Navigator.pushNamed(context, RouteNames.kLogin);
+                return;
+              }
+              Navigator.pushNamed(
+                context,
+                RouteNames.kChatThread,
+                arguments: {
+                  'otherUid': 'ai_assistant',
+                  'placeId': '',
+                  'otherName': 'AI Assistant',
+                },
+              );
+            },
           ),
           const Divider(),
           const _SectionHeader(title: 'Chat Privacy'),
