@@ -160,7 +160,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
               // TODO(Task 7): insert chat icon here
               // Avatar / profile
               GestureDetector(
-                onTap: () => MainShell.switchTab(4),
+                onTap: () => MainShell.switchTab(5),
                 child: SizedBox(
                   width: 36,
                   height: 36,
