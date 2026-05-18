@@ -3,6 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/onboarding_provider.dart';
 
+const _kBudgets = [
+  {r'$':    r'Under $15 · Budget'},
+  {r'$$':   r'$15 – $50 · Mid-range'},
+  {r'$$$':  r'$50 – $100 · Upscale'},
+  {r'$$$$': r'$100+ · Fine Dining'},
+];
+
 class BudgetScreen extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
@@ -11,12 +18,6 @@ class BudgetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
-    final budgets = [
-      {r'$':    r'Under $15 · Budget'},
-      {r'$$':   r'$15 – $50 · Mid-range'},
-      {r'$$$':  r'$50 – $100 · Upscale'},
-      {r'$$$$': r'$100+ · Fine Dining'},
-    ];
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -29,7 +30,7 @@ class BudgetScreen extends StatelessWidget {
           Text('Per meal or outing, roughly.',
               style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF6B6560))),
           const SizedBox(height: 32),
-          ...budgets.map((opt) {
+          ..._kBudgets.map((opt) {
             final key = opt.keys.first;
             final label = opt.values.first;
             final selected = provider.budget == key;
@@ -82,6 +83,7 @@ class BudgetScreen extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: Text('Continue',
+                      // Provider defaults to '$$'; pre-selects mid-range on first entry
                       style: GoogleFonts.inter(
                           color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
                 ),

@@ -48,8 +48,8 @@ class DestinationScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: selected
-                                ? Colors.white.withOpacity(0.25)
-                                : const Color(0xFFC17B4E).withOpacity(0.12),
+                                ? Colors.white.withValues(alpha:0.25)
+                                : const Color(0xFFC17B4E).withValues(alpha:0.12),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
