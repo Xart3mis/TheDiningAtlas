@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import '../models/models.dart';
+import '../core/constants/mock_data.dart';
 
 class TripsScreen extends StatefulWidget {
   const TripsScreen({super.key});
@@ -240,7 +240,7 @@ class _SpotCard extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(spot.restaurantName,
+                                  Text(spot.name,
                                       style: GoogleFonts.fraunces(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink)),
                                   const SizedBox(height: 2),
                                   Text(spot.neighborhood,

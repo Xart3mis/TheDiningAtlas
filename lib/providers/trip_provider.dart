@@ -1,51 +1,34 @@
 import 'package:flutter/material.dart';
+import '../services/interfaces/i_trip_service.dart';
 import '../models/trip_model.dart';
 
 class TripProvider extends ChangeNotifier {
+  final ITripService _service;
+  TripProvider(this._service);
+
   List<TripModel> _trips = [];
   bool _isLoading = false;
+  String? _error;
 
   List<TripModel> get trips => _trips;
   bool get isLoading => _isLoading;
+  String? get error => _error;
 
   Future<void> loadTrips(String uid) async {
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 400));
-    _trips = [
-      TripModel(
-        id: 'trip_1',
-        uid: uid,
-        cityId: 'tokyo',
-        title: 'Tokyo April 2026',
-        days: [
-          TripDayModel(
-            id: 'day_1',
-            date: DateTime(2026, 4, 12),
-            spots: [
-              const TripSpotModel(
-                id: 's1',
-                restaurantId: 'sushi_dai',
-                restaurantName: 'Sushi Dai',
-                neighborhood: 'Tsukiji',
-                time: '08:30',
-                mealType: 'MORNING',
-              ),
-              const TripSpotModel(
-                id: 's2',
-                restaurantId: 'afuri_ramen',
-                restaurantName: 'Afuri Ramen',
-                neighborhood: 'Ebisu',
-                time: '13:00',
-                mealType: 'LUNCH',
-              ),
-            ],
-          ),
-        ],
-        createdAt: DateTime(2026, 3, 1),
-      ),
-    ];
-    _isLoading = false;
-    notifyListeners();
+    try {
+      _trips = await _service.fetchTrips(uid);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> addSpot({required String uid, required String tripId, required String dayId, required TripSpotModel spot}) async {
+    await _service.addSpot(uid: uid, tripId: tripId, dayId: dayId, spot: spot);
+    await loadTrips(uid);
   }
 }

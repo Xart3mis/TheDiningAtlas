@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import '../models/models.dart';
+import '../core/constants/mock_data.dart';
 import 'write_review_screen.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
@@ -110,7 +110,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   child: Text(r.badge!, style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w700, color: Colors.white, letterSpacing: 1.2)),
                 ),
               Text(r.name, style: GoogleFonts.fraunces(fontSize: 28, fontWeight: FontWeight.w700, color: AppColors.ink)),
-              Text('${r.cuisine} · ${r.neighborhood}', style: GoogleFonts.inter(fontSize: 13, color: AppColors.warmGrey)),
+              Text('${r.category} · ${r.neighborhood}', style: GoogleFonts.inter(fontSize: 13, color: AppColors.warmGrey)),
               const SizedBox(height: 6),
               Row(
                 children: [
@@ -165,7 +165,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   }
 
   Widget _buildTagline(Restaurant r) {
-    if (r.tagline == null) return const SizedBox(height: 20);
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
       padding: const EdgeInsets.all(16),
@@ -178,7 +177,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            r.tagline!,
+            r.tagline,
             style: GoogleFonts.fraunces(fontSize: 15, fontStyle: FontStyle.italic, color: AppColors.ink, height: 1.5),
           ),
           const SizedBox(height: 6),

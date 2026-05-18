@@ -1,41 +1,42 @@
 import 'package:flutter/material.dart';
+import '../services/interfaces/i_user_service.dart';
 import '../models/user_model.dart';
 
 class UserProvider extends ChangeNotifier {
+  final IUserService _service;
+  UserProvider(this._service);
+
   UserModel? _user;
   bool _isLoading = false;
+  String? _error;
 
   UserModel? get user => _user;
   bool get isLoading => _isLoading;
+  String? get error => _error;
 
   Future<void> loadUser(String uid) async {
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 300));
-    _user = UserModel(
-      uid: uid,
-      displayName: 'Bedo',
-      photoUrl: '',
-      tier: 'local',
-      score: 128,
-      onboardingComplete: true,
-      chatPrivacy: const ChatPrivacy(mode: 'public'),
-    );
-    _isLoading = false;
-    notifyListeners();
+    try {
+      _user = await _service.fetchUser(uid);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> updateChatPrivacy(ChatPrivacy privacy) async {
     if (_user == null) return;
-    _user = UserModel(
-      uid: _user!.uid,
-      displayName: _user!.displayName,
-      photoUrl: _user!.photoUrl,
-      tier: _user!.tier,
-      score: _user!.score,
-      onboardingComplete: _user!.onboardingComplete,
-      chatPrivacy: privacy,
+    final updated = UserModel(
+      uid: _user!.uid, displayName: _user!.displayName, email: _user!.email,
+      photoUrl: _user!.photoUrl, tier: _user!.tier, score: _user!.score,
+      isPremium: _user!.isPremium, onboardingComplete: _user!.onboardingComplete,
+      chatPrivacy: privacy, createdAt: _user!.createdAt,
     );
+    await _service.updateUser(updated);
+    _user = updated;
     notifyListeners();
   }
 }

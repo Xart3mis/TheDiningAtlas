@@ -32,7 +32,7 @@ class ReviewModel {
       authorName: d['authorName'] ?? '',
       authorPhotoUrl: d['authorPhotoUrl'] ?? '',
       text: d['text'] ?? '',
-      rating: (d['rating'] as num?)?.toDouble() ?? 0,
+      rating: (d['rating'] ?? 0.0).toDouble(),
       upvotes: d['upvotes'] ?? 0,
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
@@ -46,6 +46,6 @@ class ReviewModel {
     'text': text,
     'rating': rating,
     'upvotes': upvotes,
-    'createdAt': Timestamp.fromDate(createdAt),
+    'createdAt': FieldValue.serverTimestamp(),
   };
 }

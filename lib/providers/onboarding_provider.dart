@@ -1,44 +1,42 @@
 import 'package:flutter/material.dart';
+import '../services/interfaces/i_user_service.dart';
+import '../services/interfaces/i_ai_service.dart';
+import '../models/onboarding_prefs_model.dart';
 
 class OnboardingProvider extends ChangeNotifier {
-  List<String> _vibes = [];
-  String _budget = '\$\$';
-  List<String> _atmosphere = [];
-  String _cityId = 'tokyo';
+  final IUserService _userService;
+  final IAiService _aiService;
+  OnboardingProvider(this._userService, this._aiService);
+
+  List<String> vibes = [];
+  String budget = '\$\$';
+  List<String> atmosphere = [];
+  String cityId = 'tokyo';
   bool _isLoading = false;
+  bool _completed = false;
 
-  List<String> get vibes => _vibes;
-  String get budget => _budget;
-  List<String> get atmosphere => _atmosphere;
-  String get cityId => _cityId;
   bool get isLoading => _isLoading;
-
-  set vibes(List<String> v) {
-    _vibes = v;
-    notifyListeners();
-  }
-
-  set budget(String v) {
-    _budget = v;
-    notifyListeners();
-  }
-
-  set atmosphere(List<String> v) {
-    _atmosphere = v;
-    notifyListeners();
-  }
-
-  set cityId(String v) {
-    _cityId = v;
-    notifyListeners();
-  }
+  bool get completed => _completed;
 
   Future<void> completeOnboarding(String uid) async {
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 600));
-    // Joe's UserService will persist this to Firestore
-    _isLoading = false;
-    notifyListeners();
+    try {
+      final prefs = OnboardingPrefsModel(
+        vibes: vibes, budget: budget, atmosphere: atmosphere,
+        cityId: cityId, aiWeights: {},
+      );
+      final weights = await _aiService.generateTasteWeights(prefs);
+      final prefsWithWeights = OnboardingPrefsModel(
+        vibes: vibes, budget: budget, atmosphere: atmosphere,
+        cityId: cityId, aiWeights: weights,
+      );
+      await _userService.savePreferences(uid, prefsWithWeights);
+      await _userService.markOnboardingComplete(uid);
+      _completed = true;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
-import '../models/ai_summary_model.dart';
+import '../services/interfaces/i_ai_service.dart';
+import '../services/interfaces/i_review_service.dart';
+import '../models/place_summary_model.dart';
 
 class AiProvider extends ChangeNotifier {
-  final Map<String, AiSummaryModel> _summaries = {};
+  final IAiService _aiService;
+  final IReviewService _reviewService;
+  AiProvider(this._aiService, this._reviewService);
+
+  final Map<String, PlaceSummaryModel?> _summaries = {};
   bool _isGenerating = false;
 
+  PlaceSummaryModel? summaryFor(String restaurantId) => _summaries[restaurantId];
   bool get isGenerating => _isGenerating;
 
-  AiSummaryModel? summaryFor(String restaurantId) => _summaries[restaurantId];
-
   Future<void> loadSummary(String restaurantId) async {
+    if (_summaries.containsKey(restaurantId)) return;
     _isGenerating = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 800));
-    _summaries[restaurantId] = AiSummaryModel(
-      restaurantId: restaurantId,
-      vibeOneLiner: 'A focused counter where every seat faces the chef — intimacy is the whole point.',
-      topAspects: ['Freshness', 'Service', 'Atmosphere'],
-      caveats: ['Queue can be 2h+'],
-      bestTime: 'Open at 5am · arrive by 4:30am',
-      generatedAt: DateTime.now(),
-    );
-    _isGenerating = false;
-    notifyListeners();
+    try {
+      final reviews = await _reviewService.fetchReviews(restaurantId, limit: 50);
+      if (reviews.length < 5) { _summaries[restaurantId] = null; return; }
+      _summaries[restaurantId] = await _aiService.summarizeReviews(
+        restaurantId: restaurantId, reviews: reviews,
+      );
+    } catch (_) {
+      _summaries[restaurantId] = null;
+    } finally {
+      _isGenerating = false;
+      notifyListeners();
+    }
   }
 }

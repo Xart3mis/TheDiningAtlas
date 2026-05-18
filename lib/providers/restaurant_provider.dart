@@ -1,97 +1,73 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../services/interfaces/i_restaurant_service.dart';
 import '../models/restaurant_model.dart';
 
 class RestaurantProvider extends ChangeNotifier {
+  final IRestaurantService _service;
+  RestaurantProvider(this._service);
+
   List<RestaurantModel> _feed = [];
+  List<RestaurantModel> _searchResults = [];
   bool _isLoading = false;
   String? _error;
   String _currentCityId = 'tokyo';
 
   List<RestaurantModel> get feed => _feed;
+  List<RestaurantModel> get searchResults => _searchResults;
   bool get isLoading => _isLoading;
   String? get error => _error;
   String get currentCityId => _currentCityId;
 
-  Future<void> loadFeed({required String cityId}) async {
-    _currentCityId = cityId;
+  Future<void> loadFeed({String? cityId}) async {
+    _currentCityId = cityId ?? _currentCityId;
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+    try {
+      _feed = await _service.fetchFeed(cityId: _currentCityId);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadNearby(GeoPoint center) async {
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 500));
-    _feed = _mockFeed(cityId);
-    _isLoading = false;
-    notifyListeners();
+    try {
+      _feed = await _service.fetchNearby(center: center);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
-  Future<void> loadNearby(dynamic pos) async {
+  Future<void> search(String query) async {
+    if (query.isEmpty) { _searchResults = []; notifyListeners(); return; }
     _isLoading = true;
     notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 500));
-    _feed = _mockFeed(_currentCityId);
-    _isLoading = false;
-    notifyListeners();
+    try {
+      _searchResults = await _service.search(query: query, cityId: _currentCityId);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
-  Future<void> fetchByCategory(String category) async {
-    _isLoading = true;
-    notifyListeners();
-    await Future.delayed(const Duration(milliseconds: 300));
-    _feed = _mockFeed(_currentCityId)
-        .where((r) => category == 'All' || r.category == category)
-        .toList();
-    _isLoading = false;
-    notifyListeners();
+  Future<RestaurantModel?> fetchById(String id) async {
+    try {
+      return await _service.fetchById(id);
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return null;
+    }
   }
-
-  Future<void> addRestaurant(RestaurantModel restaurant) async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    // No-op until Joe wires real service
-  }
-
-  List<RestaurantModel> _mockFeed(String cityId) => [
-    RestaurantModel(
-      id: 'sushi_dai',
-      name: 'Sushi Dai',
-      category: 'Restaurant',
-      cityId: cityId,
-      neighborhood: 'Tsukiji',
-      geopoint: const GeoPoint(35.6654, 139.7707),
-      description: 'An unadorned counter, ten seats, and the chef\'s decisive hand.',
-      tip: 'Come before 5am to beat the queue.',
-      dish: 'Omakase set',
-      mediaUrls: [],
-      contributorId: 'local_001',
-      status: 'approved',
-      avgRating: 4.9,
-      reviewCount: 312,
-      saveCount: 1024,
-      priceRange: '\$\$\$',
-      tileColor: const Color(0xFF7090A0),
-      tagline: 'The best sushi counter in Tokyo.',
-      createdAt: DateTime(2025, 1, 1),
-      updatedAt: DateTime(2025, 1, 1),
-    ),
-    RestaurantModel(
-      id: 'afuri_ramen',
-      name: 'Afuri Ramen',
-      category: 'Restaurant',
-      cityId: cityId,
-      neighborhood: 'Ebisu',
-      geopoint: const GeoPoint(35.6472, 139.7100),
-      description: 'Yuzu-forward broth, impossibly light.',
-      tip: 'Order the yuzu shio ramen.',
-      dish: 'Yuzu Shio Ramen',
-      mediaUrls: [],
-      contributorId: 'local_002',
-      status: 'approved',
-      avgRating: 4.7,
-      reviewCount: 204,
-      saveCount: 850,
-      priceRange: '\$\$',
-      tileColor: const Color(0xFFB8962E),
-      tagline: 'The bowl that made Ebisu famous.',
-      createdAt: DateTime(2025, 2, 1),
-      updatedAt: DateTime(2025, 2, 1),
-    ),
-  ];
 }

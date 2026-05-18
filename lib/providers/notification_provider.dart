@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import '../services/interfaces/i_notification_service.dart';
 
 class NotificationProvider extends ChangeNotifier {
-  String? _fcmToken;
-  String? get fcmToken => _fcmToken;
+  final INotificationService _service;
+  NotificationProvider(this._service);
+
+  int _badgeCount = 0;
+  int get badgeCount => _badgeCount;
 
   Future<void> initialize() async {
-    // Joe will wire firebase_messaging here
-    await Future.delayed(const Duration(milliseconds: 100));
+    await _service.initialize();
   }
 
-  Future<String?> getToken() async {
-    // Joe will call FirebaseMessaging.instance.getToken()
-    return null;
-  }
+  Future<String?> getToken() => _service.getFcmToken();
+
+  void incrementBadge() { _badgeCount++; notifyListeners(); }
+  void clearBadge() { _badgeCount = 0; notifyListeners(); }
 }

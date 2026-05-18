@@ -1,20 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-class TripSpotModel {
+class TripModel {
   final String id;
-  final String restaurantId;
-  final String restaurantName;
-  final String neighborhood;
-  final String time;
-  final String mealType;
+  final String uid;
+  final String title;
+  final String cityId;
+  final DateTime startDate;
+  final DateTime endDate;
+  final List<String> participantUids;
+  final List<TripDayModel> days;
 
-  const TripSpotModel({
+  const TripModel({
     required this.id,
-    required this.restaurantId,
-    required this.restaurantName,
-    required this.neighborhood,
-    required this.time,
-    required this.mealType,
+    required this.uid,
+    required this.title,
+    required this.cityId,
+    required this.startDate,
+    required this.endDate,
+    required this.participantUids,
+    required this.days,
   });
 }
 
@@ -23,27 +27,29 @@ class TripDayModel {
   final DateTime date;
   final List<TripSpotModel> spots;
 
-  const TripDayModel({
-    required this.id,
-    required this.date,
-    required this.spots,
-  });
+  const TripDayModel({required this.id, required this.date, required this.spots});
 }
 
-class TripModel {
+class TripSpotModel {
   final String id;
-  final String uid;
-  final String cityId;
-  final String title;
-  final List<TripDayModel> days;
-  final DateTime createdAt;
+  final String time;
+  final String mealType;
+  final String restaurantId;
+  final String name;
+  final String neighborhood;
+  final String statusLabel;
+  final Color statusColor;
+  final Color tileColor;
 
-  const TripModel({
+  const TripSpotModel({
     required this.id,
-    required this.uid,
-    required this.cityId,
-    required this.title,
-    required this.days,
-    required this.createdAt,
+    required this.time,
+    required this.mealType,
+    required this.restaurantId,
+    required this.name,
+    required this.neighborhood,
+    required this.statusLabel,
+    required this.statusColor,
+    required this.tileColor,
   });
 }
