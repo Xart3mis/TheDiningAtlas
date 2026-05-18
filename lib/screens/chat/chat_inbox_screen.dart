@@ -3,13 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../services/interfaces/i_chat_service.dart';
 import '../../services/interfaces/i_user_service.dart';
 import '../../models/chat_model.dart';
-import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
-import '../../core/service_provider.dart';
 
 class ChatInboxScreen extends StatefulWidget {
   const ChatInboxScreen({super.key});
@@ -141,7 +138,6 @@ class _ChatInboxScreenState extends State<ChatInboxScreen> {
       );
 
   Widget _buildList() {
-    final uid = context.read<AuthProvider>().user!.uid;
     return RefreshIndicator(
       onRefresh: _load,
       child: ListView.separated(
