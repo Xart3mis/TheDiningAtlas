@@ -34,11 +34,23 @@ class _TripsScreenState extends State<TripsScreen> {
   Widget build(BuildContext context) {
     final tripProvider = context.watch<TripProvider>();
 
+    TripDayModel? currentDay;
+    int spotCount = 0;
+    if (tripProvider.trips.isNotEmpty) {
+      final trip = tripProvider.trips.first;
+      currentDay = trip.days.isNotEmpty
+          ? trip.days[_selectedDayIndex % trip.days.length]
+          : null;
+      spotCount = currentDay?.spots.length ?? 0;
+    }
+
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _buildHeader()),
+          SliverToBoxAdapter(
+              child: _buildHeader(
+                  tripProvider.trips.isNotEmpty ? tripProvider.trips.first : null)),
           if (tripProvider.isLoading)
             const SliverToBoxAdapter(
                 child: Padding(
@@ -54,23 +66,8 @@ class _TripsScreenState extends State<TripsScreen> {
                 child: _buildDaySelector(tripProvider.trips.first)),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (_, i) {
-                  final trip = tripProvider.trips.first;
-                  final day = trip.days.isNotEmpty
-                      ? trip.days[_selectedDayIndex % trip.days.length]
-                      : null;
-                  if (day == null || i >= day.spots.length) {
-                    return const SizedBox.shrink();
-                  }
-                  return _SpotCard(spot: day.spots[i]);
-                },
-                childCount: tripProvider.trips.first.days.isNotEmpty
-                    ? tripProvider.trips.first
-                        .days[_selectedDayIndex %
-                            tripProvider.trips.first.days.length]
-                        .spots
-                        .length
-                    : 0,
+                (_, i) => _SpotCard(spot: currentDay!.spots[i]),
+                childCount: spotCount,
               ),
             ),
           ],
@@ -80,7 +77,14 @@ class _TripsScreenState extends State<TripsScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(TripModel? trip) {
+    final cityDisplay = trip != null
+        ? trip.cityId
+            .split('_')
+            .map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : w)
+            .join(' ')
+        : 'My Trips';
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
       child: Row(
@@ -105,11 +109,14 @@ class _TripsScreenState extends State<TripsScreen> {
                         color: AppColors.ink),
                     children: [
                       TextSpan(
-                          text: 'Tokyo',
+                          text: cityDisplay,
                           style: GoogleFonts.fraunces(
                               fontStyle: FontStyle.italic,
                               color: AppColors.terracotta)),
-                      const TextSpan(text: ', April 2026'),
+                      if (trip != null)
+                        TextSpan(
+                            text:
+                                ', ${_monthName(trip.startDate.month)} ${trip.startDate.year}'),
                     ],
                   ),
                 ),
@@ -186,6 +193,14 @@ class _TripsScreenState extends State<TripsScreen> {
   String _dayLabel(DateTime d) {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return days[d.weekday - 1];
+  }
+
+  String _monthName(int month) {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ];
+    return months[month - 1];
   }
 }
 
