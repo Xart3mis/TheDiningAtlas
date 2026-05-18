@@ -39,6 +39,7 @@ class UserModel {
     String? username,
     String? fcmToken,
     String? onboardingCountryId,
+    ChatPrivacy? chatPrivacy,
   }) {
     return UserModel(
       uid: uid,
@@ -49,7 +50,7 @@ class UserModel {
       score: score,
       isPremium: isPremium,
       onboardingComplete: onboardingComplete,
-      chatPrivacy: chatPrivacy,
+      chatPrivacy: chatPrivacy ?? this.chatPrivacy,
       createdAt: createdAt,
       username: username ?? this.username,
       countryCode: countryCode,

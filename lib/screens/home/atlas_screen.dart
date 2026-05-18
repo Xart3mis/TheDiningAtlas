@@ -350,6 +350,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
                   if (uid != null) {
                     await userProvider.updateCountry(uid, c.id);
                   }
+                  if (!mounted) return;
                   final countryCities = seedProvider.citiesForCountry(c.id);
                   if (countryCities.isNotEmpty) {
                     seedProvider.loadCityDetails(countryCities.first.id);

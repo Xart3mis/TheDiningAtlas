@@ -31,12 +31,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> updateChatPrivacy(ChatPrivacy privacy) async {
     if (_user == null) return;
-    final updated = UserModel(
-      uid: _user!.uid, displayName: _user!.displayName, email: _user!.email,
-      photoUrl: _user!.photoUrl, tier: _user!.tier, score: _user!.score,
-      isPremium: _user!.isPremium, onboardingComplete: _user!.onboardingComplete,
-      chatPrivacy: privacy, createdAt: _user!.createdAt,
-    );
+    final updated = _user!.copyWith(chatPrivacy: privacy);
     await _service.updateUser(updated);
     _user = updated;
     notifyListeners();
