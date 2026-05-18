@@ -120,7 +120,7 @@ class FirestoreUserService implements IUserService {
   Future<List<UserModel>> searchUsers({required String query, required String excludeUid}) async {
     if (query.trim().isEmpty) return [];
     final q = query.trim();
-    final end = q.substring(0, q.length - 1) + String.fromCharCode(q.codeUnitAt(q.length - 1) + 1);
+    final end = '$q';
 
     final byName = await _db.collection(AppConstants.kColUsers)
         .where('displayName', isGreaterThanOrEqualTo: q)

@@ -15,5 +15,5 @@ abstract class IUserService {
   Future<void> updateFcmToken(String uid, String token);
   Future<void> updateCountry(String uid, String countryId);
   Future<void> adjustScore(String uid, int delta);
-  Future<List<UserModel>> searchUsers({required String query, required String excludeUid}); // NEW
+  Future<List<UserModel>> searchUsers({required String query, required String excludeUid});
 }
