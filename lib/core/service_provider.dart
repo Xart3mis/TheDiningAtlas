@@ -80,7 +80,7 @@ class ServiceProvider {
       ChangeNotifierProvider(
           create: (_) => OnboardingProvider(userService, aiService)),
       ChangeNotifierProvider(
-          create: (_) => NotificationProvider(notificationService)),
+          create: (_) => NotificationProvider(notificationService, userService)),
       ChangeNotifierProvider(
           create: (_) => AiProvider(aiService, reviewService)),
     ];
