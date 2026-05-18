@@ -70,10 +70,10 @@ class _AtlasScreenState extends State<AtlasScreen> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildHeader(user)),
+          SliverToBoxAdapter(child: _buildSearchBanner(effectiveCountryName)),
           SliverToBoxAdapter(
-              child: _buildSearchBanner(effectiveCountryName)),
-          SliverToBoxAdapter(
-              child: _buildExploreWidget(effectiveCountryCode, effectiveCountryName, countryCities.length)),
+              child: _buildExploreWidget(effectiveCountryCode,
+                  effectiveCountryName, countryCities.length)),
           SliverToBoxAdapter(
               child: _buildCityChips(restaurantProvider, countryCities)),
           SliverToBoxAdapter(child: _buildEditorPicksHeader()),
@@ -115,12 +115,15 @@ class _AtlasScreenState extends State<AtlasScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.language_outlined, size: 22, color: AppColors.ink),
+              const Icon(Icons.language_outlined,
+                  size: 22, color: AppColors.ink),
               const SizedBox(width: 8),
               RichText(
                 text: TextSpan(
                   style: GoogleFonts.fraunces(
-                      fontSize: 17, color: AppColors.ink, fontWeight: FontWeight.w600),
+                      fontSize: 17,
+                      color: AppColors.ink,
+                      fontWeight: FontWeight.w600),
                   children: [
                     const TextSpan(text: 'The '),
                     TextSpan(
@@ -188,7 +191,8 @@ class _AtlasScreenState extends State<AtlasScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: Text('Search $countryName…',
-                  style: GoogleFonts.inter(fontSize: 14, color: Colors.white54)),
+                  style:
+                      GoogleFonts.inter(fontSize: 14, color: Colors.white54)),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -208,7 +212,8 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildExploreWidget(String countryCode, String countryName, int cityCount) {
+  Widget _buildExploreWidget(
+      String countryCode, String countryName, int cityCount) {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 14, 20, 0),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -244,7 +249,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: AppColors.ink)),
-                Text('$cityCount cities · restaurants & hidden gems',
+                Text('$cityCount cities · Restaurants & Hidden Gems',
                     style: GoogleFonts.inter(
                         fontSize: 12, color: AppColors.warmGrey)),
               ],
@@ -255,8 +260,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
             decoration: BoxDecoration(
               color: AppColors.terracotta.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                  color: AppColors.terracotta.withOpacity(0.3)),
+              border: Border.all(color: AppColors.terracotta.withOpacity(0.3)),
             ),
             child: Text('Exploring',
                 style: GoogleFonts.inter(
@@ -269,7 +273,8 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildCityChips(RestaurantProvider provider, List<SeedCityModel> cities) {
+  Widget _buildCityChips(
+      RestaurantProvider provider, List<SeedCityModel> cities) {
     return SizedBox(
       height: 44,
       child: ListView.separated(
