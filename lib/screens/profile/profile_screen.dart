@@ -8,10 +8,9 @@ import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/saved_places_provider.dart';
-import '../../providers/seed_data_provider.dart';
 import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
-import '../../core/constants/app_constants.dart';
+import '../../models/restaurant_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -27,13 +26,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Future.microtask(() async {
       if (!mounted) return;
       final auth = context.read<AuthProvider>();
-      final seedProvider = context.read<SeedDataProvider>();
-      await seedProvider.load();
+      final userProvider = context.read<UserProvider>();
+      final savedProvider = context.read<SavedPlacesProvider>();
       if (auth.user != null) {
-        await context.read<UserProvider>().loadUser(auth.user!.uid);
-        await context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
-        await seedProvider
-            .loadPassportCities(context.read<SavedPlacesProvider>().savedIds);
+        final uid = auth.user!.uid;
+        await userProvider.loadUser(uid);
+        if (mounted) await savedProvider.loadSaved(uid);
       }
     });
   }
@@ -41,22 +39,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
-    final savedCount = context.watch<SavedPlacesProvider>().savedIds.length;
-    final passportCities = context
-        .watch<SeedDataProvider>()
-        .passportCities
-        .map((city) => city.displayName)
-        .toList()
-      ..sort();
+    final savedProvider = context.watch<SavedPlacesProvider>();
+    final savedRestaurants = savedProvider.savedRestaurants;
 
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _buildHeader(context, user, savedCount)),
           SliverToBoxAdapter(
-              child: _buildStats(user, savedCount, passportCities.length)),
-          SliverToBoxAdapter(child: _buildPassport(passportCities)),
+              child: _buildHeader(context, user, savedRestaurants.length)),
+          SliverToBoxAdapter(
+              child: _buildStats(user, savedRestaurants.length, savedProvider.uniqueCityCount)),
+          SliverToBoxAdapter(
+              child: _buildPassport(savedProvider, savedRestaurants)),
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
@@ -226,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildPassport(List<String> cities) {
+  Widget _buildPassport(SavedPlacesProvider savedProvider, List<RestaurantModel> restaurants) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -234,36 +229,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: SectionLabel('Dining Passport'),
         ),
-        SizedBox(
-          height: 36,
-          child: cities.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    'Save places to build your passport.',
-                    style: GoogleFonts.inter(
-                        fontSize: 13, color: AppColors.warmGrey),
-                  ),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: cities.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
-                  itemBuilder: (_, i) => Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        if (savedProvider.isLoading)
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if (restaurants.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'Save places to build your passport.',
+              style: GoogleFonts.inter(fontSize: 13, color: AppColors.warmGrey),
+            ),
+          )
+        else
+          SizedBox(
+            height: 120,
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              scrollDirection: Axis.horizontal,
+              itemCount: restaurants.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              itemBuilder: (_, i) {
+                final r = restaurants[i];
+                return GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                      context, RouteNames.kRestaurantDetail,
+                      arguments: r),
+                  child: Container(
+                    width: 140,
                     decoration: BoxDecoration(
                       color: AppColors.white,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: AppColors.lightGrey),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                          color: AppColors.lightGrey.withOpacity(0.6)),
                     ),
-                    child: Text(cities[i],
-                        style: GoogleFonts.inter(
-                            fontSize: 13, color: AppColors.ink)),
+                    clipBehavior: Clip.hardEdge,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 68,
+                          width: 140,
+                          child: r.mediaUrls.isNotEmpty
+                              ? CachedNetworkImage(
+                                  imageUrl: r.mediaUrls.first,
+                                  fit: BoxFit.cover,
+                                  errorWidget: (_, __, ___) =>
+                                      Container(color: r.tileColor),
+                                )
+                              : Container(color: r.tileColor),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 6, 8, 0),
+                          child: Text(r.name,
+                              style: GoogleFonts.fraunces(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.ink),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 2, 8, 0),
+                          child: Text(r.category,
+                              style: GoogleFonts.inter(
+                                  fontSize: 10, color: AppColors.warmGrey),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-        ),
+                );
+              },
+            ),
+          ),
       ],
     );
   }

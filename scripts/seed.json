@@ -1,0 +1,3956 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "generated": "2026-05-18",
+    "total_countries": 2,
+    "total_cities": 10,
+    "total_venues": 100,
+    "sources": [
+      "Google Maps",
+      "TripAdvisor",
+      "TimeOut",
+      "The Infatuation",
+      "Michelin Guide",
+      "Euromonitor 2024",
+      "UN Tourism 2024"
+    ],
+    "schema_version": "travel-seed-v1"
+  },
+  "countries": [
+    {
+      "country": "France",
+      "country_code": "FR",
+      "cities": [
+        {
+          "city": "Paris",
+          "city_rank": 1,
+          "country": "France",
+          "coordinates": {
+            "lat": 48.8566,
+            "lng": 2.3522
+          },
+          "venues": [
+            {
+              "id": "fr-par-001",
+              "name": "Café de Flore",
+              "type": "cafe",
+              "description": "The beating heart of Saint-Germain-des-Prés, this legendary art deco café has hosted Sartre, de Beauvoir, and Picasso since 1887. Order a café crème and croissant at a sidewalk table to watch the world's most stylish pedestrian parade.",
+              "address": "172 Boulevard Saint-Germain, 75006 Paris",
+              "coordinates": {
+                "lat": 48.8542,
+                "lng": 2.3328
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Café",
+              "mood_tags": [
+                "iconic",
+                "romantic",
+                "artistic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "mainstream",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "historic",
+                "aesthetic",
+                "instagrammable",
+                "cafe-workspace"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "07:30–01:30 daily",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€18",
+              "instagram": "@cafedeflore",
+              "reservation_url": "https://cafedeflore.fr",
+              "image_url": "http://monumentsdeparis.net/content/monumentsparis/cafe-de-flore.jpg"
+            },
+            {
+              "id": "fr-par-002",
+              "name": "Le Comptoir du Relais",
+              "type": "restaurant",
+              "description": "Chef Yves Camdeborde's impossibly cozy Saint-Germain bistro delivers market-fresh French classics to a packed house of devoted regulars and lucky tourists who scored one of Paris's hardest reservations. The weekend prix-fixe tasting menu is a love letter to traditional brasserie cooking.",
+              "address": "9 Carrefour de l'Odéon, 75006 Paris",
+              "coordinates": {
+                "lat": 48.8519,
+                "lng": 2.3397
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "French Bistro",
+              "mood_tags": [
+                "romantic",
+                "cozy",
+                "intimate",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "luxury-dining"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Fri 12:00–23:00, Sat–Sun 12:00–23:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€65",
+              "reservation_url": "https://hotel-paris-relais-saint-germain.com",
+              "image_url": "https://media.timeout.com/images/105420341/image.jpg"
+            },
+            {
+              "id": "fr-par-003",
+              "name": "Cravan",
+              "type": "bar",
+              "description": "Paris's largest cocktail bar sprawls across a 17th-century building on the Boulevard Saint-Germain, drawing night owls with an inventive list that includes the house signature: Champagne spiked with immortelle extract. Mushroom tempura and black-garlic dipping sauce keep the crowd anchored until 2am weekends.",
+              "address": "165 Boulevard Saint-Germain, 75006 Paris",
+              "coordinates": {
+                "lat": 48.8528,
+                "lng": 2.3348
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Cocktail Bar",
+              "mood_tags": [
+                "trendy",
+                "energetic",
+                "luxurious",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "historic",
+                "aesthetic",
+                "instagrammable"
+              ],
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 18:00–01:00, Fri–Sun 18:00–02:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€25",
+              "reservation_url": "https://cravan.fr",
+              "image_url": "https://media.yatzer.com/24_cravan_paris_vincent_leroux_yatzer-900x1125.jpg"
+            },
+            {
+              "id": "fr-par-004",
+              "name": "Rex Club",
+              "type": "club",
+              "description": "The spiritual home of French techno since 1990, the Rex Club's legendary sound system and resident DJs including Laurent Garnier have made its basement dance floor a pilgrimage site for electronic music devotees worldwide. Don't arrive before midnight if you want to feel the room reach critical mass.",
+              "address": "5 Boulevard Poissonnière, 75002 Paris",
+              "coordinates": {
+                "lat": 48.87,
+                "lng": 2.3494
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "intense"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "techno-club",
+                "live-music",
+                "modern"
+              ],
+              "music_genre": "Techno, Electronic",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Fri–Sat 23:00–06:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€15 entry",
+              "instagram": "@rexclubparis",
+              "reservation_url": "https://www.rexclub.com",
+              "image_url": "https://www.leparisien.fr/resizer/gOA0iivIAPuobuxt04GI0whalL4=/932x582/arc-anglerfish-eu-central-1-prod-leparisien.s3.amazonaws.com/public/5KYF3JUQQDOJYRLONWTJSUAZQ4.jpg"
+            },
+            {
+              "id": "fr-par-005",
+              "name": "Breizh Café",
+              "type": "cafe",
+              "description": "This acclaimed Breton crêperie in the Marais has revolutionized the humble galette with premium organic buckwheat batter filled with seasonal ingredients like smoked salmon roe and crème fraîche, earning a cult following among food-obsessed Parisians. Pair a savory galette with the remarkable natural cider selection.",
+              "address": "109 Rue du Temple, 75003 Paris",
+              "coordinates": {
+                "lat": 48.8604,
+                "lng": 2.3543
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Breton Crêperie",
+              "mood_tags": [
+                "cozy",
+                "artistic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "influencer-hotspot",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "instagrammable",
+                "traditional"
+              ],
+              "best_time_of_day": "brunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Wed–Sun 11:30–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€22",
+              "instagram": "@breizhcafe",
+              "reservation_url": "https://breizhcafe.com",
+              "image_url": "https://www.doitinparis.com/files/2018/les-its-du-moment/02/creperies/thumbs-1180x525/breizh-creperie.jpg"
+            },
+            {
+              "id": "fr-par-006",
+              "name": "Géosmine",
+              "type": "restaurant",
+              "description": "Chef Maxime Bouttier's duplex restaurant in a converted 11th arrondissement textile factory serves hyper-seasonal French tasting menus where artichoke braised in white wine arrives wrapped in ribbons of lardo, and every dish carries the philosophy of its name — the smell of freshly turned earth. One of Paris's most exciting young restaurants right now.",
+              "address": "71 Rue de La Folie Méricourt, 75011 Paris",
+              "coordinates": {
+                "lat": 48.8659,
+                "lng": 2.3699
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern French",
+              "mood_tags": [
+                "artistic",
+                "intimate",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:00–22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€90",
+              "reservation_url": "https://geosminerestaurant.fr",
+              "image_url": "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/3b579a37902b44c1a63376284ee0ba0b"
+            },
+            {
+              "id": "fr-par-007",
+              "name": "Le Baron",
+              "type": "club",
+              "description": "The longtime anchor of Paris's exclusive club scene, Le Baron in the 8th arrondissement continues to draw a fashion-forward international crowd to its discreetly signed red-velvet lounge where the guest list policy is famously strict. A genuinely Parisian night out where celebrities, models, and DJs collide on a small but electric dance floor.",
+              "address": "6 Avenue Marceau, 75008 Paris",
+              "coordinates": {
+                "lat": 48.8672,
+                "lng": 2.2989
+              },
+              "cost_range": "$$$",
+              "mood_tags": [
+                "luxurious",
+                "trendy",
+                "energetic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "modern",
+                "aesthetic"
+              ],
+              "music_genre": "House, Hip-Hop",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 23:30–05:00",
+              "dress_code": "upscale",
+              "estimated_avg_spend": "€30 entry + drinks",
+              "instagram": "@lebaronparis",
+              "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/96/a7/3a/devanture.jpg?w=600&h=600&s=1"
+            },
+            {
+              "id": "fr-par-008",
+              "name": "Septime",
+              "type": "restaurant",
+              "description": "Consistently ranked among Europe's 50 best restaurants, Bertrand Grébaut's Bastille neo-bistro serves ingredient-led, natural-wine-paired tasting menus that feel simultaneously simple and revelatory — think raw shrimp with fermented rice cream and shiso, or milk-fed lamb with seasonal grains. Booking opens monthly and disappears within minutes.",
+              "address": "80 Rue de Charonne, 75011 Paris",
+              "coordinates": {
+                "lat": 48.8544,
+                "lng": 2.3801
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern French / Neo-Bistro",
+              "mood_tags": [
+                "elegant",
+                "intimate",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "modern",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Fri lunch and dinner",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€110",
+              "reservation_url": "https://www.septime-charonne.fr",
+              "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/25/74/bf/d4/caption.jpg?w=1200&h=-1&s=1"
+            },
+            {
+              "id": "fr-par-009",
+              "name": "Le Syndicat",
+              "type": "bar",
+              "description": "A proudly nationalist cocktail bar that uses exclusively French spirits — no Scotch, no Bourbon — crafting inventive drinks from Calvados, Cognac, Armagnac, and artisan French gins in a cramped, graffiti-lined space in the 10th arrondissement. The bar that proved France doesn't need imports to make world-class cocktails.",
+              "address": "51 Rue du Faubourg Saint-Denis, 75010 Paris",
+              "coordinates": {
+                "lat": 48.8707,
+                "lng": 2.3565
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Cocktail Bar",
+              "mood_tags": [
+                "trendy",
+                "chill",
+                "intimate",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "speakeasy",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:00–02:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€16",
+              "instagram": "@lesyndicatparis",
+              "image_url": "https://www.matchingfoodandwine.com/siteimages/Bars/le-syndicat.jpg"
+            },
+            {
+              "id": "fr-par-010",
+              "name": "Café Procope",
+              "type": "cafe",
+              "description": "Established in 1686 and reportedly the world's oldest café still in operation, Procope in Saint-Germain served Voltaire, Rousseau, and Napoleon Bonaparte — whose hat remains in a glass case upstairs. Today it functions as a full French brasserie, but the historic gilded interior and literary mythology make every coffee feel consequential.",
+              "address": "13 Rue de l'Ancienne Comédie, 75006 Paris",
+              "coordinates": {
+                "lat": 48.8529,
+                "lng": 2.3397
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Brasserie / Café",
+              "mood_tags": [
+                "iconic",
+                "romantic",
+                "elegant",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "instagrammable"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–00:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€35",
+              "reservation_url": "https://www.procope.com",
+              "image_url": "https://c8.alamy.com/comp/2YR5FD9/paris-france-november-30-2024-historical-cafe-procope-is-the-oldest-restaurant-of-paris-in-continuous-operation-it-was-opened-in-1686-2YR5FD9.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Nice",
+          "city_rank": 2,
+          "country": "France",
+          "coordinates": {
+            "lat": 43.7102,
+            "lng": 7.262
+          },
+          "venues": [
+            {
+              "id": "fr-nic-001",
+              "name": "Café du Turin",
+              "type": "cafe",
+              "description": "The undisputed institution for seafood aperitifs on the Place Garibaldi, Café du Turin has been shucking the finest oysters and sea urchins on the Côte d'Azur since 1908. Arrive at noon for a dozen Fines de Claires and a cold Provençal rosé before the crowds descend.",
+              "address": "5 Place Garibaldi, 06300 Nice",
+              "coordinates": {
+                "lat": 43.7028,
+                "lng": 7.2787
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Seafood / French Café",
+              "mood_tags": [
+                "chill",
+                "elegant",
+                "romantic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "beachside"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "spring-summer",
+              "opening_hours": "Daily 08:00–22:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€30",
+              "instagram": "@cafeduturin",
+              "image_url": "https://4.bp.blogspot.com/-b_ADBtDtmDY/V87lA6Qp6JI/AAAAAAAAUhQ/l-EEXUE2bQ829azRa7N36_1Su6qCW7kbQCLcB/s1600/DSC07324.JPG"
+            },
+            {
+              "id": "fr-nic-002",
+              "name": "Jan Restaurant",
+              "type": "restaurant",
+              "description": "South African chef Jan Hendrik van der Westhuizen brings the flavors of his homeland to the Côte d'Azur, weaving Cape Malay spices and South African wines into a Michelin-starred tasting menu that feels utterly original in the heart of the French Riviera. The terrace overlooking Nice's ochre rooftops is a dream backdrop.",
+              "address": "12 Rue Lascaris, 06300 Nice",
+              "coordinates": {
+                "lat": 43.6978,
+                "lng": 7.2763
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "South African / Modern French",
+              "mood_tags": [
+                "romantic",
+                "elegant",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "rooftop"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:30–21:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€120",
+              "reservation_url": "https://www.restaurantjan.com",
+              "image_url": "https://photos.smugmug.com/Provence-Lovers/Nice/Restaurants/n-wMjggh/Restaurant-Jan/i-ztN7xrv/1/b43464c8/L/Restaurant-Jan-Nice-003-L.jpg"
+            },
+            {
+              "id": "fr-nic-003",
+              "name": "Bar des Oiseaux",
+              "type": "bar",
+              "description": "Tucked on a narrow medieval lane in Vieux-Nice, this warmly lit natural wine bar draws a knowledgeable local crowd with an ever-changing list of small-producer bottles from Corsica, Provence, and beyond. Small plates of charcuterie and Niçoise cheese make it easy to linger through the evening.",
+              "address": "5 Rue Saint-Vincent, 06300 Nice",
+              "coordinates": {
+                "lat": 43.6968,
+                "lng": 7.2757
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Wine Bar",
+              "mood_tags": [
+                "intimate",
+                "chill",
+                "romantic",
+                "cozy"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 18:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€20",
+              "image_url": "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/3dbfc0cd290e443b9878de07035eeb6a?width=1000"
+            },
+            {
+              "id": "fr-nic-004",
+              "name": "Chez Pipo",
+              "type": "restaurant",
+              "description": "The definitive address for socca — Nice's beloved chickpea pancake — Chez Pipo has been making the city's best version in a wood-fired oven since 1923, serving it scorching hot on brown paper with zero frills and maximum flavor. This is the original, the others are imitations.",
+              "address": "13 Rue Bavastro, 06300 Nice",
+              "coordinates": {
+                "lat": 43.6984,
+                "lng": 7.2798
+              },
+              "cost_range": "$",
+              "cuisine_type": "Niçoise Street Food",
+              "mood_tags": [
+                "energetic",
+                "chill",
+                "chaotic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "street-food",
+                "traditional",
+                "historic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 09:00–14:30, 17:30–22:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://static.apidae-tourisme.com/filestore/objets-touristiques/images/107/11/26872683.jpg"
+            },
+            {
+              "id": "fr-nic-005",
+              "name": "L'Effervescence",
+              "type": "club",
+              "description": "The Riviera's most respected club for electronic music hosts an internationally curated DJ lineup across two floors of a refurbished venue near the train station, drawing a discerning crowd of Nice locals and well-traveled party tourists. The sound system is legitimately exceptional.",
+              "address": "2 Rue du Congrès, 06000 Nice",
+              "coordinates": {
+                "lat": 43.702,
+                "lng": 7.2659
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "techno-club",
+                "modern",
+                "live-music"
+              ],
+              "music_genre": "House, Techno",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Fri–Sat 23:30–05:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12 entry",
+              "image_url": "https://nice.city-life.fr/images/fiche/710/2439.jpg"
+            },
+            {
+              "id": "fr-nic-006",
+              "name": "Babel Babel",
+              "type": "restaurant",
+              "description": "A buzzy Mediterranean small-plates restaurant in the hip Libération neighborhood that perfectly channels Nice's multicultural soul, serving mezze-style dishes rooted in Niçoise, Lebanese, and Maghrebi cooking. The vine-covered terrace and natural-wine list make every visit feel like a discovery.",
+              "address": "31 Rue Bavastro, 06300 Nice",
+              "coordinates": {
+                "lat": 43.699,
+                "lng": 7.2809
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Mediterranean / Fusion",
+              "mood_tags": [
+                "trendy",
+                "energetic",
+                "artistic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "instagrammable",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Tue–Sat 19:00–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€38",
+              "image_url": "https://thumbs.dreamstime.com/b/nice-france-may-people-terrace-babel-cafe-347016687.jpg"
+            },
+            {
+              "id": "fr-nic-007",
+              "name": "La Cave du Fromager",
+              "type": "bar",
+              "description": "A subterranean wine and cheese bar carved into the medieval foundations of Vieux-Nice, offering one of the most intimate aperitif experiences on the Côte d'Azur. The staff's encyclopedic knowledge of Provençal wines paired with aged Comté and fresh chèvre makes this a genuinely instructive pit-stop.",
+              "address": "29 Rue Benoît Bunico, 06300 Nice",
+              "coordinates": {
+                "lat": 43.6963,
+                "lng": 7.2745
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Wine Bar / Cheese",
+              "mood_tags": [
+                "intimate",
+                "cozy",
+                "romantic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "speakeasy",
+                "traditional"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 17:00–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€22",
+              "image_url": "https://media-cdn.tripadvisor.com/media/photo-s/15/87/02/dc/view-from-outside.jpg"
+            },
+            {
+              "id": "fr-nic-008",
+              "name": "Le Plongeoir",
+              "type": "restaurant",
+              "description": "Perched on a rock platform jutting into the sea off Cap de Nice with views stretching to the Alps, this iconic dining platform built around a 1930s diving board serves fresh Mediterranean seafood and rosé to one of the most spectacular outdoor dining crowds in France. You don't eat here for the food alone — the setting is the whole point.",
+              "address": "33 Boulevard Franck Pilatte, 06300 Nice",
+              "coordinates": {
+                "lat": 43.7127,
+                "lng": 7.2983
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Mediterranean / Seafood",
+              "mood_tags": [
+                "romantic",
+                "luxurious",
+                "chill",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "influencer-hotspot",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "beachside",
+                "instagrammable",
+                "rooftop",
+                "aesthetic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "spring-summer",
+              "opening_hours": "Apr–Oct, Tue–Sun 12:00–23:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€55",
+              "reservation_url": "https://leplongeoir.com",
+              "instagram": "@leplongeoir_nice",
+              "image_url": "https://thumbs.dreamstime.com/b/le-plongeoir-restaurant-nice-france-most-iconic-dinner-spot-all-its-views-history-sitting-top-rock-377352886.jpg"
+            },
+            {
+              "id": "fr-nic-009",
+              "name": "Ruban Bleu",
+              "type": "cafe",
+              "description": "A beloved Promenade des Anglais institution known for its front-row sea views, all-day café menu, and classic pan bagnat — the great Niçoise sandwich of tuna, olives, and egg on olive-oil-soaked bread. The terrace at golden hour with the Mediterranean stretching in every direction is an unforgettable Riviera snapshot.",
+              "address": "20 Promenade des Anglais, 06000 Nice",
+              "coordinates": {
+                "lat": 43.6958,
+                "lng": 7.2563
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Café / Sandwich",
+              "mood_tags": [
+                "chill",
+                "romantic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "beachside",
+                "instagrammable",
+                "traditional"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "spring-summer",
+              "opening_hours": "Daily 08:00–22:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€18",
+              "image_url": "https://www.travelandleisure.com/thmb/Cs5whxHI-ZrvMCZ8CZOXCCe8ii8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/TAL-le-ruban-bleu-juan-les-pins-france-JUANLESPINS0623-35e3816c507c41dd815d604175827521.jpg"
+            },
+            {
+              "id": "fr-nic-010",
+              "name": "Le Smarties",
+              "type": "club",
+              "description": "Nice's longest-running LGBTQ+ club in the heart of the old town parties hard three nights a week with pop, house, and drag nights that draw an inclusive, high-energy mix of locals, expats, and tourists. The best club in Nice for anyone who wants to actually dance rather than pose.",
+              "address": "10 Rue Défly, 06300 Nice",
+              "coordinates": {
+                "lat": 43.6982,
+                "lng": 7.2742
+              },
+              "cost_range": "$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "intimate",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "modern"
+              ],
+              "music_genre": "Pop, House, Drag",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 22:30–04:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€10 entry",
+              "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/CZNGQfcOYFO0sAm-jFU9Hg/o.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Lyon",
+          "city_rank": 3,
+          "country": "France",
+          "coordinates": {
+            "lat": 45.764,
+            "lng": 4.8357
+          },
+          "venues": [
+            {
+              "id": "fr-lyo-001",
+              "name": "Café des Fédérations",
+              "type": "cafe",
+              "description": "The most authentic bouchon lyonnais in the city, with its red-checked tablecloths, shared benches, and a fixed four-course menu that hasn't deviated from andouillette and quenelle in forty years. Every Lyonnais you ask will claim it's a tourist trap, then admit they go anyway because the food is just that good.",
+              "address": "8 Rue Major Martin, 69001 Lyon",
+              "coordinates": {
+                "lat": 45.7656,
+                "lng": 4.8312
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Bouchon",
+              "mood_tags": [
+                "cozy",
+                "chaotic",
+                "intimate",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Fri 12:00–14:00, 19:30–22:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€32",
+              "image_url": "https://media.lyon-france.com/1280x960/201714/16663922.jpg"
+            },
+            {
+              "id": "fr-lyo-002",
+              "name": "Le Dôme Bar",
+              "type": "bar",
+              "description": "Housed inside a converted 19th-century chapel with a 32-meter-high painted dome, this theatrical cocktail bar in the heart of Lyon's Presqu'île is one of the most visually arresting drinking spaces in France. The baroque grandeur contrasts brilliantly with the modern cocktail menu.",
+              "address": "11 Place de la République, 69002 Lyon",
+              "coordinates": {
+                "lat": 45.756,
+                "lng": 4.8327
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Cocktail Bar",
+              "mood_tags": [
+                "luxurious",
+                "artistic",
+                "elegant",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "influencer-hotspot",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "historic",
+                "aesthetic",
+                "instagrammable",
+                "cocktail-bar"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 17:00–02:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€18",
+              "image_url": "https://lyon.intercontinental.com/wp-content/uploads/sites/6/2019/11/The-Dome-bar-c-Eric-Cuvillier.jpg"
+            },
+            {
+              "id": "fr-lyo-003",
+              "name": "Paul Bocuse Brasserie Nord",
+              "type": "restaurant",
+              "description": "The Art Deco brasserie bearing the legendary chef's name serves his most accessible menu — roast chicken, Lyon sausage with lentils, and impeccable tarte tatin — in a magnificent 1930s dining room that was once a railway café. An essential Lyon experience that's surprisingly democratic in price.",
+              "address": "18 Rue Neuve, 69002 Lyon",
+              "coordinates": {
+                "lat": 45.7612,
+                "lng": 4.8337
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Brasserie",
+              "mood_tags": [
+                "elegant",
+                "romantic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–14:30, 19:00–22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€45",
+              "reservation_url": "https://nordsudbrasseries.com",
+              "image_url": "https://c8.alamy.com/comp/P87987/paul-bocuse-brasserie-le-nord-lyon-france-P87987.jpg"
+            },
+            {
+              "id": "fr-lyo-004",
+              "name": "Hot Club de Lyon",
+              "type": "club",
+              "description": "One of Europe's oldest jazz clubs, founded in 1948, the Hot Club continues its mission in a vaulted stone cellar in Vieux Lyon where live bebop, swing, and contemporary jazz fill the underground space every night except Monday. The quintessential Lyon music experience.",
+              "address": "26 Rue Lanterne, 69001 Lyon",
+              "coordinates": {
+                "lat": 45.7662,
+                "lng": 4.8313
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "intimate",
+                "artistic",
+                "energetic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "jazz-bar",
+                "live-music",
+                "historic"
+              ],
+              "music_genre": "Jazz, Bebop, Swing",
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sun 21:00–00:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12 entry",
+              "instagram": "@hotclubdelyon",
+              "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/10/3c/8c/le-hot-club.jpg?w=1200&h=700&s=1"
+            },
+            {
+              "id": "fr-lyo-005",
+              "name": "Café Comptoir Abel",
+              "type": "cafe",
+              "description": "A family-run bouchon that opened in 1928 and shows absolutely no sign of modernizing — and that's the entire point. The quenelle de brochet with Nantua sauce here is the platonic ideal of the dish, and the house Beaujolais is poured generously from terracotta pots called pots lyonnais. Arrive hungry and with time.",
+              "address": "25 Rue Guynemer, 69002 Lyon",
+              "coordinates": {
+                "lat": 45.7543,
+                "lng": 4.8265
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Bouchon",
+              "mood_tags": [
+                "cozy",
+                "intimate",
+                "romantic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "local-hidden-gem"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 12:00–14:00, 19:30–21:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€38",
+              "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/3d/d0/4d/devanture-rustique-et.jpg?w=1200&h=1200&s=1"
+            },
+            {
+              "id": "fr-lyo-006",
+              "name": "Ninkasi Gerland",
+              "type": "bar",
+              "description": "Lyon's beloved homegrown craft brewery and bar-restaurant complex in the Gerland district pours eight house-brewed beers on tap in a cavernous industrial-chic space that also hosts live music and cinema nights. The terrace in summer becomes the city's most democratic meeting point.",
+              "address": "267 Rue Marcel Mérieux, 69007 Lyon",
+              "coordinates": {
+                "lat": 45.735,
+                "lng": 4.827
+              },
+              "cost_range": "$",
+              "cuisine_type": "Craft Brewery / Bar",
+              "mood_tags": [
+                "energetic",
+                "chill",
+                "chaotic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "modern",
+                "aesthetic"
+              ],
+              "music_genre": "Varied Live Music",
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 12:00–00:00, Fri–Sat 12:00–01:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€15",
+              "image_url": "https://www.citizenkid.com/uploads/medias/16/e2/16e2791b787c8d5567fb3741575a15f8e80787b9.jpg"
+            },
+            {
+              "id": "fr-lyo-007",
+              "name": "Le Sucre",
+              "type": "club",
+              "description": "Lyon's crown jewel of electronic music occupies the extraordinary rooftop of a 1930s sugar refinery — La Sucrière — and hosts touring international DJs under the open sky with a panoramic view over the Rhône and the city's illuminated skyline. One of Europe's great outdoor club venues.",
+              "address": "49 Quai Rambaud, 69002 Lyon",
+              "coordinates": {
+                "lat": 45.7432,
+                "lng": 4.8175
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "trendy",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "techno-club",
+                "instagrammable",
+                "live-music"
+              ],
+              "music_genre": "Techno, House, Electronic",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Fri–Sat 23:00–06:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€15 entry",
+              "instagram": "@lesucre_lyon",
+              "image_url": "https://www.heurebleue.fr/wp-content/files_dnk/cache/7e6f4bb05446b6935b7583c8132db6e1_le-sucre-lyon-rooftop.jpg"
+            },
+            {
+              "id": "fr-lyo-008",
+              "name": "Takao Takano",
+              "type": "restaurant",
+              "description": "Japanese-born chef Takao Takano distills the soul of Lyon's market gardens into a Michelin-starred tasting menu that has no menu at all — he cooks exclusively what the season and his instinct dictate. The 12-seat room at the edge of the 6th arrondissement feels like being invited into a chef's private kitchen.",
+              "address": "33 Rue Malesherbes, 69006 Lyon",
+              "coordinates": {
+                "lat": 45.7672,
+                "lng": 4.8451
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern French / Japanese-influenced",
+              "mood_tags": [
+                "intimate",
+                "elegant",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "modern",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:30–22:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€130",
+              "image_url": "https://b70f084e29f3f8faffb0-389fffc5b90936635d166a32fdb11b6a.ssl.cf3.rackcdn.com/andy-hayler-takao-takano-outside-w709-h532.jpg"
+            },
+            {
+              "id": "fr-lyo-009",
+              "name": "Café 203",
+              "type": "cafe",
+              "description": "A compact, perpetually buzzing neobistro-café in the trendy 1st arrondissement that serves excellent espresso beside inventive seasonal tartines and natural wine from 8am well into the night. Lyon's creative class uses it as an unofficial headquarters.",
+              "address": "9 Rue du Garet, 69001 Lyon",
+              "coordinates": {
+                "lat": 45.7661,
+                "lng": 4.8331
+              },
+              "cost_range": "$",
+              "cuisine_type": "Café / Wine Bar",
+              "mood_tags": [
+                "chill",
+                "artistic",
+                "intimate",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "cafe-workspace",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 08:00–23:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "image_url": "https://media-cdn.tripadvisor.com/media/photo-s/1d/33/a3/10/le-203-reprend-vie.jpg"
+            },
+            {
+              "id": "fr-lyo-010",
+              "name": "Brasserie Georges",
+              "type": "restaurant",
+              "description": "Founded in 1836 and still going strong, this cathedral-like Belle Époque brasserie seats 500 guests under its magnificent painted ceilings and has been brewing its own lager on the premises for nearly two centuries. Order the choucroute royale and a glass of the house beer in one of Lyon's most breathtaking dining rooms.",
+              "address": "30 Cours de Verdun Perrache, 69002 Lyon",
+              "coordinates": {
+                "lat": 45.7497,
+                "lng": 4.8266
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Brasserie",
+              "mood_tags": [
+                "iconic",
+                "elegant",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–23:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€38",
+              "reservation_url": "https://www.brasserie-georges.com",
+              "image_url": "https://coenco.be/wp-content/uploads/2020/04/brasserie-georges-lyon-exterior.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Bordeaux",
+          "city_rank": 4,
+          "country": "France",
+          "coordinates": {
+            "lat": 44.8378,
+            "lng": -0.5792
+          },
+          "venues": [
+            {
+              "id": "fr-bor-001",
+              "name": "Bar à Vin - CIVB",
+              "type": "bar",
+              "description": "The official wine bar of the Bordeaux wine trade council occupies a 16th-century building opposite the Grand Théâtre, pouring sixty different Bordeaux wines by the glass at remarkably democratic prices. This is where wine buyers, sommeliers, and curious travelers all sit side by side at the curved oak bar.",
+              "address": "3 Cours du 30 Juillet, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.8421,
+                "lng": -0.5745
+              },
+              "cost_range": "$",
+              "cuisine_type": "Wine Bar",
+              "mood_tags": [
+                "elegant",
+                "chill",
+                "romantic",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "expat-popular",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 11:00–22:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€18",
+              "image_url": "https://api.toutlevin.com/images/65ab84f68fad644f006ea689d9b17b77003840002366.jpg?width=1920&quality=75"
+            },
+            {
+              "id": "fr-bor-002",
+              "name": "Le Pressoir d'Argent Gordon Ramsay",
+              "type": "restaurant",
+              "description": "Gordon Ramsay's two-Michelin-star Bordeaux outpost inside the Grand Hotel delivers the most theatrically French fine dining experience in the city — including a 150-year-old silver wine press that tables can use to press their own Sauternes-paired dessert course. The wine pairings emphasize local terroir with remarkable depth.",
+              "address": "2 Place de la Comédie, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.8437,
+                "lng": -0.5754
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern French / Fine Dining",
+              "mood_tags": [
+                "luxurious",
+                "romantic",
+                "elegant",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "historic",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:00–21:30",
+              "dress_code": "formal",
+              "estimated_avg_spend": "€180",
+              "reservation_url": "https://www.intercontinental-bordeaux.com",
+              "image_url": "https://bordeaux.intercontinental.com/wp-content/uploads/sites/4/2022/10/InterContinental_Bordeaux_Grand_Hotel_Gordon_Ramsay_Pressoir_Argent-scaled-1.jpg"
+            },
+            {
+              "id": "fr-bor-003",
+              "name": "Soif",
+              "type": "bar",
+              "description": "A lovingly curated natural wine bar with a 35-bottle-strong list built around small producers from the Gironde and across France, serving market-inspired small plates alongside glasses that represent the best of contemporary winemaking. The ground-floor room is tiny, so arrive early or grab a street-side perch.",
+              "address": "8 Rue des Bahutiers, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.8394,
+                "lng": -0.5733
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Natural Wine Bar",
+              "mood_tags": [
+                "intimate",
+                "chill",
+                "artistic",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "modern",
+                "cocktail-bar"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 18:00–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€22",
+              "image_url": "https://api.toutlevin.com/images/7750c44d257eca64101e4ab6156dde5b003840002366.jpg"
+            },
+            {
+              "id": "fr-bor-004",
+              "name": "Café du Port",
+              "type": "cafe",
+              "description": "A riverside café with an unbeatable terrace overlooking the Garonne and the Pont de Pierre, where Bordelais locals gather for morning coffee and afternoon wine in equal measure. The relaxed atmosphere and excellent croque-monsieur make it the city's best spot for people-watching along the riverbank.",
+              "address": "1 Quai Deschamps, 33100 Bordeaux",
+              "coordinates": {
+                "lat": 44.8392,
+                "lng": -0.5499
+              },
+              "cost_range": "$",
+              "cuisine_type": "French Café",
+              "mood_tags": [
+                "chill",
+                "romantic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "beachside",
+                "instagrammable",
+                "traditional"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "spring-summer",
+              "opening_hours": "Daily 09:00–22:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "image_url": "https://www.petitfute.com/medias/professionnel/97248/premium/originale/92e571ef32f9ad06f3b7adce34f484ae_le-cafe-du-port_facade.jpg"
+            },
+            {
+              "id": "fr-bor-005",
+              "name": "Symbiose",
+              "type": "restaurant",
+              "description": "A contemporary small-plates bistro whose street-level dining room leads through a hidden doorway into a speakeasy-style cocktail bar — making it one of Bordeaux's most cleverly conceived evening destinations. Chef Antoine Adeiran's seasonal dishes are honest and delicious before the cocktail chapter begins.",
+              "address": "13 Rue des Remparts, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.839,
+                "lng": -0.5752
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Modern French / Cocktail Bar",
+              "mood_tags": [
+                "trendy",
+                "intimate",
+                "artistic",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "speakeasy",
+                "aesthetic",
+                "modern",
+                "cocktail-bar"
+              ],
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:00–01:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€45",
+              "image_url": "https://media.timeout.com/images/105787252/750/562/image.jpg"
+            },
+            {
+              "id": "fr-bor-006",
+              "name": "Le Bootlegger",
+              "type": "club",
+              "description": "Bordeaux's best rock and indie club is a sweat-soaked basement venue near the Saint-Pierre quarter that books international touring bands alongside local acts, keeping the city's live music scene honest and unpretentious. The bar is cheap, the crowd is passionate, and no one is there to be seen.",
+              "address": "10 Rue des Pielles, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.838,
+                "lng": -0.5682
+              },
+              "cost_range": "$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "modern"
+              ],
+              "music_genre": "Rock, Indie, Alternative",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Wed–Sat 21:00–03:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€10 entry",
+              "image_url": "https://i.pinimg.com/736x/94/04/42/940442d4e80944da3b89ba226db01ba3.jpg"
+            },
+            {
+              "id": "fr-bor-007",
+              "name": "La Brasserie Bordelaise",
+              "type": "restaurant",
+              "description": "A temple of Aquitaine beef and Bordelaise bone marrow served in a handsome tiled dining room by the covered market of the Capucins, this restaurant makes the case that Bordeaux's cuisine is just as exceptional as its wine. The entrecôte à la bordelaise — grilled rib-eye with shallot and marrow sauce — is the dish to order.",
+              "address": "50 Rue Saint-Rémi, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.8367,
+                "lng": -0.5711
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French / Steakhouse",
+              "mood_tags": [
+                "cozy",
+                "intimate",
+                "elegant",
+                "romantic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "historic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 12:00–14:00, 19:00–22:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€55",
+              "image_url": "https://c8.alamy.com/comp/2C171P5/exterior-of-la-brasserie-bordelaise-a-french-restaurant-in-the-centre-of-bordeaux-city-specialising-in-meat-2C171P5.jpg"
+            },
+            {
+              "id": "fr-bor-008",
+              "name": "Mama Shelter Bordeaux",
+              "type": "bar",
+              "description": "The rooftop bar of the hip Mama Shelter hotel in the Saint-Paul district serves cocktails and pintxos to a terraced crowd that feels more like a house party than a hotel bar. DJ sets most weekends and a brilliant view of the Grosse Cloche bell tower make it a reliably excellent Bordeaux night out.",
+              "address": "19 Rue Poquelin Molière, 33000 Bordeaux",
+              "coordinates": {
+                "lat": 44.8389,
+                "lng": -0.5686
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Cocktail Rooftop Bar",
+              "mood_tags": [
+                "trendy",
+                "energetic",
+                "chill",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "expat-popular",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "cocktail-bar",
+                "live-music"
+              ],
+              "music_genre": "House, Pop DJ Sets",
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "spring-summer",
+              "opening_hours": "Daily 12:00–02:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€20",
+              "instagram": "@mamashelterbordeaux",
+              "image_url": "https://mama-shelter-bordeaux.hotelsinbordeaux.net/data/Photos/OriginalPhoto/16002/1600238/1600238390/photo-mama-shelter-bordeaux-centre-bordeaux-90.JPEG"
+            },
+            {
+              "id": "fr-bor-009",
+              "name": "La Tête de Bœuf",
+              "type": "cafe",
+              "description": "A quintessential neighborhood café-tabac in the working-class Bastide district on the right bank, where builders, office workers, and visiting journalists share zinc bar stools for a tartine and a café serré at 7am. The unchanged 1950s décor, €2.20 coffee, and complete lack of tourism make it one of the city's most authentic spaces.",
+              "address": "15 Place des Capucins, 33800 Bordeaux",
+              "coordinates": {
+                "lat": 44.8334,
+                "lng": -0.5651
+              },
+              "cost_range": "$",
+              "cuisine_type": "French Café-Tabac",
+              "mood_tags": [
+                "chill",
+                "chaotic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "historic"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 06:00–19:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€6",
+              "image_url": "https://booktable.app/wp-content/uploads/2022/12/Plat-La-Tete-de-Boeuf-bookTable-Site-1.jpg"
+            },
+            {
+              "id": "fr-bor-010",
+              "name": "IBoat",
+              "type": "club",
+              "description": "A converted barge moored on the Garonne that functions as Bordeaux's most beloved cultural club — part concert hall, part outdoor terrace, part techno bunker — hosting everything from reggae to minimal techno across its multiple decks. The setting is absolutely unique and the programming punches well above its weight for a city this size.",
+              "address": "Quai Armand Lalande, 33300 Bordeaux",
+              "coordinates": {
+                "lat": 44.8624,
+                "lng": -0.5584
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "artistic",
+                "chaotic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "techno-club",
+                "aesthetic",
+                "beachside"
+              ],
+              "music_genre": "Techno, Reggae, Electronic",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 22:00–05:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12 entry",
+              "instagram": "@iboat_bordeaux",
+              "image_url": "https://www.visiter-bordeaux.eu/wp-content/uploads/2019/07/iboat-bordeaux-1.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Marseille",
+          "city_rank": 5,
+          "country": "France",
+          "coordinates": {
+            "lat": 43.2965,
+            "lng": 5.3698
+          },
+          "venues": [
+            {
+              "id": "fr-mar-001",
+              "name": "La Mercerie",
+              "type": "restaurant",
+              "description": "London chef Harry Cummins and Montreal sommelier Laura Vidal created Marseille's most internationally celebrated restaurant in a converted textile factory in the Cours Julien neighborhood — a five-course dinner of precise, herb-driven French cooking paired with Laura's natural wine selection is one of the best meals in southern France.",
+              "address": "9 Cours Saint-Louis, 13001 Marseille",
+              "coordinates": {
+                "lat": 43.2941,
+                "lng": 5.383
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern French / Natural Wine",
+              "mood_tags": [
+                "intimate",
+                "elegant",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "local-hidden-gem"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Fri–Sun 12:00–14:30, Tue–Sat 19:00–22:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€70",
+              "reservation_url": "https://www.lamerceriemarseille.com",
+              "image_url": "https://marseille.city-life.fr/images/fiche/606/2577.jpg"
+            },
+            {
+              "id": "fr-mar-002",
+              "name": "Figure Wine Bar",
+              "type": "bar",
+              "description": "A powder-pink natural wine bar in the Vauban neighborhood that has single-handedly elevated the area's dining scene, buzzing from the moment the sun comes out with small plates of tarama with green oil, gorgonzola with apricots, and impeccably crisped pommes dauphine. The terrace is an unstoppable magnet on warm evenings.",
+              "address": "22 Rue Vauban, 13006 Marseille",
+              "coordinates": {
+                "lat": 43.2877,
+                "lng": 5.3755
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Natural Wine Bar / Small Plates",
+              "mood_tags": [
+                "trendy",
+                "energetic",
+                "intimate",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "instagrammable",
+                "modern"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Tue–Sat 18:00–23:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€25",
+              "instagram": "@figure_marseille",
+              "image_url": "https://cdn.sanity.io/images/rizm0do5/production/0460bd83fca4f1eba8f9bcccc814b88f2eaa0769-1300x975.jpg?rect=0,146,1300,683&w=1200&h=630&q=75&auto=format"
+            },
+            {
+              "id": "fr-mar-003",
+              "name": "Pizzéria Chez Sauveur",
+              "type": "restaurant",
+              "description": "Open since 1943 and making Neapolitan-descended pizza with a thin, crackling crust across 18 topping options in a dimly lit dining room on a narrow old-town street — La Spéciale, finished post-bake with cherry tomatoes, olives, and pistou (Provençal pesto without the nuts), is a Marseille classic that never disappoints.",
+              "address": "10 Rue d'Aubagne, 13001 Marseille",
+              "coordinates": {
+                "lat": 43.2954,
+                "lng": 5.3812
+              },
+              "cost_range": "$",
+              "cuisine_type": "Neapolitan Pizza",
+              "mood_tags": [
+                "cozy",
+                "intimate",
+                "chaotic",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "historic",
+                "street-food"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 12:00–14:00, 19:00–22:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€14",
+              "image_url": "https://res.cloudinary.com/the-infatuation/image/upload/c_fill,w_3840,ar_4:3,g_center,f_auto/images/ChezSauveur_Facade_EricFoucher_Marseille_qhczrl"
+            },
+            {
+              "id": "fr-mar-004",
+              "name": "Bar de la Marine",
+              "type": "bar",
+              "description": "Marcel Pagnol set his Marius trilogy in this exact waterfront bar on the Vieux-Port, and the wooden interior, zinc bar, and pastis-drinking fishermen have barely changed since the 1930s. A glass of pastis here while watching boats navigate the old harbor is as Marseille as it gets.",
+              "address": "15 Quai de Rive Neuve, 13007 Marseille",
+              "coordinates": {
+                "lat": 43.2929,
+                "lng": 5.3715
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional French Bar",
+              "mood_tags": [
+                "iconic",
+                "chill",
+                "romantic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "beachside"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 07:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://www.grandsudinsolite.fr/client/gfx/photos/produit/01-marseille---bar-de-la-marine-decouvrir-marseillecom_13569.jpg"
+            },
+            {
+              "id": "fr-mar-005",
+              "name": "AM par Alexandre Mazzia",
+              "type": "restaurant",
+              "description": "Three-Michelin-star chef Alexandre Mazzia—born in the Congo, raised in Marseille—delivers arguably the most ambitious and personal tasting menu in France from a small, intimate room in the 8th arrondissement, where Congolese memory, Provençal produce, and technical wizardry combine into something utterly unlike any other restaurant in the country.",
+              "address": "9 Rue François Rocca, 13008 Marseille",
+              "coordinates": {
+                "lat": 43.2768,
+                "lng": 5.3905
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Contemporary French / Creative",
+              "mood_tags": [
+                "artistic",
+                "intimate",
+                "elegant",
+                "luxurious"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Fri 12:00–13:30, Tue–Sat 19:30–21:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€200",
+              "reservation_url": "https://alexandremazzia.com",
+              "image_url": "https://foodle.pro/meals-images/2021-10-01-18-02-35-167eec1dd12dc60ee5543c00ec7ad20b.jpg"
+            },
+            {
+              "id": "fr-mar-006",
+              "name": "Café de l'Abbaye",
+              "type": "cafe",
+              "description": "An ancient stone café tucked against the walls of the Saint-Victor Basilica in the 7th arrondissement, serving strong Corsican coffee and almond tarts to a mix of local residents and pilgrims who've been climbing this hill since the 5th century. One of Marseille's most charming and unhurried terraces.",
+              "address": "3 Rue de l'Abbaye, 13007 Marseille",
+              "coordinates": {
+                "lat": 43.2905,
+                "lng": 5.3688
+              },
+              "cost_range": "$",
+              "cuisine_type": "French Café",
+              "mood_tags": [
+                "cozy",
+                "romantic",
+                "chill",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 08:00–18:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€7",
+              "image_url": "https://larelevemarseille.fr/wp-content/uploads/2023/06/cafe-de-l-abbaye-marseille.jpeg"
+            },
+            {
+              "id": "fr-mar-007",
+              "name": "Le Trolleybus",
+              "type": "club",
+              "description": "Marseille's most storied superclub occupies a series of converted tram depots near the Vieux-Port and spreads across five rooms of house, techno, and R&B nightly, pulling the city's most diverse and high-energy crowd. The outdoor terrace between the rooms gives the whole place an almost carnival atmosphere in summer.",
+              "address": "24 Quai de Rive Neuve, 13007 Marseille",
+              "coordinates": {
+                "lat": 43.2928,
+                "lng": 5.3726
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "mainstream",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "techno-club",
+                "live-music",
+                "modern"
+              ],
+              "music_genre": "House, Techno, R&B",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Fri–Sat 23:00–06:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12 entry",
+              "image_url": "https://i.pinimg.com/736x/6f/85/7d/6f857d141eccdff49e1dd3c1b6a98748.jpg"
+            },
+            {
+              "id": "fr-mar-008",
+              "name": "La Boîte à Sardine",
+              "type": "restaurant",
+              "description": "The best standing-room-only fish counter in Marseille sources entirely from the day's catch at the adjacent Vieux-Port fish market, serving the freshest sea urchin, grilled red mullet, and bouillabaisse portions to a tightly packed lunchtime crowd that knows what it's there for. Cash only, arrive early, eat standing.",
+              "address": "2 Boulevard de la Libération, 13001 Marseille",
+              "coordinates": {
+                "lat": 43.2987,
+                "lng": 5.3836
+              },
+              "cost_range": "$",
+              "cuisine_type": "Seafood / Provençal",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "street-food",
+                "traditional",
+                "historic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 12:00–15:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€20",
+              "image_url": "https://4.bp.blogspot.com/-oxbov4zSQ38/VDjBeRqr2EI/AAAAAAAAJ-g/GTbQNEiRlAw/s1600/DSC_1273.JPG"
+            },
+            {
+              "id": "fr-mar-009",
+              "name": "Ventre Saint-Gris",
+              "type": "bar",
+              "description": "A compact, low-lit cocktail bar in the Cours Julien arts district that makes a remarkable case for Provençal herbs and spirits in its cocktail recipes — lavender-infused pastis sours, Corsican myrtle liqueur negronis — drawing a creative neighborhood crowd who treat it as their unofficial living room.",
+              "address": "16 Place Notre Dame du Mont, 13006 Marseille",
+              "coordinates": {
+                "lat": 43.2919,
+                "lng": 5.383
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Cocktail Bar",
+              "mood_tags": [
+                "intimate",
+                "trendy",
+                "chill",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "aesthetic",
+                "speakeasy"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sun 18:00–01:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€15",
+              "image_url": "https://images.resto.com/view?iid=resto.be:7e93c4a1-6043-437e-8857-6f103f4f83a6&context=default&hash=2a94f3aa90026a2c0fe2f5bc3e84256e"
+            },
+            {
+              "id": "fr-mar-010",
+              "name": "Café La Caravelle",
+              "type": "cafe",
+              "description": "Perched above the Vieux-Port in a 17th-century building that once housed the Hôtel de Ville tax office, La Caravelle's mezzanine terrace delivers one of the finest harbor views in Europe alongside excellent coffee, Ricard, and jazz on weekend evenings. The ceiling is covered in ship models from across the centuries.",
+              "address": "34 Quai du Port, 13002 Marseille",
+              "coordinates": {
+                "lat": 43.2966,
+                "lng": 5.3715
+              },
+              "cost_range": "$$",
+              "cuisine_type": "French Café / Jazz Bar",
+              "mood_tags": [
+                "romantic",
+                "chill",
+                "iconic",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "historic",
+                "jazz-bar",
+                "beachside",
+                "instagrammable"
+              ],
+              "music_genre": "Jazz (weekends)",
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 07:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€14",
+              "image_url": "https://media-cdn.tripadvisor.com/media/photo-s/14/46/34/f7/1th-floor-hotel-bellevue.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "country": "Spain",
+      "country_code": "ES",
+      "cities": [
+        {
+          "city": "Madrid",
+          "city_rank": 1,
+          "country": "Spain",
+          "coordinates": {
+            "lat": 40.4168,
+            "lng": -3.7038
+          },
+          "venues": [
+            {
+              "id": "es-mad-001",
+              "name": "Café Gijón",
+              "type": "cafe",
+              "description": "A literary café in continuous operation since 1888 on the Paseo de Recoletos, Café Gijón has hosted Lorca, Hemingway, and every important Spanish intellectual of the 20th century at its marble-topped tables. Order a café con leche and a tostada con tomate and settle into the timeless dark-wood interior.",
+              "address": "Paseo de Recoletos, 21, 28004 Madrid",
+              "coordinates": {
+                "lat": 40.4231,
+                "lng": -3.6915
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Spanish Café",
+              "mood_tags": [
+                "iconic",
+                "romantic",
+                "artistic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic",
+                "cafe-workspace"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 07:30–01:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€14",
+              "image_url": "https://c8.alamy.com/comp/DECA1X/caf-gijn-paseo-de-recoletos-madrid-spain-DECA1X.jpg"
+            },
+            {
+              "id": "es-mad-002",
+              "name": "DiverXO",
+              "type": "restaurant",
+              "description": "David Muñoz's three-Michelin-star spectacle is the most extravagant restaurant in Spain — a roving 30-course tasting journey through Asian-Spanish flavors served by a troupe of theatrical staff in a room of chinoiserie excess inside the NH Collection Eurobuilding. Booking opens a month in advance and sells out in minutes.",
+              "address": "Calle del Padre Damián, 23, 28036 Madrid",
+              "coordinates": {
+                "lat": 40.4583,
+                "lng": -3.6888
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Creative Spanish / Asian Fusion",
+              "mood_tags": [
+                "luxurious",
+                "chaotic",
+                "artistic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "instagrammable"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Wed–Sat 14:00–15:30, 21:00–22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€350",
+              "reservation_url": "https://www.diverxo.com",
+              "image_url": "https://www.alamy.com/aggregator-api/download?url=https://c8.alamy.com/comp/2J59G88/diverxo-restaurant-entrance-and-sign-madrid-spain-a-three-michelin-stars-resturants-3-star-michelin-diver-xo-2J59G88.jpg"
+            },
+            {
+              "id": "es-mad-003",
+              "name": "1862 Dry Bar",
+              "type": "bar",
+              "description": "A narrow, Victorian-appointed cocktail bar in the Malasaña district where the drinks menu reads like a 19th-century pharmacopoeia — bitters-forward, spirit-led, and impeccably made. The tight space and knowledgeable bartenders make it one of Madrid's best places to have a proper conversation over a well-crafted drink.",
+              "address": "Calle del Pez, 27, 28004 Madrid",
+              "coordinates": {
+                "lat": 40.4239,
+                "lng": -3.7069
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Cocktail Bar",
+              "mood_tags": [
+                "intimate",
+                "trendy",
+                "chill",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "speakeasy",
+                "historic",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 19:00–02:00, Fri–Sun 19:00–03:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€16",
+              "image_url": "https://www.theworlds50best.com/discovery/filestore/jpg/1862DryBar-Madrid-Spain-01.jpg"
+            },
+            {
+              "id": "es-mad-004",
+              "name": "Sala El Sol",
+              "type": "club",
+              "description": "The club that launched La Movida Madrileña — the post-Franco cultural explosion — Sala El Sol has been Madrid's most historically significant music venue since 1979, hosting everyone from Mecano and Alaska to international indie acts in its intimate subterranean room. The nostalgia here isn't kitsch; it's real.",
+              "address": "Calle de los Jardines, 3, 28013 Madrid",
+              "coordinates": {
+                "lat": 40.4177,
+                "lng": -3.7009
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "iconic",
+                "energetic",
+                "intimate",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "historic",
+                "techno-club"
+              ],
+              "music_genre": "Indie, Rock, Electronic, Pop",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 23:30–05:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12 entry",
+              "image_url": "https://images.squarespace-cdn.com/content/v1/5bf1e2c19d5abbac28975277/1616517286864-A8C8O8JWPJKI48Y5GVTQ/Sala-El-Sol_Madrid.jpg"
+            },
+            {
+              "id": "es-mad-005",
+              "name": "Taberna La Carmencita",
+              "type": "restaurant",
+              "description": "Founded in 1854 and retaining every scrap of its original ceramic tiles, marble bar, and wooden partitions, La Carmencita in Chueca is the city's most beautiful and genuinely old taberna, serving cocido madrileño, tortilla, and house-made croquetas to regulars who've been coming for generations. Hemingway's name is in the archive.",
+              "address": "Calle de la Libertad, 16, 28004 Madrid",
+              "coordinates": {
+                "lat": 40.4219,
+                "lng": -3.6975
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Traditional Spanish / Taberna",
+              "mood_tags": [
+                "intimate",
+                "cozy",
+                "romantic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sun 13:00–16:00, 20:00–00:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€35",
+              "image_url": "https://cabila.com/wp-content/uploads/2022/03/Taberna-La-Carmencita-5-scaled.jpg"
+            },
+            {
+              "id": "es-mad-006",
+              "name": "Angelita Madrid",
+              "type": "bar",
+              "description": "A four-floor natural wine bar and vermouth house in Malasaña that covers every base from morning vermut on the terrace to late-night natural wine in the candlelit basement — one of Madrid's most complete drinking establishments. The natural wine list is one of the best-curated in Spain.",
+              "address": "Calle de la Reina, 4, 28004 Madrid",
+              "coordinates": {
+                "lat": 40.4198,
+                "lng": -3.6993
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Natural Wine Bar / Vermouth",
+              "mood_tags": [
+                "trendy",
+                "chill",
+                "intimate",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "cocktail-bar",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–02:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€18",
+              "instagram": "@angelitamadrid",
+              "image_url": "https://c8.alamy.com/comp/2J1K2GP/angelita-restaurant-sign-popular-gastro-cocktail-bar-and-cuisine-at-reina-street-4-madrid-spain-2J1K2GP.jpg"
+            },
+            {
+              "id": "es-mad-007",
+              "name": "Lateral Gran Vía",
+              "type": "restaurant",
+              "description": "A modern tapas bar with a rooftop terrace facing the Gran Vía that does exactly what Madrid's best mid-range restaurants do — serves generous, reliable croquetas, patatas bravas, and jamón ibérico to a mix of locals and tourists who want decent food at a fair price in a central location. No pretension, just pleasure.",
+              "address": "Gran Vía, 31, 28013 Madrid",
+              "coordinates": {
+                "lat": 40.4191,
+                "lng": -3.703
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Spanish Tapas",
+              "mood_tags": [
+                "energetic",
+                "chill",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "modern"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:30–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€25",
+              "image_url": "https://c8.alamy.com/comp/FGKXX1/view-of-a-bus-stop-lateral-in-gran-via-street-madrid-city-spain-FGKXX1.jpg"
+            },
+            {
+              "id": "es-mad-008",
+              "name": "Café Comercial",
+              "type": "cafe",
+              "description": "Madrid's oldest café (1887) in the Bilbao neighborhood, lovingly restored to its original mirrored grandeur after a decade-long closure, now serves excellent cortados and weekend vermouth to a new generation of locals in an impossibly beautiful Belle Époque setting. The chess club meets on Tuesday evenings.",
+              "address": "Glorieta de Bilbao, 7, 28004 Madrid",
+              "coordinates": {
+                "lat": 40.4275,
+                "lng": -3.7028
+              },
+              "cost_range": "$",
+              "cuisine_type": "Spanish Café",
+              "mood_tags": [
+                "iconic",
+                "romantic",
+                "chill",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "historic",
+                "aesthetic",
+                "instagrammable",
+                "traditional"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 07:30–00:00, Fri 07:30–01:30, Sat 09:00–01:30, Sun 09:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€10",
+              "image_url": "https://res.cloudinary.com/tf-lab/image/upload/w_600,h_310,c_fill,g_auto:subject,q_auto,f_auto/restaurant/51b3be2e-b79d-4f0b-9b2c-cd1492d4b6d9/b2342aa1-a7d1-4aeb-8540-64f9eda1fb34.jpg"
+            },
+            {
+              "id": "es-mad-009",
+              "name": "Corral de la Morería",
+              "type": "club",
+              "description": "The world's oldest and most decorated flamenco tablao (open since 1956) stages nightly performances by top-tier dancers, guitarists, and cantaores in an intimate candlelit room in the La Latina neighborhood, pairing the art with an optional Michelin-starred tasting menu. A genuinely moving live music experience.",
+              "address": "Calle de la Morería, 17, 28005 Madrid",
+              "coordinates": {
+                "lat": 40.4139,
+                "lng": -3.713
+              },
+              "cost_range": "$$$",
+              "mood_tags": [
+                "romantic",
+                "elegant",
+                "artistic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "historic",
+                "aesthetic",
+                "traditional"
+              ],
+              "music_genre": "Flamenco",
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 20:00–01:00, shows at 20:00 and 22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€60 + drinks",
+              "reservation_url": "https://www.corraldelamoreria.com",
+              "image_url": "https://c8.alamy.com/comp/BKGFGF/exterior-view-of-the-flamenco-restaurant-corral-de-la-maoreira-in-BKGFGF.jpg"
+            },
+            {
+              "id": "es-mad-010",
+              "name": "StreetXO",
+              "type": "restaurant",
+              "description": "David Muñoz's street-food alter ego takes place in a punk-rock open kitchen in El Corte Inglés de Castellana — 30-seat counter dining where you watch the chaos of Asian-Spanish street food being cooked at full volume in front of you, and the spiced pork taco with smoked eel mayo is as good as high-end food gets at this price point.",
+              "address": "Paseo de la Castellana, 85, 28046 Madrid",
+              "coordinates": {
+                "lat": 40.4396,
+                "lng": -3.6892
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Street Food / Asian-Spanish Fusion",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "influencer-hotspot",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "street-food",
+                "modern",
+                "aesthetic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:30–16:00, 20:00–23:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€45",
+              "image_url": "https://buro247.hr/wp-content/uploads/2025/03/streetxo-madrid-gastronomski-spektakl1.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Barcelona",
+          "city_rank": 2,
+          "country": "Spain",
+          "coordinates": {
+            "lat": 41.3851,
+            "lng": 2.1734
+          },
+          "venues": [
+            {
+              "id": "es-bcn-001",
+              "name": "El Xampanyet",
+              "type": "bar",
+              "description": "A tile-clad cava bar in the El Born neighborhood that has been pouring house cava and anchovies on bread since 1929, filling its few marble-topped tables with the most convivial pre-dinner crowd in Barcelona. The house cava — poured into saucers not flutes — costs less than a coffee at any nearby hotel.",
+              "address": "Carrer de Montcada, 22, 08003 Barcelona",
+              "coordinates": {
+                "lat": 41.3842,
+                "lng": 2.1813
+              },
+              "cost_range": "$",
+              "cuisine_type": "Cava Bar / Tapas",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "intimate",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "instagrammable"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 12:00–15:30, 19:00–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€10",
+              "image_url": "https://production-data.worldofmouth.app/images/0d0e0c4b-bf3e-4362-a457-efcc283e67ee-1080x1080.jpg"
+            },
+            {
+              "id": "es-bcn-002",
+              "name": "Bodega Sepúlveda",
+              "type": "restaurant",
+              "description": "A wood-paneled neighborhood tavern in the Eixample dating to 1921 that serves vermouth, anchovies, and honest Catalan cooking to a fiercely loyal local clientele — the kind of place that has never needed a website and never will. The butifarra sausage with mongetes beans is a Barcelona essential.",
+              "address": "Carrer de Sepúlveda, 179, 08011 Barcelona",
+              "coordinates": {
+                "lat": 41.3823,
+                "lng": 2.1617
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Catalan / Bodega",
+              "mood_tags": [
+                "cozy",
+                "intimate",
+                "chaotic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "historic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 08:00–15:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€18",
+              "image_url": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhg213LdwCs6Bm0bgyeFmcjTYAQhsJ7WqBfIlmRjsCYyvDvV1QfMoL0top1Saet9RjLwad3qqIRWYgcYZdXCQKjbbvjKYoPxdQdyGONVsPRi-VvsEzaKGFiC4itajBJR9f1dPcpDqQ1wpZri4adaJqYfFkdRZfSfIbAU8-sw9M83BwBL6G_5s3c2sfX/w1200-h630-p-k-no-nu/file_recovery_1668960716622192.jpg"
+            },
+            {
+              "id": "es-bcn-003",
+              "name": "Nomad Coffee Lab",
+              "type": "cafe",
+              "description": "Spain's most internationally acclaimed specialty coffee roastery operates this compact tasting room and café in the Raval neighborhood, where single-origin pour-overs and perfectly pulled ristrettos are served with the same seriousness applied in Nordic coffee culture — but with unmistakably Spanish warmth.",
+              "address": "Passatge de Sert, 12, 08003 Barcelona",
+              "coordinates": {
+                "lat": 41.3868,
+                "lng": 2.1774
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Specialty Coffee",
+              "mood_tags": [
+                "chill",
+                "artistic",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "cafe-workspace",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 09:00–18:00, Sun 10:00–18:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "instagram": "@nomadcoffee",
+              "image_url": "https://happyinspain.com/assets/uploads/2015/07/coffee-nomad9.jpg"
+            },
+            {
+              "id": "es-bcn-004",
+              "name": "Ático by Ramon Freixa",
+              "type": "restaurant",
+              "description": "The two-Michelin-star penthouse restaurant of the El Palace Hotel gives the city's most cinematic dining experience — floor-to-ceiling views of the Eixample grid at night while chef Ramon Freixa serves his technically brilliant Catalan-accented tasting menus. The rooftop terrace aperitif is worth the price of admission alone.",
+              "address": "Gran Via de les Corts Catalanes, 668, 08010 Barcelona",
+              "coordinates": {
+                "lat": 41.3926,
+                "lng": 2.1677
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern Catalan / Fine Dining",
+              "mood_tags": [
+                "luxurious",
+                "romantic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "luxury-dining",
+                "instagrammable"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 13:30–15:30, 20:30–22:30",
+              "dress_code": "formal",
+              "estimated_avg_spend": "€180",
+              "reservation_url": "https://www.hostalpalace.com",
+              "image_url": "https://good2b.es/wp-content/uploads/2017/01/atico_1.jpg"
+            },
+            {
+              "id": "es-bcn-005",
+              "name": "Garage Beer Co.",
+              "type": "bar",
+              "description": "Barcelona's pioneering craft brewery turned its modest Eixample taproom into the city's most influential beer venue — pouring 20 taps of house-brewed IPAs, lagers, and stouts alongside a guest beer program that brings in the best European producers. Bare concrete, good music, and serious beer at sensible prices.",
+              "address": "Carrer del Consell de Cent, 261, 08011 Barcelona",
+              "coordinates": {
+                "lat": 41.3827,
+                "lng": 2.1618
+              },
+              "cost_range": "$",
+              "cuisine_type": "Craft Brewery / Bar",
+              "mood_tags": [
+                "energetic",
+                "chill",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "local-hidden-gem"
+              ],
+              "vibe_tags": [
+                "modern",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 17:00–00:00, Fri–Sun 12:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "instagram": "@garagebeerco",
+              "image_url": "https://craftbeernomads.com/wp-content/uploads/2022/08/Garage-Brewing-Barcelona-Spain-Craft-Beer-Nomads-2022_0025-1280x721.jpg"
+            },
+            {
+              "id": "es-bcn-006",
+              "name": "Razzmatazz",
+              "type": "club",
+              "description": "Five rooms, five simultaneous music policies — from indie rock to techno — make this converted warehouse in Poblenou the most comprehensive club in Spain, hosting everyone from Arctic Monkeys to Richie Hawtin since 2000. The sheer scale of the party ensures every musical tribe finds its room.",
+              "address": "Carrer dels Almogàvers, 122, 08018 Barcelona",
+              "coordinates": {
+                "lat": 41.401,
+                "lng": 2.1954
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "mainstream",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "techno-club",
+                "live-music",
+                "modern"
+              ],
+              "music_genre": "Techno, Indie, Electronic, House",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Fri–Sat 23:30–06:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€18 entry",
+              "instagram": "@razzbarcelona",
+              "image_url": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/05/13/ed/3b/razzmatazz.jpg?w=1200&h=1200&s=1"
+            },
+            {
+              "id": "es-bcn-007",
+              "name": "Bar Calders",
+              "type": "bar",
+              "description": "The self-appointed king of the Sant Antoni neighborhood's vibrant vermouth scene occupies a prime corner terrace where young Barcelonins gather on Sunday mornings for vermouth, house-made potato chips, and the ritual that defines Catalan social life. No reservations, no concept — just the best vermut in the city.",
+              "address": "Carrer del Parlament, 25, 08015 Barcelona",
+              "coordinates": {
+                "lat": 41.3791,
+                "lng": 2.1634
+              },
+              "cost_range": "$",
+              "cuisine_type": "Vermouth Bar / Tapas",
+              "mood_tags": [
+                "chill",
+                "energetic",
+                "chaotic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "street-food"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Thu 09:00–00:30, Fri–Sun 09:00–01:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://i.pinimg.com/originals/36/09/f6/3609f61ca245afc6598e4270f2e1d99b.jpg"
+            },
+            {
+              "id": "es-bcn-008",
+              "name": "Enigma",
+              "type": "restaurant",
+              "description": "Albert Adrià's theatrical six-act tasting menu takes place over 40+ courses in a futuristic white labyrinth beneath the Eixample streets, guiding diners through zones of temperature, texture, and flavor with the conceptual rigor you'd expect from the brother of Ferran. Booking opens weeks in advance at a specific hour; set an alarm.",
+              "address": "Carrer de Sepúlveda, 38-40, 08015 Barcelona",
+              "coordinates": {
+                "lat": 41.3791,
+                "lng": 2.1644
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Avant-Garde Spanish / Molecular",
+              "mood_tags": [
+                "luxurious",
+                "artistic",
+                "chaotic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 19:00–00:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€220",
+              "reservation_url": "https://enigmaconcept.es",
+              "image_url": "https://s3.amazonaws.com/a.storyblok.com/f/116532/1440x1341/057c338d0f/enigma-barcelona.jpg"
+            },
+            {
+              "id": "es-bcn-009",
+              "name": "El Nacional",
+              "type": "cafe",
+              "description": "A magnificent 1920s Art Deco pavilion near the Passeig de Gràcia that houses four restaurants, two bars, and a market hall simultaneously — offering everything from a coffee at the marble bar to a full paella in the covered courtyard. Barcelona's most impressive gathering place for food and drink.",
+              "address": "Passeig de Gràcia, 24 Bis, 08007 Barcelona",
+              "coordinates": {
+                "lat": 41.3929,
+                "lng": 2.165
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Multi-Restaurant / Spanish Café",
+              "mood_tags": [
+                "iconic",
+                "elegant",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "historic",
+                "aesthetic",
+                "instagrammable"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–01:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€28",
+              "instagram": "@elnacionalbarcelona",
+              "image_url": "https://barcelonahacks.com/wp-content/uploads/2016/12/el-nacional-barcelona.jpg"
+            },
+            {
+              "id": "es-bcn-010",
+              "name": "Otto Zutz",
+              "type": "club",
+              "description": "Barcelona's most enduring upscale club has been a fixture of the Gràcia neighborhood's glittering nightlife since 1985, drawing a fashion-industry crowd to three floors of hip-hop, R&B, and house music in an industrial-chic warehouse. The queue on Friday is long but moves faster than the legend suggests.",
+              "address": "Carrer de Lincoln, 15, 08006 Barcelona",
+              "coordinates": {
+                "lat": 41.4022,
+                "lng": 2.1533
+              },
+              "cost_range": "$$$",
+              "mood_tags": [
+                "trendy",
+                "luxurious",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "mainstream",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "techno-club",
+                "aesthetic",
+                "modern"
+              ],
+              "music_genre": "Hip-Hop, R&B, House",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 23:30–06:00",
+              "dress_code": "upscale",
+              "estimated_avg_spend": "€20 entry",
+              "image_url": "https://clubbable.blob.core.windows.net/medias/Otto-Zutz-Barcelona-2"
+            }
+          ]
+        },
+        {
+          "city": "Seville",
+          "city_rank": 3,
+          "country": "Spain",
+          "coordinates": {
+            "lat": 37.3886,
+            "lng": -5.9823
+          },
+          "venues": [
+            {
+              "id": "es-sev-001",
+              "name": "El Rinconcillo",
+              "type": "bar",
+              "description": "The oldest bar in Seville (founded 1670), its ancient marble counters and walls covered in jamón legs and dusty bottles have barely changed in three and a half centuries. Bartenders still chalk your tab on the bar top, the montaditos are sublime, and a cold manzanilla here connects you directly to the soul of Andalusia.",
+              "address": "Calle Gerona, 40, 41003 Seville",
+              "coordinates": {
+                "lat": 37.3954,
+                "lng": -5.9876
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Bar / Tapas",
+              "mood_tags": [
+                "iconic",
+                "chaotic",
+                "chill",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 13:00–01:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "image_url": "https://travellemming.com/wp-content/uploads/El-Rinconcillo-Restaurant.jpg"
+            },
+            {
+              "id": "es-sev-002",
+              "name": "ConTenedor",
+              "type": "restaurant",
+              "description": "An inventive slow-food restaurant in the Macarena neighborhood where organic, hyperlocal ingredients are plated like edible modern art — artisan beet tagliatelle with black olive cream, or seasonal mushrooms with apple-pepper sauce — at surprisingly honest prices after 18 years at the top of Seville's dining scene.",
+              "address": "Calle San Luis, 50, 41003 Seville",
+              "coordinates": {
+                "lat": 37.3975,
+                "lng": -5.9857
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Creative Spanish / Organic",
+              "mood_tags": [
+                "artistic",
+                "intimate",
+                "elegant",
+                "trendy"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 13:30–16:00, 21:00–23:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€35",
+              "image_url": "https://c8.alamy.com/comp/R097F0/a-couple-having-a-late-lunch-in-contenedor-slow-food-restaurant-in-seville-spain-R097F0.jpg"
+            },
+            {
+              "id": "es-sev-003",
+              "name": "Café de Indias",
+              "type": "cafe",
+              "description": "A sun-drenched art-colonial café inside the former Casa Lonja de Mercaderes — the same building that houses the Archivo de Indias — serving Seville's finest café cortado alongside traditional torrijas and bollos on a terrace watched over by orange trees. The architectural setting alone is worth the price of a coffee.",
+              "address": "Avenida de la Constitución, 3, 41004 Seville",
+              "coordinates": {
+                "lat": 37.3856,
+                "lng": -5.9922
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Spanish Café",
+              "mood_tags": [
+                "romantic",
+                "elegant",
+                "chill",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "historic",
+                "instagrammable",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 08:30–21:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€10",
+              "image_url": "https://images.mnstatic.com/29/5c/295ccf619f535bc2e3e1826c1b3b532b.jpg?quality=75&format=pjpg&fit=crop&width=980&height=880&aspect_ratio=980:880"
+            },
+            {
+              "id": "es-sev-004",
+              "name": "Las Golondrinas",
+              "type": "restaurant",
+              "description": "A beloved no-frills Triana tapas bar with blue-and-white azulejo tiles, brisk bartenders, and exceptional champiñones (mushrooms in green alioli) and puntas de solomillo (grilled tenderloin on crispy chips) that make it a prime example of why Seville's working-class tapas culture is the best in Spain.",
+              "address": "Calle Antillano Campos, 26, 41010 Seville",
+              "coordinates": {
+                "lat": 37.3871,
+                "lng": -6.0027
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Tapas",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "street-food",
+                "historic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 12:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/5CHODbjRqMGN2OYZv0FGiA/l.jpg"
+            },
+            {
+              "id": "es-sev-005",
+              "name": "La Carbonería",
+              "type": "club",
+              "description": "A free-entry flamenco bar in a crumbling old coal merchant's warehouse in the Santa Cruz neighborhood that stages spontaneous and semi-organized flamenco shows nightly from around 11pm — no ticketing, no pretension, just passionate artists and a crowd that's half local, half fascinated tourist. The most authentic flamenco experience in Seville.",
+              "address": "Calle Levíes, 18, 41004 Seville",
+              "coordinates": {
+                "lat": 37.3856,
+                "lng": -5.9867
+              },
+              "cost_range": "$",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "artistic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "historic",
+                "traditional"
+              ],
+              "music_genre": "Flamenco",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 20:00–03:00, flamenco from 22:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8 drinks minimum",
+              "image_url": "https://www.thebarefootnomad.com/wp-content/uploads/2014/02/The-Legendary-La-Carbonería-flamenco-bar-in-Seville-Spain-.jpg"
+            },
+            {
+              "id": "es-sev-006",
+              "name": "Abades Triana",
+              "type": "restaurant",
+              "description": "A glass-walled fine dining room projecting over the Guadalquivir River in Triana with the most theatrical dining view in Seville — the illuminated Torre del Oro and Cathedral skyline reflected in the water below. The Andalusian seafood and rice dishes are excellent, but the panoramic terrace is transformative at sunset.",
+              "address": "Calle Betis, 69, 41010 Seville",
+              "coordinates": {
+                "lat": 37.3835,
+                "lng": -5.9989
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern Andalusian / Seafood",
+              "mood_tags": [
+                "romantic",
+                "luxurious",
+                "elegant",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "touristy"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "luxury-dining",
+                "beachside"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Daily 13:30–16:00, 20:30–23:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€65",
+              "reservation_url": "https://www.abadestriana.com",
+              "image_url": "https://media-cdn.tripadvisor.com/media/photo-m/1280/2d/3a/80/3c/abades-triana-2024.jpg"
+            },
+            {
+              "id": "es-sev-007",
+              "name": "La Terraza de EME",
+              "type": "bar",
+              "description": "A rooftop cocktail bar with cathedral views — specifically the Giralda tower rising impossibly close above you — at the boutique EME Catedral Hotel in the Santa Cruz quarter. Drinking a fino sherry cocktail as the Moorish tower glows golden at dusk is one of Seville's most indulgent pleasures.",
+              "address": "Calle Alemanes, 27, 41004 Seville",
+              "coordinates": {
+                "lat": 37.3862,
+                "lng": -5.9926
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Cocktail Rooftop Bar",
+              "mood_tags": [
+                "romantic",
+                "luxurious",
+                "iconic",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "cocktail-bar",
+                "aesthetic"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Daily 12:00–00:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€20",
+              "instagram": "@emecatedralsevilla",
+              "image_url": "https://i.pinimg.com/736x/d9/9d/ce/d99dced2a6ff6f7ddcf6588daa27fc09--rooftop-bar-seville-spain.jpg"
+            },
+            {
+              "id": "es-sev-008",
+              "name": "Bar La Fresquita",
+              "type": "bar",
+              "description": "A legendary no-sign dive bar in the Feria neighborhood where the entire block socializes over tinto de verano and papas aliñadas on plastic chairs dragged into the narrow street, typifying the informal Sevillian outdoor bar culture that no amount of tourist development has managed to sanitize.",
+              "address": "Calle Feria, 57, 41003 Seville",
+              "coordinates": {
+                "lat": 37.3979,
+                "lng": -5.9919
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Bar",
+              "mood_tags": [
+                "chaotic",
+                "chill",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "street-food",
+                "traditional"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 10:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€6",
+              "image_url": "https://www.venturists.net/wp-content/uploads/2017/08/Bar-Fresquita-Devour-Spain-Food-Tour-960x494.jpeg"
+            },
+            {
+              "id": "es-sev-009",
+              "name": "Lalola de Javi Abascal",
+              "type": "restaurant",
+              "description": "Chef Javier Abascal's fine dining inside the whitewashed internal courtyard of a 16th-century palace turned boutique hotel delivers elevated Iberian cooking — Presa Ibérica, offal preparations, and ceviches — that feels simultaneously rooted in Andalusian tradition and in genuine creative dialogue with contemporary cooking.",
+              "address": "Calle Baños, 5, 41002 Seville",
+              "coordinates": {
+                "lat": 37.3901,
+                "lng": -5.9981
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern Iberian / Fine Dining",
+              "mood_tags": [
+                "romantic",
+                "elegant",
+                "intimate",
+                "artistic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "historic",
+                "aesthetic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 13:30–16:00, 20:30–23:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€75",
+              "image_url": "https://res.cloudinary.com/tf-lab/image/upload/restaurant/374f4fc5-7f69-479f-a5b6-9ae095b53d69/50e9c17a-05bb-44a5-a05f-5e1d03beba0c.jpg"
+            },
+            {
+              "id": "es-sev-010",
+              "name": "Café Central",
+              "type": "cafe",
+              "description": "Seville's most charming outdoor café tables spill across the shaded Plaza del Salvador in the historic center, making it the city's prime morning café-con-leche spot after the fish market vendors and before the tourist tide — the churros here are as good as they come in Andalusia, and the locals who've been coming for decades will tell you so.",
+              "address": "Plaza del Salvador, 3, 41004 Seville",
+              "coordinates": {
+                "lat": 37.3889,
+                "lng": -5.9938
+              },
+              "cost_range": "$",
+              "cuisine_type": "Spanish Café",
+              "mood_tags": [
+                "chill",
+                "romantic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "instagrammable"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 07:30–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://c8.alamy.com/comp/CN7JPA/cafe-terrace-at-night-central-seville-andalusia-spain-CN7JPA.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Valencia",
+          "city_rank": 4,
+          "country": "Spain",
+          "coordinates": {
+            "lat": 39.4699,
+            "lng": -0.3763
+          },
+          "venues": [
+            {
+              "id": "es-val-001",
+              "name": "Casa Montaña",
+              "type": "bar",
+              "description": "A century-old wine tavern in the Cabanyal beach neighborhood whose walls are covered in dusty old barrels and whose wine list spans 800 natural and traditional labels — this is where Valencia's most knowledgeable wine lovers gather for clóchinas (local mussels), patatas bravas, and bottles you won't find anywhere else in the city.",
+              "address": "Carrer de Josep Benlliure, 69, 46011 Valencia",
+              "coordinates": {
+                "lat": 39.4719,
+                "lng": -0.3313
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Wine Tavern / Tapas",
+              "mood_tags": [
+                "intimate",
+                "cozy",
+                "chill",
+                "elegant"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 12:00–16:00, 19:30–23:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€25",
+              "image_url": "https://5barricas.valenciaplaza.com/wp-content/uploads/2023/05/230504-casa-montana-01.jpg"
+            },
+            {
+              "id": "es-val-002",
+              "name": "Central Bar (Mercado Central)",
+              "type": "cafe",
+              "description": "Inside Valencia's magnificent Art Nouveau covered market, chef Ricard Camarena operates a counter that serves the best almuerzo (mid-morning brunch) in the city — house-made embutidos on a rosca roll, oysters from the counter, and a cold cerveza — all sourced from the stalls surrounding you in one of Europe's finest food markets.",
+              "address": "Plaça de la Ciutat de Bruges, s/n, 46001 Valencia",
+              "coordinates": {
+                "lat": 39.4737,
+                "lng": -0.3785
+              },
+              "cost_range": "$",
+              "cuisine_type": "Spanish Market Café / Tapas",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "street-food",
+                "instagrammable",
+                "traditional"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 08:00–14:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€12",
+              "image_url": "https://spainist.com/wp-content/uploads/valencia-central-market3-696x436.jpg"
+            },
+            {
+              "id": "es-val-003",
+              "name": "El Poblet",
+              "type": "restaurant",
+              "description": "Two Michelin stars and chef Luis Valls's mastery of Valencia's sacred rice dishes — served in a spare, elegant dining room near the City of Arts — make this the definitive destination for anyone who wants to understand why paella is a serious art form. The arroz a banda with lobster bisque is among the finest plates of food in Spain.",
+              "address": "Carrer de Correus, 8, 46002 Valencia",
+              "coordinates": {
+                "lat": 39.4728,
+                "lng": -0.3758
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern Valencian / Seafood",
+              "mood_tags": [
+                "elegant",
+                "intimate",
+                "romantic",
+                "luxurious"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "modern",
+                "aesthetic"
+              ],
+              "best_time_of_day": "lunch",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 13:30–15:30, 20:30–22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€120",
+              "reservation_url": "https://elpoblet.com",
+              "image_url": "https://foodle.pro/meals-images/2023-06-24-10-41-32-b5dd24a980214f00f26aae5d10b10104.jpg"
+            },
+            {
+              "id": "es-val-004",
+              "name": "L'Umbracle Terrazza",
+              "type": "club",
+              "description": "A futuristic open-air club and bar set inside Calatrava's luminous L'Umbracle botanical walkway at the City of Arts and Sciences, mixing DJ sets with the surreal backdrop of Valencia's most iconic architecture. The outdoor terrace is extraordinary and summer nights here feel genuinely cinematic.",
+              "address": "Av. del Professor López Piñero, 5, 46013 Valencia",
+              "coordinates": {
+                "lat": 39.454,
+                "lng": -0.353
+              },
+              "cost_range": "$$$",
+              "mood_tags": [
+                "trendy",
+                "luxurious",
+                "energetic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist",
+                "influencer-hotspot"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "techno-club",
+                "aesthetic"
+              ],
+              "music_genre": "House, EDM",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "summer",
+              "opening_hours": "Jun–Sep, Fri–Sat 23:00–05:00",
+              "dress_code": "upscale",
+              "estimated_avg_spend": "€20 entry",
+              "image_url": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=194274263191162"
+            },
+            {
+              "id": "es-val-005",
+              "name": "Bar Ricardo",
+              "type": "bar",
+              "description": "A bustling Ruzafa neighborhood bar where locals pack three deep for weekday vermut and the weekend aperitivo ritual, sustained entirely by the best patatas bravas and house-made pickles in the city. No cocktails, no craft beer — just cold Estrella Damm, raw honesty, and the best aperitivo in Valencia.",
+              "address": "Carrer de Cadis, 28, 46006 Valencia",
+              "coordinates": {
+                "lat": 39.4638,
+                "lng": -0.3728
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Bar",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "local-hidden-gem"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "street-food"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 08:00–16:00, 19:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://media-cdn.tripadvisor.com/media/photo-s/08/04/48/37/bar-ricardo.jpg"
+            },
+            {
+              "id": "es-val-006",
+              "name": "Café Infusiones",
+              "type": "cafe",
+              "description": "A pioneering specialty coffee shop in the Ruzafa neighborhood that brought third-wave coffee culture to Valencia before it was fashionable, serving meticulous V60 pour-overs from rotating single-origin beans in a calm, plant-filled room that doubles as a workspace for half the neighborhood's freelancers.",
+              "address": "Carrer del Progrés, 24, 46006 Valencia",
+              "coordinates": {
+                "lat": 43.4651,
+                "lng": -0.3704
+              },
+              "cost_range": "$",
+              "cuisine_type": "Specialty Coffee",
+              "mood_tags": [
+                "chill",
+                "artistic",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "cafe-workspace",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Fri 08:30–20:00, Sat 09:00–15:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€6",
+              "image_url": "https://c8.alamy.com/comp/2J70CNT/cafe-sant-jaume-el-carmen-neighborhood-valencia-valencian-community-spain-2J70CNT.jpg"
+            },
+            {
+              "id": "es-val-007",
+              "name": "La Cantina de Ruzafa",
+              "type": "restaurant",
+              "description": "Ruzafa's most beloved neighborhood trattoria fuses Italian and Valencian pantry instincts into a daily changing menu of pasta, rice, and market vegetables that encapsulates what this eclectic multicultural neighborhood has become. Natural wines, no reservations, and a queue that starts forming at 20:00.",
+              "address": "Carrer del Literat Azorín, 12, 46006 Valencia",
+              "coordinates": {
+                "lat": 39.463,
+                "lng": -0.3709
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Italian-Valencian Fusion",
+              "mood_tags": [
+                "intimate",
+                "chill",
+                "trendy",
+                "cozy"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "packed"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "modern",
+                "traditional"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 13:00–16:00, 20:00–23:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€28",
+              "image_url": "https://www.gastronosfera.com/sites/default/files/restaurant/2023/Cantina13.jpg"
+            },
+            {
+              "id": "es-val-008",
+              "name": "Akuarela Playa",
+              "type": "club",
+              "description": "A beachfront club on Malvarrosa Beach that defines Valencia's summer nightlife — dance floors open to the sea, sunrise DJ sets, and a crowd that arrives at 4am because the night hasn't started yet. The combination of sand under your feet and house music in the warm Mediterranean air is impossible to replicate anywhere else.",
+              "address": "Passeig Marítim de la Patacona, s/n, 46120 Alboraia",
+              "coordinates": {
+                "lat": 39.4884,
+                "lng": -0.3261
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "mainstream"
+              ],
+              "vibe_tags": [
+                "beachside",
+                "techno-club",
+                "instagrammable"
+              ],
+              "music_genre": "House, EDM",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "summer",
+              "opening_hours": "Jun–Sep, Fri–Sun 00:00–07:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€15 entry",
+              "image_url": "https://spainclubpromoter.com/wp-content/uploads/elementor/thumbs/AKUARELA-VALENCIA-qanusx6sume3hs0lfyre682efhcrmtg6ywh9ps7yq0.jpg"
+            },
+            {
+              "id": "es-val-009",
+              "name": "Askua",
+              "type": "restaurant",
+              "description": "A serious steak and ember-grilled meat restaurant near the Palau de la Música that treats Galician beef with the reverence most cities reserve for premium sushi — the T-bones are aged 60+ days and arrive on custom slate boards with nothing but sea salt. Valencia's answer to the Basque steak temples of San Sebastián.",
+              "address": "Carrer de Félix Pizcueta, 9, 46004 Valencia",
+              "coordinates": {
+                "lat": 39.4699,
+                "lng": -0.372
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Steakhouse / Spanish Grill",
+              "mood_tags": [
+                "elegant",
+                "intimate",
+                "luxurious"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "upscale-tourist",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Mon–Sat 13:30–15:30, 21:00–23:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€90",
+              "reservation_url": "https://askua.es",
+              "image_url": "http://encuinarte.hl1136.dinaserver.com/wp-content/uploads/2021/12/Askua_004.jpg"
+            },
+            {
+              "id": "es-val-010",
+              "name": "Radio City Valencia",
+              "type": "club",
+              "description": "A legendary multi-room cultural club in the Carmen historic quarter that hosts live music, flamenco, world music, and DJ nights across four stages with free entry before midnight — making it the best value nightlife experience in the city and an institution of Valencia's alternative cultural life since 1982.",
+              "address": "Calle de Santa Teresa, 19, 46001 Valencia",
+              "coordinates": {
+                "lat": 39.4773,
+                "lng": -0.38
+              },
+              "cost_range": "$",
+              "mood_tags": [
+                "chaotic",
+                "artistic",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "traditional",
+                "historic"
+              ],
+              "music_genre": "Flamenco, World, Indie, Electronic",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sun 21:00–03:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8 drinks",
+              "image_url": "https://www.taquilla.com/data/images/t_icimgs/72/galeria_radio-city-valencia_1.jpg"
+            }
+          ]
+        },
+        {
+          "city": "Granada",
+          "city_rank": 5,
+          "country": "Spain",
+          "coordinates": {
+            "lat": 37.1773,
+            "lng": -3.5986
+          },
+          "venues": [
+            {
+              "id": "es-gra-001",
+              "name": "Bar Los Diamantes",
+              "type": "bar",
+              "description": "The definitive Granada tapas bar, where the city's sacred tradition of free tapas with every drink reaches its pinnacle — order a cold Alhambra beer and a mountain of fresh seafood appears gratis. The ceramic-tiled Plaza de la Pescadería original has been replicated but never surpassed.",
+              "address": "Calle Navas, 26, 18009 Granada",
+              "coordinates": {
+                "lat": 37.177,
+                "lng": -3.5996
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Bar / Tapas",
+              "mood_tags": [
+                "chaotic",
+                "energetic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "historic",
+                "street-food"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:30–16:30, 20:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://www.willflyforfood.net/wp-content/uploads/2019/08/bar-los-diamantes8.jpg"
+            },
+            {
+              "id": "es-gra-002",
+              "name": "Tetería Al Faguara",
+              "type": "cafe",
+              "description": "A Moorish-style teahouse in the Albaicín quarter where mint tea is poured from great heights into Moroccan glasses and shisha smoke curls through arched windows facing the Alhambra's towers — a direct descendant of the Nasrid civilization that shaped this city. The baklava and almond pastries are extraordinary.",
+              "address": "Callejón de las Tomasas, 4, 18010 Granada",
+              "coordinates": {
+                "lat": 37.1815,
+                "lng": -3.5942
+              },
+              "cost_range": "$",
+              "cuisine_type": "Moorish Tearoom",
+              "mood_tags": [
+                "exotic",
+                "intimate",
+                "romantic",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "quiet"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "best_time_of_day": "afternoon",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 11:00–00:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://s3-media0.fl.yelpcdn.com/bphoto/K-2wiGb_IAlpW52yRVHC6Q/o.jpg"
+            },
+            {
+              "id": "es-gra-003",
+              "name": "Restaurante Carmela",
+              "type": "restaurant",
+              "description": "A beloved Granadan institution in the Realejo neighborhood serving outstanding modern interpretations of Andalusian cuisine — the salmorejo, oxtail braised in Pedro Ximénez, and ajo blanco with Málaga grapes are all textbook perfect — to a loyal crowd of locals and discerning visitors who know the difference.",
+              "address": "Calle Colcha, 13, 18009 Granada",
+              "coordinates": {
+                "lat": 37.1741,
+                "lng": -3.6014
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Modern Andalusian",
+              "mood_tags": [
+                "cozy",
+                "romantic",
+                "elegant",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "expat-popular",
+                "local-hidden-gem"
+              ],
+              "vibe_tags": [
+                "traditional",
+                "aesthetic",
+                "historic"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 13:00–16:00, 20:00–23:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€35",
+              "image_url": "https://patrocina.granadaimedia.com/files/2013/02/carmela-exteriorp.jpg"
+            },
+            {
+              "id": "es-gra-004",
+              "name": "El Bar de Eric",
+              "type": "bar",
+              "description": "A wine-focused bar in the Realejo neighborhood run by a Franco-Granadan couple that quietly became the city's best natural wine destination — a tiny room with 150 labels, excellent cheese, and an atmosphere of relaxed expertise that makes it the perfect counterpoint to Granada's tapas bar chaos.",
+              "address": "Calle Pavaneras, 19, 18009 Granada",
+              "coordinates": {
+                "lat": 37.1739,
+                "lng": -3.6037
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Natural Wine Bar",
+              "mood_tags": [
+                "intimate",
+                "chill",
+                "elegant",
+                "romantic"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sun 18:30–00:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€18",
+              "image_url": "https://static.grupojoly.com/clip/77e0d41b-3d0e-4199-a300-ee388821afbb_source-aspect-ratio_1600w_0.jpg"
+            },
+            {
+              "id": "es-gra-005",
+              "name": "Granada 10",
+              "type": "club",
+              "description": "A repurposed art-house cinema in the city center that transforms at midnight into Granada's most eclectic and genuinely fun nightclub — spinning Spanish pop, reggaeton, and '80s hits to a university-heavy crowd who dance until 5am on the same floors where generations of Granadans once watched films. Free entry before 1am.",
+              "address": "Calle Cárcel Baja, 10, 18001 Granada",
+              "coordinates": {
+                "lat": 37.1779,
+                "lng": -3.6002
+              },
+              "cost_range": "$",
+              "mood_tags": [
+                "energetic",
+                "chaotic",
+                "chill",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "nightlife-heavy"
+              ],
+              "touristiness_tags": [
+                "authentic-local",
+                "backpacker-friendly"
+              ],
+              "vibe_tags": [
+                "historic",
+                "modern"
+              ],
+              "music_genre": "Reggaeton, Spanish Pop, '80s",
+              "best_time_of_day": "late night",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Thu–Sat 23:30–05:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8 entry",
+              "image_url": "https://zeppelingrupo.com/wp-content/uploads/2021/11/G10.jpg"
+            },
+            {
+              "id": "es-gra-006",
+              "name": "Mirador de Morayma",
+              "type": "restaurant",
+              "description": "A garden terrace restaurant carved into the hillside of the Albaicín with the most captivating Alhambra views in Granada, serving Granadan classics like habas con jamón and remojón oranges with cod alongside a wine list weighted toward Andalusian producers. Dining here at sunset is a genuinely emotional experience.",
+              "address": "Carrera de la Virgen, 2, 18010 Granada",
+              "coordinates": {
+                "lat": 37.1825,
+                "lng": -3.5948
+              },
+              "cost_range": "$$",
+              "cuisine_type": "Traditional Granadan / Andalusian",
+              "mood_tags": [
+                "romantic",
+                "iconic",
+                "elegant",
+                "chill"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "upscale-tourist"
+              ],
+              "vibe_tags": [
+                "rooftop",
+                "instagrammable",
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "spring-autumn",
+              "opening_hours": "Mon–Sat 13:30–15:30, 20:30–23:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€40",
+              "image_url": "https://image.arrivalguides.com/1230x800/11/cad0103c5e00af19c97e4ad499b4ff81.jpg"
+            },
+            {
+              "id": "es-gra-007",
+              "name": "Café Futbol",
+              "type": "cafe",
+              "description": "Since 1930 this café on the Plaza de Mariana Pineda has been serving Granada's most acclaimed churros con chocolate — thicker and darker than the Madrid variety, the chocolate is practically molten ganache. A morning here watching the city wake up from a corner table is as close to perfect as breakfasts get.",
+              "address": "Plaza de Mariana Pineda, 6, 18009 Granada",
+              "coordinates": {
+                "lat": 37.1763,
+                "lng": -3.5972
+              },
+              "cost_range": "$",
+              "cuisine_type": "Spanish Café / Churros",
+              "mood_tags": [
+                "iconic",
+                "cozy",
+                "chill",
+                "intimate"
+              ],
+              "crowdedness_tags": [
+                "busy",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "morning",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 08:00–21:00",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€6",
+              "image_url": "https://static.grupojoly.com/clip/d5870d4c-107f-49e0-8155-6d2ce2e8a228_source-aspect-ratio_1600w_0.jpg"
+            },
+            {
+              "id": "es-gra-008",
+              "name": "Cueva del Sacromonte La Zambra",
+              "type": "club",
+              "description": "A genuine cave dwelling hewn from the limestone of the Sacromonte hillside that stages nightly zambra flamenco shows — the oldest and most private form of flamenco, originally performed by Granada's Romani community in candlelit grottoes. The whitewashed cave walls and the intimacy of the setting make this unlike any other flamenco experience.",
+              "address": "Camino del Sacromonte, 48, 18010 Granada",
+              "coordinates": {
+                "lat": 37.182,
+                "lng": -3.5807
+              },
+              "cost_range": "$$",
+              "mood_tags": [
+                "intimate",
+                "romantic",
+                "artistic",
+                "iconic"
+              ],
+              "crowdedness_tags": [
+                "moderate",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "live-music",
+                "historic",
+                "traditional",
+                "aesthetic"
+              ],
+              "music_genre": "Flamenco / Zambra",
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily shows at 22:00",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€30 + drinks",
+              "image_url": "https://www.ruralidays.com/viajar/wp-content/uploads/2019/06/Cueva-en-el-Sacromonte-Granada.jpg"
+            },
+            {
+              "id": "es-gra-009",
+              "name": "Taberna La Cueva de 1900",
+              "type": "bar",
+              "description": "A genuinely antique wine cellar in the university quarter that offers Granada's most immersive free-tapas experience — each round of drinks brings larger and more elaborate accompaniments, starting with olives and escalating to hot stews and meat preparations after a few rounds. The walls are pasted with yellowing bullfight posters.",
+              "address": "Calle Elvira, 23, 18010 Granada",
+              "coordinates": {
+                "lat": 37.1799,
+                "lng": -3.5991
+              },
+              "cost_range": "$",
+              "cuisine_type": "Traditional Spanish Bar / Tapas",
+              "mood_tags": [
+                "chaotic",
+                "intimate",
+                "energetic"
+              ],
+              "crowdedness_tags": [
+                "packed",
+                "busy"
+              ],
+              "touristiness_tags": [
+                "touristy",
+                "authentic-local"
+              ],
+              "vibe_tags": [
+                "historic",
+                "traditional"
+              ],
+              "best_time_of_day": "evening",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Daily 12:00–16:00, 19:00–01:30",
+              "dress_code": "casual",
+              "estimated_avg_spend": "€8",
+              "image_url": "https://www.granadadirect.com/images/gastronomia/bares/plazanueva/cueva-1900-granada.jpg"
+            },
+            {
+              "id": "es-gra-010",
+              "name": "Damasqueros",
+              "type": "restaurant",
+              "description": "Chef Lola Marín's quiet Realejo restaurant has become Granada's most critically acclaimed modern dining destination — a tightly conceived four-course menu of Andalusian produce elevated with technique and genuine creativity, served in a converted historic house with an intimate dining room that feels like a particularly well-curated private home.",
+              "address": "Calle Damasqueros, 3, 18009 Granada",
+              "coordinates": {
+                "lat": 37.1738,
+                "lng": -3.6027
+              },
+              "cost_range": "$$$",
+              "cuisine_type": "Modern Andalusian / Creative",
+              "mood_tags": [
+                "elegant",
+                "intimate",
+                "artistic",
+                "romantic"
+              ],
+              "crowdedness_tags": [
+                "quiet",
+                "moderate"
+              ],
+              "touristiness_tags": [
+                "local-hidden-gem",
+                "expat-popular"
+              ],
+              "vibe_tags": [
+                "luxury-dining",
+                "aesthetic",
+                "modern"
+              ],
+              "best_time_of_day": "dinner",
+              "seasonal_popularity": "year-round",
+              "opening_hours": "Tue–Sat 13:30–15:30, 20:30–22:30",
+              "dress_code": "smart casual",
+              "estimated_avg_spend": "€65",
+              "image_url": "https://c8.alamy.com/comp/2J59E80/bar-damasqueros-granada-andalucia-spain-2J59E80.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

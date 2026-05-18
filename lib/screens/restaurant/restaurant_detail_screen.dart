@@ -32,6 +32,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
       if (!mounted) return;
       context.read<ReviewProvider>().loadReviews(widget.restaurant.id);
       context.read<AiProvider>().loadSummary(widget.restaurant.id);
+      final auth = context.read<AuthProvider>();
+      if (auth.user != null) {
+        context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
+      }
     });
   }
 
@@ -139,15 +143,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              Container(
-                width: 36, height: 36,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.9)),
-                child: const Icon(Icons.ios_share_outlined,
-                    size: 18, color: AppColors.ink),
-              ),
             ],
           ),
         ),
@@ -237,10 +232,8 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
   Widget _buildInfoGrid(RestaurantModel r) {
     final items = [
-      ('NEIGHBORHOOD', r.neighborhood),
       ('PRICE', r.priceRange),
       ('CATEGORY', r.category),
-      ('STATUS', r.status),
     ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),

@@ -25,7 +25,7 @@ class FirestoreSeedDataService {
         country: data['country'] ?? '',
         countryCode: data['countryCode'] ?? '',
         rank: (data['rank'] as num?)?.toInt() ?? 0,
-        geopoint: data['geopoint'] ?? const GeoPoint(0, 0),
+        geopoint: data['coordinates'] as GeoPoint? ?? const GeoPoint(0, 0),
         venueCount: (data['venueCount'] as num?)?.toInt() ?? 0,
       );
     }).toList();

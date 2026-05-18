@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/route_names.dart';
@@ -151,51 +152,106 @@ class _RecommendationCard extends StatelessWidget {
       ),
       child: Container(
         margin: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
-        ),
-        child: Row(
-          children: [
-            StripeTile(
-              color: restaurant.tileColor,
-              width: 64,
-              height: 64,
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.lightGrey.withOpacity(0.5)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            const SizedBox(width: 12),
+          ],
+        ),
+        child: IntrinsicHeight(
+          child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(16),
+              ),
+              child: SizedBox(
+                width: 100,
+                child: restaurant.mediaUrls.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: restaurant.mediaUrls.first,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) =>
+                            Container(color: restaurant.tileColor),
+                        errorWidget: (_, __, ___) =>
+                            Container(color: restaurant.tileColor),
+                      )
+                    : StripeTile(color: restaurant.tileColor),
+              ),
+            ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    restaurant.name,
-                    style: GoogleFonts.fraunces(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.ink,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            restaurant.name,
+                            style: GoogleFonts.fraunces(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.ink,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          restaurant.priceRange,
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.terracotta,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '${restaurant.category} · ${restaurant.neighborhood}',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      color: AppColors.warmGrey,
+                    const SizedBox(height: 4),
+                    Text(
+                      restaurant.category,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppColors.warmGrey,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  StarRating(
-                    rating: restaurant.avgRating,
-                    reviewCount: restaurant.reviewCount,
-                    size: 12,
-                  ),
-                ],
+                    const SizedBox(height: 6),
+                    StarRating(
+                      rating: restaurant.avgRating,
+                      reviewCount: restaurant.reviewCount,
+                      size: 12,
+                    ),
+                    if (restaurant.tagline.isNotEmpty) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        restaurant.tagline,
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: AppColors.warmGrey,
+                          height: 1.4,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
           ],
+        ),
         ),
       ),
     );

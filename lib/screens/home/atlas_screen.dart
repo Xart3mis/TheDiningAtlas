@@ -10,6 +10,7 @@ import '../../providers/onboarding_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/seed_data_provider.dart';
 import '../../models/restaurant_model.dart';
+import '../../models/seed_data_model.dart';
 import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
 import '../../core/constants/app_constants.dart';
@@ -30,9 +31,15 @@ class _AtlasScreenState extends State<AtlasScreen> {
     Future.microtask(() async {
       if (!mounted) return;
       final seedProvider = context.read<SeedDataProvider>();
+      final user = context.read<UserProvider>().user;
+      final onboarding = context.read<OnboardingProvider>();
+      final countryId = (user?.onboardingCountryId.isNotEmpty == true)
+          ? user!.onboardingCountryId
+          : onboarding.countryId;
       await seedProvider.load();
       if (!mounted) return;
-      final defaultCity = seedProvider.defaultCity;
+      final countryCities = seedProvider.citiesForCountry(countryId);
+      final defaultCity = countryCities.isEmpty ? null : countryCities.first;
       if (defaultCity != null) {
         seedProvider.loadCityDetails(defaultCity.id);
         context.read<RestaurantProvider>().loadFeed(cityId: defaultCity.id);
@@ -47,17 +54,28 @@ class _AtlasScreenState extends State<AtlasScreen> {
     final seedProvider = context.watch<SeedDataProvider>();
     final user = context.watch<UserProvider>().user;
 
+    final countryId = (user?.onboardingCountryId.isNotEmpty == true)
+        ? user!.onboardingCountryId
+        : onboardingProvider.countryId;
+    final countryCities = seedProvider.citiesForCountry(countryId);
+    final effectiveCountryCode = countryCities.isNotEmpty
+        ? countryCities.first.countryCode
+        : onboardingProvider.countryCode;
+    final effectiveCountryName = countryCities.isNotEmpty
+        ? countryCities.first.country
+        : onboardingProvider.countryName;
+
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildHeader(user)),
           SliverToBoxAdapter(
-              child: _buildSearchBanner(onboardingProvider.countryName)),
+              child: _buildSearchBanner(effectiveCountryName)),
           SliverToBoxAdapter(
-              child: _buildExploreWidget(onboardingProvider, seedProvider.cities.length)),
+              child: _buildExploreWidget(effectiveCountryCode, effectiveCountryName, countryCities.length)),
           SliverToBoxAdapter(
-              child: _buildCityChips(restaurantProvider, seedProvider)),
+              child: _buildCityChips(restaurantProvider, countryCities)),
           SliverToBoxAdapter(child: _buildEditorPicksHeader()),
           if (restaurantProvider.isLoading)
             const SliverToBoxAdapter(child: _FeedShimmer())
@@ -72,7 +90,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
           else
             SliverToBoxAdapter(
               child: SizedBox(
-                height: 140,
+                height: 152,
                 child: ListView.separated(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   scrollDirection: Axis.horizontal,
@@ -190,7 +208,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildExploreWidget(OnboardingProvider provider, int cityCount) {
+  Widget _buildExploreWidget(String countryCode, String countryName, int cityCount) {
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 14, 20, 0),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
@@ -210,7 +228,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
               border: Border.all(color: AppColors.lightGrey),
             ),
             alignment: Alignment.center,
-            child: Text(provider.countryCode,
+            child: Text(countryCode,
                 style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
@@ -221,7 +239,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(provider.countryName,
+                Text(countryName,
                     style: GoogleFonts.fraunces(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
@@ -251,8 +269,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildCityChips(RestaurantProvider provider, SeedDataProvider seedProvider) {
-    final cities = seedProvider.cities;
+  Widget _buildCityChips(RestaurantProvider provider, List<SeedCityModel> cities) {
     return SizedBox(
       height: 44,
       child: ListView.separated(
@@ -264,7 +281,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
           label: cities[i].name,
           selected: provider.currentCityId == cities[i].id,
           onTap: () {
-            seedProvider.loadCityDetails(cities[i].id);
+            context.read<SeedDataProvider>().loadCityDetails(cities[i].id);
             provider.loadFeed(cityId: cities[i].id);
           },
         ),
@@ -374,7 +391,7 @@ class _FeedShimmer extends StatelessWidget {
       baseColor: const Color(0xFFE0D9D0),
       highlightColor: const Color(0xFFF5EFE6),
       child: SizedBox(
-        height: 140,
+        height: 152,
         child: ListView.separated(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           scrollDirection: Axis.horizontal,
