@@ -280,14 +280,15 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: () async {
-                final userService = context.read<IUserService>();
                 String name = 'Local';
-                try {
-                  final contributor = await userService.fetchUser(r.contributorId);
-                  if (contributor != null && contributor.displayName.isNotEmpty) {
-                    name = contributor.displayName;
-                  }
-                } catch (_) {}
+                if (r.contributorId.isNotEmpty) {
+                  try {
+                    final contributor = await context.read<IUserService>().fetchUser(r.contributorId);
+                    if (contributor != null && contributor.displayName.isNotEmpty) {
+                      name = contributor.displayName;
+                    }
+                  } catch (_) {}
+                }
                 if (!context.mounted) return;
                 Navigator.pushNamed(
                   context,

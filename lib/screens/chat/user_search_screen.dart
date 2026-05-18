@@ -54,7 +54,7 @@ class _UserSearchScreenState extends State<UserSearchScreen> {
   }
 
   void _openChat(UserModel other) {
-    Navigator.pushReplacementNamed(
+    Navigator.pushNamed(
       context,
       RouteNames.kChatThread,
       arguments: {

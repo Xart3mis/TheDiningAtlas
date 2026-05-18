@@ -146,6 +146,7 @@ class _ChatInboxScreenState extends State<ChatInboxScreen> {
     return RefreshIndicator(
       onRefresh: _load,
       child: ListView.separated(
+        padding: const EdgeInsets.only(bottom: 88),
         itemCount: _rows!.length,
         separatorBuilder: (_, __) => const Divider(height: 1, indent: 72),
         itemBuilder: (_, i) {

@@ -285,44 +285,6 @@ class AtlasBottomNav extends StatelessWidget {
   }
 }
 
-// ─── Notification badge icon ──────────────────────────────────────────────────
-class _BadgeIcon extends StatelessWidget {
-  final Widget icon;
-  final int count;
-  const _BadgeIcon({required this.icon, required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    if (count == 0) return icon;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        icon,
-        Positioned(
-          top: -4,
-          right: -4,
-          child: Container(
-            width: 14,
-            height: 14,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              count > 9 ? '9+' : '$count',
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 8,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 // ─── Search bar ───────────────────────────────────────────────────────────────
 class AtlasSearchBar extends StatelessWidget {
   final String hint;
