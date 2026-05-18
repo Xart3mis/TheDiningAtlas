@@ -6,6 +6,7 @@ import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/trip_provider.dart';
 import '../../models/trip_model.dart';
+import '../../core/constants/route_names.dart';
 
 class TripsScreen extends StatefulWidget {
   const TripsScreen({super.key});
@@ -82,27 +83,54 @@ class _TripsScreenState extends State<TripsScreen> {
   Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text('MY TRIP',
-              style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.warmGrey,
-                  letterSpacing: 1.2)),
-          const SizedBox(height: 4),
-          RichText(
-            text: TextSpan(
-              style: GoogleFonts.fraunces(
-                  fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.ink),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                    text: 'Tokyo',
+                Text('MY TRIPS',
+                    style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.warmGrey,
+                        letterSpacing: 1.2)),
+                const SizedBox(height: 4),
+                RichText(
+                  text: TextSpan(
                     style: GoogleFonts.fraunces(
-                        fontStyle: FontStyle.italic, color: AppColors.terracotta)),
-                const TextSpan(text: ', April 2026'),
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.ink),
+                    children: [
+                      TextSpan(
+                          text: 'Tokyo',
+                          style: GoogleFonts.fraunces(
+                              fontStyle: FontStyle.italic,
+                              color: AppColors.terracotta)),
+                      const TextSpan(text: ', April 2026'),
+                    ],
+                  ),
+                ),
               ],
+            ),
+          ),
+          ElevatedButton.icon(
+            onPressed: () =>
+                Navigator.pushNamed(context, RouteNames.kPlanTrip),
+            icon: const Icon(Icons.add, size: 16),
+            label: Text('Plan Trip',
+                style: GoogleFonts.inter(
+                    fontSize: 13, fontWeight: FontWeight.w600)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.terracotta,
+              foregroundColor: Colors.white,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
             ),
           ),
         ],
