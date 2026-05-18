@@ -79,19 +79,31 @@ class DiningAtlasApp extends StatelessWidget {
       case RouteNames.kMain:
         return MaterialPageRoute(builder: (_) => MainShell(key: mainShellKey));
       case RouteNames.kRestaurantDetail:
-        final restaurant = settings.arguments as RestaurantModel;
+        if (settings.arguments is! RestaurantModel) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
-            builder: (_) => RestaurantDetailScreen(restaurant: restaurant));
+            builder: (_) => RestaurantDetailScreen(
+                restaurant: settings.arguments as RestaurantModel));
       case RouteNames.kWriteReview:
-        final restaurant = settings.arguments as RestaurantModel;
+        if (settings.arguments is! RestaurantModel) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
-            builder: (_) => WriteReviewScreen(restaurant: restaurant));
+            builder: (_) => WriteReviewScreen(
+                restaurant: settings.arguments as RestaurantModel));
       case RouteNames.kAddPlace:
         return MaterialPageRoute(builder: (_) => const AddPlaceScreen());
       case RouteNames.kMapSearch:
         return MaterialPageRoute(builder: (_) => const MapSearchScreen());
       case RouteNames.kChatThread:
-        final args = settings.arguments as Map<String, String>;
+        final args = settings.arguments;
+        if (args is! Map<String, String> ||
+            !args.containsKey('otherUid') ||
+            !args.containsKey('placeId') ||
+            !args.containsKey('otherName')) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
             builder: (_) => ChatThreadScreen(
                   otherUid: args['otherUid']!,
