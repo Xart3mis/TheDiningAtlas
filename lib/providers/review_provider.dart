@@ -18,7 +18,8 @@ class ReviewProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   String? translationFor(String reviewId, String lang) => _translations['${reviewId}_$lang'];
-  bool isTranslating(String reviewId) => _translating.contains(reviewId);
+  bool isTranslating(String reviewId, String targetLang) =>
+      _translating.contains('${reviewId}_$targetLang');
 
   Future<void> loadReviews(String restaurantId) async {
     _isLoading = true;
@@ -85,31 +86,33 @@ class ReviewProvider extends ChangeNotifier {
   }
 
   Future<void> upvote({required String restaurantId, required String reviewId}) async {
-    // Optimistic UI update
     final list = _reviews[restaurantId];
-    if (list != null) {
-      final idx = list.indexWhere((r) => r.id == reviewId);
-      if (idx != -1) {
-        final old = list[idx];
-        _reviews[restaurantId]![idx] = ReviewModel(
-          id: old.id,
-          restaurantId: old.restaurantId,
-          authorId: old.authorId,
-          authorName: old.authorName,
-          authorPhotoUrl: old.authorPhotoUrl,
-          text: old.text,
-          rating: old.rating,
-          upvotes: old.upvotes + 1,
-          createdAt: old.createdAt,
-        );
-        notifyListeners();
-      }
-    }
+    if (list == null) return;
+    final idx = list.indexWhere((r) => r.id == reviewId);
+    if (idx == -1) return;
+
+    // Store old state for rollback
+    final old = list[idx];
+    // Optimistic update
+    _reviews[restaurantId]![idx] = ReviewModel(
+      id: old.id,
+      restaurantId: old.restaurantId,
+      authorId: old.authorId,
+      authorName: old.authorName,
+      authorPhotoUrl: old.authorPhotoUrl,
+      text: old.text,
+      rating: old.rating,
+      upvotes: old.upvotes + 1,
+      createdAt: old.createdAt,
+    );
+    notifyListeners();
+
     try {
       await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId);
     } catch (_) {
-      // Revert on failure
-      await loadReviews(restaurantId);
+      // Inline rollback — just restore old model, single notifyListeners
+      _reviews[restaurantId]![idx] = old;
+      notifyListeners();
     }
   }
 
@@ -120,9 +123,9 @@ class ReviewProvider extends ChangeNotifier {
     required String targetLang,
   }) async {
     final key = '${reviewId}_$targetLang';
-    if (_translations.containsKey(key) || _translating.contains(reviewId)) return;
+    if (_translations.containsKey(key) || _translating.contains(key)) return;
 
-    _translating.add(reviewId);
+    _translating.add(key);
     notifyListeners();
 
     try {
@@ -143,7 +146,7 @@ class ReviewProvider extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
     } finally {
-      _translating.remove(reviewId);
+      _translating.remove(key);
       notifyListeners();
     }
   }
