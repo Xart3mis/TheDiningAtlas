@@ -31,4 +31,9 @@ class TripProvider extends ChangeNotifier {
     await _service.addSpot(uid: uid, tripId: tripId, dayId: dayId, spot: spot);
     await loadTrips(uid);
   }
+
+  Future<void> createTrip(String uid, TripModel trip) async {
+    await _service.createTrip(trip);
+    await loadTrips(uid);
+  }
 }
