@@ -9,6 +9,7 @@ class ReviewModel {
   final String text;
   final double rating;
   final int upvotes;
+  final List<String> likedBy;
   final DateTime createdAt;
 
   const ReviewModel({
@@ -20,8 +21,11 @@ class ReviewModel {
     required this.text,
     required this.rating,
     required this.upvotes,
+    this.likedBy = const [],
     required this.createdAt,
   });
+
+  bool hasLiked(String uid) => likedBy.contains(uid);
 
   factory ReviewModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
@@ -34,6 +38,7 @@ class ReviewModel {
       text: d['text'] ?? '',
       rating: (d['rating'] ?? 0.0).toDouble(),
       upvotes: d['upvotes'] ?? 0,
+      likedBy: List<String>.from(d['likedBy'] ?? []),
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
@@ -46,6 +51,7 @@ class ReviewModel {
     'text': text,
     'rating': rating,
     'upvotes': upvotes,
+    'likedBy': likedBy,
     'createdAt': FieldValue.serverTimestamp(),
   };
 }

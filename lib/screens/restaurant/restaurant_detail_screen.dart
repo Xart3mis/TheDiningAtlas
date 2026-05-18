@@ -359,20 +359,28 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      GestureDetector(
-                        onTap: () => reviewProvider.upvote(
-                            restaurantId: r.id, reviewId: review.id),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.thumb_up_outlined,
-                                size: 14, color: AppColors.warmGrey),
-                            const SizedBox(width: 4),
-                            Text('${review.upvotes}',
-                                style: GoogleFonts.inter(
-                                    fontSize: 12, color: AppColors.warmGrey)),
-                          ],
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        final uid = context.read<AuthProvider>().user?.uid ?? '';
+                        final liked = review.hasLiked(uid);
+                        return GestureDetector(
+                          onTap: () => reviewProvider.upvote(
+                              restaurantId: r.id, reviewId: review.id, uid: uid),
+                          child: Row(
+                            children: [
+                              Icon(
+                                liked ? Icons.thumb_up : Icons.thumb_up_outlined,
+                                size: 14,
+                                color: liked ? AppColors.terracotta : AppColors.warmGrey,
+                              ),
+                              const SizedBox(width: 4),
+                              Text('${review.upvotes}',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: liked ? AppColors.terracotta : AppColors.warmGrey)),
+                            ],
+                          ),
+                        );
+                      }),
                       Builder(builder: (context) {
                         final currentUid = context.read<AuthProvider>().user?.uid;
                         final isOwner = review.authorId == currentUid;
