@@ -46,4 +46,10 @@ class NotificationProvider extends ChangeNotifier {
     _badgeCount = 0;
     notifyListeners();
   }
+
+  void reset() {
+    _notifications = [];
+    _badgeCount = 0;
+    notifyListeners();
+  }
 }

@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/saved_places_provider.dart';
+import '../../providers/trip_provider.dart';
+import '../../providers/notification_provider.dart';
+import '../../providers/review_provider.dart';
 import '../../services/interfaces/i_storage_service.dart';
 import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
@@ -103,6 +107,11 @@ class SettingsScreen extends StatelessWidget {
                     fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red)),
             onTap: () async {
               final navigator = Navigator.of(context);
+              // Reset all user-scoped state BEFORE sign-out
+              context.read<SavedPlacesProvider>().reset();
+              context.read<TripProvider>().reset();
+              context.read<NotificationProvider>().reset();
+              context.read<ReviewProvider>().reset();
               await context.read<AuthProvider>().signOut();
               navigator.pushNamedAndRemoveUntil('/', (_) => false);
             },

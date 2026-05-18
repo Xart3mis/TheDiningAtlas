@@ -104,4 +104,11 @@ class ReviewProvider extends ChangeNotifier {
     _translations[key] = translated;
     notifyListeners();
   }
+
+  void reset() {
+    _reviews.clear();
+    _translations.clear();
+    _error = null;
+    notifyListeners();
+  }
 }

@@ -36,4 +36,10 @@ class TripProvider extends ChangeNotifier {
     await _service.createTrip(trip);
     await loadTrips(uid);
   }
+
+  void reset() {
+    _trips = [];
+    _error = null;
+    notifyListeners();
+  }
 }
