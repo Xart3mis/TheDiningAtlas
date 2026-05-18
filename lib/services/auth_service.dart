@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 
-/// Wraps Firebase Auth operations in a simple, clean interface.
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  // Web requires an OAuth clientId — skip lazy init on web to avoid crash at startup
+  GoogleSignIn? get _googleSignIn => kIsWeb ? null : GoogleSignIn();
 
   /// Stream of auth state changes (logged in / logged out).
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -30,8 +31,10 @@ class AuthService {
 
   /// Sign in with Google.
   Future<UserCredential?> signInWithGoogle() async {
-    final googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) return null; // user cancelled
+    final signIn = _googleSignIn;
+    if (signIn == null) return null; // not supported on web without clientId
+    final googleUser = await signIn.signIn();
+    if (googleUser == null) return null;
 
     final googleAuth = await googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -48,7 +51,7 @@ class AuthService {
 
   /// Sign out.
   Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    await _googleSignIn?.signOut();
     await _auth.signOut();
   }
 }
