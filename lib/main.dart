@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
 import 'core/service_provider.dart';
@@ -29,6 +30,8 @@ import 'models/restaurant_model.dart';
 import 'widgets/offline_banner.dart';
 import 'widgets/shared_widgets.dart';
 import 'providers/location_provider.dart';
+
+final mainShellKey = GlobalKey<_MainShellState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,7 +77,7 @@ class DiningAtlasApp extends StatelessWidget {
       case RouteNames.kOnboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingShell());
       case RouteNames.kMain:
-        return MaterialPageRoute(builder: (_) => const MainShell());
+        return MaterialPageRoute(builder: (_) => MainShell(key: mainShellKey));
       case RouteNames.kRestaurantDetail:
         final restaurant = settings.arguments as RestaurantModel;
         return MaterialPageRoute(
@@ -101,9 +104,22 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const PremiumUpgradeScreen());
       case RouteNames.kPlanTrip:
         return MaterialPageRoute(
-            builder: (_) => const Scaffold(
-                  body: Center(child: Text('Coming soon')),
-                ));
+          builder: (_) => Scaffold(
+            backgroundColor: AppColors.cream,
+            appBar: AppBar(
+              backgroundColor: AppColors.cream,
+              elevation: 0,
+              leading: const BackButton(color: AppColors.ink),
+              title: Text('Plan a Trip',
+                  style: GoogleFonts.fraunces(
+                      fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.ink)),
+            ),
+            body: Center(
+              child: Text('Coming soon',
+                  style: GoogleFonts.inter(fontSize: 15, color: AppColors.warmGrey)),
+            ),
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }
@@ -114,7 +130,7 @@ class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
   static void switchTab(int index) {
-    // stub — wired in Task 7 with GlobalKey
+    mainShellKey.currentState?._switchTab(index);
   }
 
   @override
@@ -132,6 +148,13 @@ class _MainShellState extends State<MainShell> {
     ProfileScreen(),
   ];
 
+  void _switchTab(int index) {
+    if (index < 0 || index >= _screens.length || index == _currentIndex) {
+      return;
+    }
+    setState(() => _currentIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,13 +164,15 @@ class _MainShellState extends State<MainShell> {
       ),
       bottomNavigationBar: AtlasBottomNav(
         currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
+        onTap: _switchTab,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
-        backgroundColor: AppColors.terracotta,
-        child: const Icon(Icons.add_location_alt, color: Colors.white),
-      ),
+      floatingActionButton: _currentIndex <= 1
+          ? FloatingActionButton(
+              onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
+              backgroundColor: AppColors.terracotta,
+              child: const Icon(Icons.add_location_alt, color: Colors.white),
+            )
+          : null,
     );
   }
 }
