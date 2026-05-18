@@ -115,4 +115,32 @@ class FirestoreUserService implements IUserService {
     if (score >= 100) return 'local';
     return 'explorer';
   }
+
+  @override
+  Future<List<UserModel>> searchUsers({required String query, required String excludeUid}) async {
+    if (query.trim().isEmpty) return [];
+    final q = query.trim();
+    final end = '$q';
+
+    final byName = await _db.collection(AppConstants.kColUsers)
+        .where('displayName', isGreaterThanOrEqualTo: q)
+        .where('displayName', isLessThan: end)
+        .limit(20)
+        .get();
+
+    final byUsername = await _db.collection(AppConstants.kColUsers)
+        .where('username', isGreaterThanOrEqualTo: q)
+        .where('username', isLessThan: end)
+        .limit(20)
+        .get();
+
+    final seen = <String>{};
+    final results = <UserModel>[];
+    for (final doc in [...byName.docs, ...byUsername.docs]) {
+      if (seen.contains(doc.id) || doc.id == excludeUid) continue;
+      seen.add(doc.id);
+      results.add(UserModel.fromFirestore(doc));
+    }
+    return results;
+  }
 }

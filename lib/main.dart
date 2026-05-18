@@ -29,6 +29,8 @@ import 'models/review_model.dart';
 import 'screens/restaurant/add_place_screen.dart';
 import 'screens/map/map_search_screen.dart';
 import 'screens/chat/chat_thread_screen.dart';
+import 'screens/chat/chat_inbox_screen.dart';
+import 'screens/chat/user_search_screen.dart';
 import 'screens/premium/premium_upgrade_screen.dart';
 import 'screens/trips/plan_trip_screen.dart';
 import 'screens/trips/trip_place_picker_screen.dart';
@@ -145,6 +147,8 @@ class DiningAtlasApp extends StatelessWidget {
             uid: raw['uid'] ?? '',
           ),
         );
+      case RouteNames.kUserSearch:
+        return MaterialPageRoute(builder: (_) => const UserSearchScreen());
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }
@@ -169,7 +173,7 @@ class _MainShellState extends State<MainShell> {
     AtlasScreen(),
     ForYouScreen(),
     StoriesScreen(),
-    NotificationsScreen(),
+    ChatInboxScreen(),
     TripsScreen(),
     ProfileScreen(),
   ];

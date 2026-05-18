@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
-import '../providers/notification_provider.dart';
 
 // ─── Diagonal stripe tile (placeholder for images) ──────────────────────────
 class StripeTile extends StatelessWidget {
@@ -236,13 +235,10 @@ class AtlasBottomNav extends StatelessWidget {
       (Icons.language_outlined, 'Atlas'),
       (Icons.favorite_border_outlined, 'For You'),
       (Icons.play_circle_outline, 'Stories'),
-      (Icons.notifications_outlined, 'Alerts'),
+      (Icons.chat_bubble_outline, 'Messages'),
       (Icons.luggage_outlined, 'Trips'),
       (Icons.person_outline, 'You'),
     ];
-
-    // Index of the notifications bell in the items list
-    const notifIndex = 3;
 
     return Container(
       decoration: BoxDecoration(
@@ -258,17 +254,7 @@ class AtlasBottomNav extends StatelessWidget {
               final selected = i == currentIndex;
               final iconColor = selected ? AppColors.terracotta : AppColors.warmGrey;
 
-              Widget iconWidget;
-              if (i == notifIndex) {
-                iconWidget = Consumer<NotificationProvider>(
-                  builder: (_, notif, __) => _BadgeIcon(
-                    icon: Icon(Icons.notifications_outlined, size: 22, color: iconColor),
-                    count: notif.badgeCount,
-                  ),
-                );
-              } else {
-                iconWidget = Icon(items[i].$1, size: 22, color: iconColor);
-              }
+              Widget iconWidget = Icon(items[i].$1, size: 22, color: iconColor);
 
               return Expanded(
                 child: GestureDetector(
@@ -295,44 +281,6 @@ class AtlasBottomNav extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-// ─── Notification badge icon ──────────────────────────────────────────────────
-class _BadgeIcon extends StatelessWidget {
-  final Widget icon;
-  final int count;
-  const _BadgeIcon({required this.icon, required this.count});
-
-  @override
-  Widget build(BuildContext context) {
-    if (count == 0) return icon;
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        icon,
-        Positioned(
-          top: -4,
-          right: -4,
-          child: Container(
-            width: 14,
-            height: 14,
-            decoration: const BoxDecoration(
-              color: Colors.red,
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              count > 9 ? '9+' : '$count',
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 8,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -13,6 +13,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/ai_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../core/constants/route_names.dart';
+import '../../services/interfaces/i_user_service.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
   final RestaurantModel restaurant;
@@ -278,15 +279,27 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton.icon(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                RouteNames.kChatThread,
-                arguments: {
-                  'otherUid': r.contributorId,
-                  'placeId': r.id,
-                  'otherName': 'Local',
-                },
-              ),
+              onPressed: () async {
+                String name = 'Local';
+                if (r.contributorId.isNotEmpty) {
+                  try {
+                    final contributor = await context.read<IUserService>().fetchUser(r.contributorId);
+                    if (contributor != null && contributor.displayName.isNotEmpty) {
+                      name = contributor.displayName;
+                    }
+                  } catch (_) {}
+                }
+                if (!context.mounted) return;
+                Navigator.pushNamed(
+                  context,
+                  RouteNames.kChatThread,
+                  arguments: {
+                    'otherUid': r.contributorId,
+                    'placeId': r.id,
+                    'otherName': name,
+                  },
+                );
+              },
               icon: const Icon(Icons.chat_bubble_outline, size: 18),
               label: const Text('Ask a local'),
               style: OutlinedButton.styleFrom(

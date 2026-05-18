@@ -12,6 +12,7 @@ class RouteNames {
   static const String kAddPlace = '/add-place';
   static const String kMapSearch = '/map-search';
   static const String kChatThread = '/chat';
+  static const String kUserSearch = '/user-search';
   static const String kSettings = '/settings';
   static const String kPremiumUpgrade = '/premium';
   static const String kNotifications = '/notifications';
