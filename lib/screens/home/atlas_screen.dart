@@ -9,8 +9,10 @@ import '../../providers/restaurant_provider.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../models/restaurant_model.dart';
+import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
 import '../../core/constants/app_constants.dart';
+// TODO(Task 7): move MainShell to its own file (lib/shell/main_shell.dart) and update import
 import '../../main.dart' show MainShell;
 
 class AtlasScreen extends StatefulWidget {
@@ -39,16 +41,19 @@ class _AtlasScreenState extends State<AtlasScreen> {
   Widget build(BuildContext context) {
     final restaurantProvider = context.watch<RestaurantProvider>();
     final onboardingProvider = context.watch<OnboardingProvider>();
-    final countryId = onboardingProvider.countryId;
+    final user = context.watch<UserProvider>().user;
+    final countryId = onboardingProvider.countryId.isEmpty
+        ? 'japan'
+        : onboardingProvider.countryId;
     final cities = kCountryCities[countryId] ?? kCountryCities['japan']!;
 
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _buildHeader(context)),
+          SliverToBoxAdapter(child: _buildHeader(user)),
           SliverToBoxAdapter(
-              child: _buildSearchBanner(context, onboardingProvider.countryName)),
+              child: _buildSearchBanner(onboardingProvider.countryName)),
           SliverToBoxAdapter(
               child: _buildExploreWidget(onboardingProvider, cities.length)),
           SliverToBoxAdapter(
@@ -58,10 +63,12 @@ class _AtlasScreenState extends State<AtlasScreen> {
             const SliverToBoxAdapter(child: _FeedShimmer())
           else if (restaurantProvider.feed.isEmpty)
             const SliverToBoxAdapter(
-                child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.all(32),
-                        child: Text('No places found.'))))
+                child: SizedBox(
+                    height: 120,
+                    child: Center(
+                        child: Padding(
+                            padding: EdgeInsets.all(32),
+                            child: Text('No places found.')))))
           else
             SliverToBoxAdapter(
               child: SizedBox(
@@ -82,8 +89,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    final user = context.watch<UserProvider>().user;
+  Widget _buildHeader(UserModel? user) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
       child: Row(
@@ -141,7 +147,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildSearchBanner(BuildContext context, String countryName) {
+  Widget _buildSearchBanner(String countryName) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
       child: Container(
@@ -242,7 +248,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
 
   Widget _buildCityChips(RestaurantProvider provider, List<String> cities) {
     return SizedBox(
-      height: 44,
+      height: 52,
       child: ListView.separated(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
         scrollDirection: Axis.horizontal,
@@ -268,11 +274,14 @@ class _AtlasScreenState extends State<AtlasScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SectionLabel("Editor's Picks"),
-          Text('See all',
-              style: GoogleFonts.inter(
-                  fontSize: 13,
-                  color: AppColors.terracotta,
-                  fontWeight: FontWeight.w500)),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
+            child: Text('See all',
+                style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: AppColors.terracotta,
+                    fontWeight: FontWeight.w500)),
+          ),
         ],
       ),
     );
