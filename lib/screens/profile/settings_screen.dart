@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/chat_provider.dart';
 import '../../providers/saved_places_provider.dart';
 import '../../providers/trip_provider.dart';
 import '../../providers/notification_provider.dart';
@@ -108,6 +109,8 @@ class SettingsScreen extends StatelessWidget {
             onTap: () async {
               final navigator = Navigator.of(context);
               // Reset all user-scoped state BEFORE sign-out
+              context.read<UserProvider>().reset();
+              context.read<ChatProvider>().reset();
               context.read<SavedPlacesProvider>().reset();
               context.read<TripProvider>().reset();
               context.read<NotificationProvider>().reset();

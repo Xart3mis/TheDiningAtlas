@@ -39,6 +39,7 @@ class TripProvider extends ChangeNotifier {
 
   void reset() {
     _trips = [];
+    _isLoading = false;
     _error = null;
     notifyListeners();
   }

@@ -47,4 +47,12 @@ class ChatProvider extends ChangeNotifier {
     _translations[key] = translated;
     notifyListeners();
   }
+
+  void reset() {
+    _currentChat = null;
+    _messagesStream = null;
+    _translations.clear();
+    _error = null;
+    notifyListeners();
+  }
 }

@@ -124,6 +124,7 @@ class SavedPlacesProvider extends ChangeNotifier {
   void reset() {
     _savedIds = {};
     _savedRestaurants = [];
+    _isLoading = false;
     _loaded = false;
     _error = null;
     notifyListeners();
