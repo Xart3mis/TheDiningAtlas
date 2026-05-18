@@ -78,6 +78,11 @@ class RestaurantProvider extends ChangeNotifier {
     }
   }
 
+  void clearSearch() {
+    _searchResults = [];
+    notifyListeners();
+  }
+
   Future<void> loadCategory(String category) async {
     if (_currentCityId.isEmpty) return;
     _isLoading = true;

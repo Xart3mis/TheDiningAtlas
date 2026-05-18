@@ -155,7 +155,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
 
   Widget _buildSearchBanner(String countryName) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
+      onTap: () => Navigator.pushNamed(context, RouteNames.kSearch),
       child: Container(
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         height: 54,
