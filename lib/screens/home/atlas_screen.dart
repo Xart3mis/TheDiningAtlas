@@ -138,37 +138,63 @@ class _AtlasScreenState extends State<AtlasScreen> {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () => MainShell.switchTab(4),
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: ClipOval(
-                child: user?.photoUrl.isNotEmpty == true
-                    ? CachedNetworkImage(
-                        imageUrl: user!.photoUrl,
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => const StripeTile(
-                          color: AppColors.terracotta,
-                          width: 36,
-                          height: 36,
-                          borderRadius: BorderRadius.all(Radius.circular(18)),
-                        ),
-                        errorWidget: (_, __, ___) => const StripeTile(
-                          color: AppColors.terracotta,
-                          width: 36,
-                          height: 36,
-                          borderRadius: BorderRadius.all(Radius.circular(18)),
-                        ),
-                      )
-                    : const StripeTile(
-                        color: AppColors.terracotta,
-                        width: 36,
-                        height: 36,
-                        borderRadius: BorderRadius.all(Radius.circular(18)),
-                      ),
+          Row(
+            children: [
+              // Map button
+              GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.kMapSearch),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.parchment,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.lightGrey),
+                  ),
+                  child: const Icon(Icons.map_outlined,
+                      size: 18, color: AppColors.ink),
+                ),
               ),
-            ),
+              // TODO(Task 7): insert chat icon here
+              // Avatar / profile
+              GestureDetector(
+                onTap: () => MainShell.switchTab(4),
+                child: SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: ClipOval(
+                    child: user?.photoUrl.isNotEmpty == true
+                        ? CachedNetworkImage(
+                            imageUrl: user!.photoUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (_, __) => const StripeTile(
+                              color: AppColors.terracotta,
+                              width: 36,
+                              height: 36,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                            errorWidget: (_, __, ___) => const StripeTile(
+                              color: AppColors.terracotta,
+                              width: 36,
+                              height: 36,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          )
+                        : const StripeTile(
+                            color: AppColors.terracotta,
+                            width: 36,
+                            height: 36,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(18)),
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
