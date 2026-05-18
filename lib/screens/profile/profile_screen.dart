@@ -138,10 +138,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: _tierColor(user.tier).withValues(alpha: 0.15),
+                          color: _tierColor(user.tier).withOpacity(0.15),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                              color: _tierColor(user.tier).withValues(alpha: 0.3)),
+                              color: _tierColor(user.tier).withOpacity(0.3)),
                         ),
                         child: Text(
                           _tierLabel(user.tier).toUpperCase(),
@@ -199,7 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       child: Row(
         children: stats.map((s) {

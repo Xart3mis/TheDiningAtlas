@@ -86,9 +86,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.teal.withValues(alpha: 0.08),
+                      color: AppColors.teal.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: AppColors.teal.withValues(alpha: 0.3)),
+                      border: Border.all(color: AppColors.teal.withOpacity(0.3)),
                     ),
                     child: Column(
                       children: [
@@ -143,17 +143,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     decoration: InputDecoration(
                       hintText: 'your@email.com',
                       hintStyle: GoogleFonts.inter(
-                          fontSize: 14, color: AppColors.warmGrey.withValues(alpha: 0.6)),
+                          fontSize: 14, color: AppColors.warmGrey.withOpacity(0.6)),
                       filled: true,
                       fillColor: AppColors.white,
                       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                        borderSide: BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                        borderSide: BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),

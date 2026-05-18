@@ -34,7 +34,7 @@ class StripeTile extends StatelessWidget {
                     label!,
                     style: GoogleFonts.inter(
                       fontSize: 9,
-                      color: Colors.white.withValues(alpha: 0.8),
+                      color: Colors.white.withOpacity(0.8),
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0.5,
                     ),
@@ -59,7 +59,7 @@ class _StripePainter extends CustomPainter {
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
 
     final stripePaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.15)
+      ..color = Colors.white.withOpacity(0.15)
       ..strokeWidth = 8
       ..style = PaintingStyle.stroke;
 
@@ -205,9 +205,9 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
+        color: color.withOpacity(0.12),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Text(
         label,
@@ -241,7 +241,7 @@ class AtlasBottomNav extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        border: Border(top: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6))),
+        border: Border(top: BorderSide(color: AppColors.lightGrey.withOpacity(0.6))),
       ),
       child: SafeArea(
         top: false,

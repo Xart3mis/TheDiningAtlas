@@ -2,44 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/onboarding_provider.dart';
-import '../../core/constants/app_constants.dart';
 
-class DestinationScreen extends StatelessWidget {
+class BudgetScreen extends StatelessWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
-  const DestinationScreen({super.key, required this.onNext, required this.onBack});
+  const BudgetScreen({super.key, required this.onNext, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
+    final options = [
+      {r'$': r'Under $15 · Budget'},
+      {r'$$': r'$15 – $50 · Mid-range'},
+      {r'$$$': r'$50 – $100 · Upscale'},
+      {r'$$$$': r'$100+ · Fine Dining'},
+    ];
 
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Where are you headed?',
+          Text("What's your budget?",
               style: GoogleFonts.fraunces(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
                   color: const Color(0xFF1C1C1A))),
           const SizedBox(height: 8),
-          Text('Pick your destination.',
-              style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF6B6560))),
-          const SizedBox(height: 32),
+          Text('Pick what feels right.',
+              style: GoogleFonts.inter(
+                  fontSize: 16, color: const Color(0xFF6B6560))),
+          const SizedBox(height: 24),
           Expanded(
             child: ListView(
-              children: kSupportedCountries.map((country) {
-                final selected = provider.countryId == country['id'];
+              children: options.map((opt) {
+                final key = opt.keys.first;
+                final label = opt.values.first;
+                final selected = provider.budget == key;
                 return GestureDetector(
-                  onTap: () => provider.setCountry(country['id']!),
+                  onTap: () => provider.setBudget(key),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 18),
                     decoration: BoxDecoration(
-                      color: selected ? const Color(0xFFC17B4E) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
+                      color: selected
+                          ? const Color(0xFFC17B4E)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                           color: selected
                               ? const Color(0xFFC17B4E)
@@ -47,29 +58,20 @@ class DestinationScreen extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: selected
-                                ? Colors.white.withOpacity(0.25)
-                                : const Color(0xFFC17B4E).withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            country['code']!,
+                        Text(key,
                             style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
-                              color: selected ? Colors.white : const Color(0xFFC17B4E),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Text(country['name']!,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: selected
+                                    ? Colors.white
+                                    : const Color(0xFFC17B4E))),
+                        const SizedBox(width: 14),
+                        Text(label.split(' · ').last,
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: selected ? Colors.white : const Color(0xFF2C2825))),
+                                fontSize: 14,
+                                color: selected
+                                    ? Colors.white70
+                                    : const Color(0xFF6B6560))),
                       ],
                     ),
                   ),
@@ -82,11 +84,12 @@ class DestinationScreen extends StatelessWidget {
               TextButton(
                   onPressed: onBack,
                   child: Text('Back',
-                      style: GoogleFonts.inter(color: const Color(0xFF6B6560)))),
+                      style: GoogleFonts.inter(
+                          color: const Color(0xFF6B6560)))),
               const SizedBox(width: 12),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: provider.countryId.isNotEmpty ? onNext : null,
+                  onPressed: onNext,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFC17B4E),
                     padding: const EdgeInsets.symmetric(vertical: 16),

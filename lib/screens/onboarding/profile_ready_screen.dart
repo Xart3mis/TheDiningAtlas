@@ -65,7 +65,7 @@ class ProfileReadyScreen extends StatelessWidget {
               color: AppColors.white,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                  color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                  color: AppColors.lightGrey.withOpacity(0.6)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,11 +89,11 @@ class ProfileReadyScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
-                        color: AppColors.terracotta.withValues(alpha: 0.1),
+                        color: AppColors.terracotta.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                             color: AppColors.terracotta
-                                .withValues(alpha: 0.3)),
+                                .withOpacity(0.3)),
                       ),
                       child: Text(display,
                           style: GoogleFonts.inter(

@@ -105,7 +105,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
               width: 36, height: 36,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.9)),
+                  color: Colors.white.withOpacity(0.9)),
               child: const Icon(Icons.arrow_back_ios_new,
                   size: 16, color: AppColors.ink),
             ),
@@ -131,7 +131,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   width: 36, height: 36,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.white.withValues(alpha: 0.9)),
+                      color: Colors.white.withOpacity(0.9)),
                   child: Icon(
                     isSaved ? Icons.bookmark : Icons.bookmark_border,
                     size: 18,
@@ -144,7 +144,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                 width: 36, height: 36,
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withValues(alpha: 0.9)),
+                    color: Colors.white.withOpacity(0.9)),
                 child: const Icon(Icons.ios_share_outlined,
                     size: 18, color: AppColors.ink),
               ),
@@ -186,7 +186,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
       decoration: BoxDecoration(
         color: AppColors.cream,
         border: Border(
-            bottom: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6))),
+            bottom: BorderSide(color: AppColors.lightGrey.withOpacity(0.6))),
       ),
       child: Row(
         children: _tabs.map((tab) {
@@ -333,7 +333,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+            border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,9 +449,9 @@ class _AiSummaryContent extends StatelessWidget {
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.teal.withValues(alpha: 0.08),
+        color: AppColors.teal.withOpacity(0.08),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.teal.withValues(alpha: 0.3)),
+        border: Border.all(color: AppColors.teal.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -509,7 +509,7 @@ class _InfoCell extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

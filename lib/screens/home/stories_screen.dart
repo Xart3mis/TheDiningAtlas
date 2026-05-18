@@ -76,9 +76,9 @@ class StoriesScreen extends StatelessWidget {
               height: 64,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Colors.white.withOpacity(0.2),
                 border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.4), width: 1.5),
+                    color: Colors.white.withOpacity(0.4), width: 1.5),
               ),
               child: const Icon(Icons.play_arrow_rounded,
                   color: Colors.white, size: 32),

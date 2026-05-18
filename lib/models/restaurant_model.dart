@@ -109,7 +109,7 @@ class RestaurantModel {
     'reviewCount': reviewCount,
     'saveCount': saveCount,
     'priceRange': priceRange,
-    'tileColorValue': tileColor.toARGB32(),
+    'tileColorValue': tileColor.value,
     'badge': badge,
     'tagline': tagline,
     'createdAt': FieldValue.serverTimestamp(),

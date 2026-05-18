@@ -155,7 +155,7 @@ class _RecommendationCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
         ),
         child: Row(
           children: [
