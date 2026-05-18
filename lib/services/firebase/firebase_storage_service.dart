@@ -7,10 +7,10 @@ class FirebaseStorageService implements IStorageService {
   final _storage = FirebaseStorage.instance;
 
   @override
-  Future<String> uploadImage({required File file, required String path}) async {
+  Future<String> uploadImage({required String filePath, required String storagePath}) async {
     try {
-      final ref = _storage.ref(path);
-      final task = ref.putFile(file);
+      final ref = _storage.ref(storagePath);
+      final task = ref.putFile(File(filePath));
       int retries = 0;
       while (retries < 3) {
         try {
