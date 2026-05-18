@@ -68,20 +68,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _onRegister() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_selectedCountry == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select your country of birth')),
+      );
+      return;
+    }
     final auth = context.read<AuthProvider>();
     final success = await auth.signUp(
       _emailController.text.trim(),
       _passwordController.text,
       username: _usernameController.text.trim(),
-      countryCode: _selectedCountry?['code'] ?? '',
+      countryCode: _selectedCountry!['code']!,
+      displayName: _nameController.text.trim(),
     );
     if (success && mounted) {
-      // Update Firebase display name — profile photo upload is handled
-      // by Joe's backend after onboarding.
-      await auth.user?.updateDisplayName(_nameController.text.trim());
-      if (mounted) {
-        Navigator.pushNamed(context, RouteNames.kOnboarding);
-      }
+      Navigator.pushNamed(context, RouteNames.kOnboarding);
     }
   }
 
@@ -131,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             radius: 45,
                             backgroundImage: FileImage(_pickedImage!),
                           )
-                        : _DashedAvatarPlaceholder(),
+                        : const _DashedAvatarPlaceholder(),
                   ),
                 ),
                 const SizedBox(height: 28),
@@ -374,6 +376,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 // ── Dashed avatar placeholder ────────────────────────────────────────────────
 
 class _DashedAvatarPlaceholder extends StatelessWidget {
+  const _DashedAvatarPlaceholder();
+
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
@@ -565,7 +569,7 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
   ];
 
   final _searchController = TextEditingController();
-  List<Map<String, String>> _filtered = _allCountries;
+  List<Map<String, String>> _filtered = List.of(_allCountries);
 
   @override
   void dispose() {
