@@ -22,7 +22,7 @@ import '../services/firebase/fcm_notification_service.dart';
 import '../services/firebase/firestore_trip_service.dart';
 import '../services/firebase/firestore_subscription_service.dart';
 import '../services/firebase/firestore_seed_data_service.dart';
-import '../services/ai/groq_ai_service.dart';
+import '../services/ai/gemini_ai_service.dart';
 
 import '../providers/seed_data_provider.dart';
 import '../providers/restaurant_provider.dart';
@@ -47,7 +47,7 @@ class ServiceProvider {
     final storageService = FirebaseStorageService();
     final locationService = GeolocatorLocationService();
     final notificationService = FcmNotificationService();
-    final aiService = GroqAiService();
+    final aiService = GeminiAiService();
     final subscriptionService = FirestoreSubscriptionService();
 
     return [
