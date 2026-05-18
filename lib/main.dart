@@ -139,6 +139,8 @@ class DiningAtlasApp extends StatelessWidget {
             ),
           ),
         );
+      case RouteNames.kNotifications:
+        return MaterialPageRoute(builder: (_) => const NotificationsScreen());
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }
