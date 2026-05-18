@@ -27,6 +27,13 @@ class OnboardingProvider extends ChangeNotifier {
     );
     return entry['code'] ?? '';
   }
+  String get countryName {
+    final entry = kSupportedCountries.firstWhere(
+      (c) => c['id'] == _countryId,
+      orElse: () => {'name': ''},
+    );
+    return entry['name'] ?? '';
+  }
   bool get isLoading => _isLoading;
   bool get completed => _completed;
 

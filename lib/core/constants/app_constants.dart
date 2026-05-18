@@ -34,7 +34,7 @@ class AppConstants {
   static const String kGroqModel = 'llama3-8b-8192';
 }
 
-const kSupportedCountries = [
+const kSupportedCountries = <Map<String, String>>[
   {'id': 'france',         'name': 'France',         'code': 'FR'},
   {'id': 'spain',          'name': 'Spain',           'code': 'ES'},
   {'id': 'united_states',  'name': 'United States',   'code': 'US'},
@@ -52,7 +52,7 @@ const kSupportedCountries = [
   {'id': 'malaysia',       'name': 'Malaysia',         'code': 'MY'},
 ];
 
-const kCountryCities = {
+const kCountryCities = <String, List<String>>{
   'france':         ['Paris', 'Lyon', 'Marseille', 'Nice', 'Bordeaux', 'Toulouse', 'Strasbourg', 'Nantes'],
   'spain':          ['Madrid', 'Barcelona', 'Seville', 'Valencia', 'Bilbao', 'Granada', 'Malaga', 'Zaragoza'],
   'united_states':  ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Miami', 'San Francisco', 'Las Vegas', 'New Orleans'],

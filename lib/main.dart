@@ -99,6 +99,11 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case RouteNames.kPremiumUpgrade:
         return MaterialPageRoute(builder: (_) => const PremiumUpgradeScreen());
+      case RouteNames.kPlanTrip:
+        return MaterialPageRoute(
+            builder: (_) => const Scaffold(
+                  body: Center(child: Text('Coming soon')),
+                ));
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }

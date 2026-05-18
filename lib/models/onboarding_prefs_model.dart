@@ -21,7 +21,7 @@ class OnboardingPrefsModel {
       vibes: List<String>.from(d['vibes'] ?? []),
       budget: d['budget'] ?? '\$',
       atmosphere: List<String>.from(d['atmosphere'] ?? []),
-      countryId: d['countryId'] ?? '',
+      countryId: d['countryId'] ?? d['cityId'] ?? '',
       aiWeights: Map<String, double>.from(
         (d['aiWeights'] ?? {}).map((k, v) => MapEntry(k, (v as num).toDouble())),
       ),
