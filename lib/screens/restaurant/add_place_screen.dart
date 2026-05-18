@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/restaurant_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/seed_data_provider.dart';
 import '../../models/restaurant_model.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -28,13 +29,36 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _lngController = TextEditingController();
   final _neighborhoodController = TextEditingController();
 
-  String _category = 'Restaurant';
+  String _category = '';
   String _priceRange = '\$\$';
   final List<File> _photos = [];
   bool _isSubmitting = false;
 
-  final _categories = ['Restaurant', 'Cafe', 'Street Food', 'Bar', 'Market', 'Nature', 'Art'];
   final _priceTiers = ['\$', '\$\$', '\$\$\$'];
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() async {
+      if (!mounted) return;
+      await context.read<SeedDataProvider>().load();
+      if (!mounted || _category.isNotEmpty) return;
+      final restaurantProvider = context.read<RestaurantProvider>();
+      final seedProvider = context.read<SeedDataProvider>();
+      final cityId = restaurantProvider.currentCityId.isNotEmpty
+          ? restaurantProvider.currentCityId
+          : seedProvider.defaultCity?.id;
+      if (cityId != null) {
+        await seedProvider.loadCityDetails(cityId);
+      }
+      final categories = cityId == null
+          ? const <String>[]
+          : seedProvider.categoriesForCity(cityId);
+      if (categories.isNotEmpty) {
+        setState(() => _category = categories.first);
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -62,13 +86,24 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     setState(() => _isSubmitting = true);
     try {
       final auth = context.read<AuthProvider>();
+      final restaurantProvider = context.read<RestaurantProvider>();
+      final seedProvider = context.read<SeedDataProvider>();
       final isGuest = auth.user == null;
-      
+      final cityId = restaurantProvider.currentCityId.isNotEmpty
+          ? restaurantProvider.currentCityId
+          : seedProvider.defaultCity?.id;
+      if (cityId == null || cityId.isEmpty) {
+        throw StateError('Choose a city before submitting a place.');
+      }
+      if (_category.isEmpty) {
+        throw StateError('Choose a category before submitting a place.');
+      }
+
       final restaurant = RestaurantModel(
         id: '',
         name: _nameController.text.trim(),
         category: _category,
-        cityId: 'tokyo',
+        cityId: cityId,
         neighborhood: _neighborhoodController.text.trim(),
         geopoint: GeoPoint(
           double.tryParse(_latController.text) ?? 0,
@@ -91,8 +126,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       );
       await context.read<RestaurantProvider>().addRestaurant(restaurant);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Place submitted! It will be reviewed shortly.')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Place submitted! It will be reviewed shortly.')));
         Navigator.pop(context);
       }
     } catch (e) {
@@ -123,6 +158,18 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   }
 
   Widget _step1Info() {
+    final restaurantProvider = context.watch<RestaurantProvider>();
+    final seedProvider = context.watch<SeedDataProvider>();
+    final cityId = restaurantProvider.currentCityId.isNotEmpty
+        ? restaurantProvider.currentCityId
+        : seedProvider.defaultCity?.id;
+    final categories = cityId == null
+        ? const <String>[]
+        : seedProvider.categoriesForCity(cityId);
+    final currentCategory = categories.contains(_category)
+        ? _category
+        : (categories.isEmpty ? null : categories.first);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -135,8 +182,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            initialValue: _category,
-            items: _categories
+            initialValue: currentCategory,
+            items: categories
                 .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                 .toList(),
             onChanged: (v) => setState(() => _category = v!),
@@ -151,7 +198,8 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
           const SizedBox(height: 16),
           TextField(
             controller: _tipController,
-            decoration: const InputDecoration(labelText: 'Local tip (insider advice)'),
+            decoration:
+                const InputDecoration(labelText: 'Local tip (insider advice)'),
           ),
           const SizedBox(height: 16),
           TextField(
@@ -166,12 +214,14 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                 onTap: () => setState(() => _priceRange = p),
                 child: Container(
                   margin: const EdgeInsets.only(right: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: sel ? AppColors.terracotta : Colors.white,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                        color: sel ? AppColors.terracotta : AppColors.lightGrey),
+                        color:
+                            sel ? AppColors.terracotta : AppColors.lightGrey),
                   ),
                   child: Text(p,
                       style: TextStyle(
@@ -182,8 +232,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
             }).toList(),
           ),
           const SizedBox(height: 32),
-          _NextButton(
-              onTap: _nameController.text.isNotEmpty ? _next : null),
+          _NextButton(onTap: _nameController.text.isNotEmpty ? _next : null),
         ],
       ),
     );
@@ -278,12 +327,15 @@ class _NextButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.terracotta,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           elevation: 0,
         ),
         child: Text(label,
             style: GoogleFonts.inter(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600)),
       ),
     );
   }

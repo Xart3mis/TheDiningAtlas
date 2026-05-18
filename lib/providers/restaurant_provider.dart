@@ -11,7 +11,7 @@ class RestaurantProvider extends ChangeNotifier {
   List<RestaurantModel> _searchResults = [];
   bool _isLoading = false;
   String? _error;
-  String _currentCityId = 'tokyo';
+  String _currentCityId = '';
 
   List<RestaurantModel> get feed => _feed;
   List<RestaurantModel> get searchResults => _searchResults;
@@ -23,6 +23,7 @@ class RestaurantProvider extends ChangeNotifier {
 
   Future<void> loadFeed({String? cityId}) async {
     _currentCityId = cityId ?? _currentCityId;
+    if (_currentCityId.isEmpty) return;
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -71,6 +72,24 @@ class RestaurantProvider extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
       _searchResults = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadCategory(String category) async {
+    if (_currentCityId.isEmpty) return;
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+    try {
+      _feed = await _service
+          .fetchByCategory(category: category, cityId: _currentCityId)
+          .timeout(_timeout, onTimeout: () => []);
+    } catch (e) {
+      _error = e.toString();
+      _feed = [];
     } finally {
       _isLoading = false;
       notifyListeners();

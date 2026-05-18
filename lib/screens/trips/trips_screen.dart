@@ -5,6 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/trip_provider.dart';
+import '../../providers/seed_data_provider.dart';
 import '../../models/trip_model.dart';
 
 class TripsScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _TripsScreenState extends State<TripsScreen> {
     super.initState();
     Future.microtask(() {
       if (!mounted) return;
+      context.read<SeedDataProvider>().load();
       final uid = context.read<AuthProvider>().user?.uid;
       if (uid != null) {
         context.read<TripProvider>().loadTrips(uid);
@@ -37,7 +39,10 @@ class _TripsScreenState extends State<TripsScreen> {
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _buildHeader()),
+          SliverToBoxAdapter(
+              child: _buildHeader(tripProvider.trips.isEmpty
+                  ? null
+                  : tripProvider.trips.first)),
           if (tripProvider.isLoading)
             const SliverToBoxAdapter(
                 child: Padding(
@@ -47,7 +52,8 @@ class _TripsScreenState extends State<TripsScreen> {
             const SliverToBoxAdapter(
                 child: Padding(
                     padding: EdgeInsets.all(32),
-                    child: Center(child: Text('No trips yet. Plan your first!'))))
+                    child:
+                        Center(child: Text('No trips yet. Plan your first!'))))
           else ...[
             SliverToBoxAdapter(
                 child: _buildDaySelector(tripProvider.trips.first)),
@@ -64,7 +70,9 @@ class _TripsScreenState extends State<TripsScreen> {
                   return _SpotCard(spot: day.spots[i]);
                 },
                 childCount: tripProvider.trips.first.days.isNotEmpty
-                    ? tripProvider.trips.first
+                    ? tripProvider
+                        .trips
+                        .first
                         .days[_selectedDayIndex %
                             tripProvider.trips.first.days.length]
                         .spots
@@ -79,7 +87,12 @@ class _TripsScreenState extends State<TripsScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(TripModel? trip) {
+    final city = trip == null
+        ? null
+        : context.watch<SeedDataProvider>().cityById(trip.cityId);
+    final cityName = city?.name ?? trip?.cityId.replaceAll('-', ' ') ?? 'Trip';
+    final dateLabel = trip == null ? '' : _tripDateLabel(trip.startDate);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
       child: Column(
@@ -95,13 +108,16 @@ class _TripsScreenState extends State<TripsScreen> {
           RichText(
             text: TextSpan(
               style: GoogleFonts.fraunces(
-                  fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.ink),
+                  fontSize: 26,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.ink),
               children: [
                 TextSpan(
-                    text: 'Tokyo',
+                    text: cityName,
                     style: GoogleFonts.fraunces(
-                        fontStyle: FontStyle.italic, color: AppColors.terracotta)),
-                const TextSpan(text: ', April 2026'),
+                        fontStyle: FontStyle.italic,
+                        color: AppColors.terracotta)),
+                TextSpan(text: dateLabel.isEmpty ? '' : ', $dateLabel'),
               ],
             ),
           ),
@@ -122,13 +138,15 @@ class _TripsScreenState extends State<TripsScreen> {
               onTap: () => setState(() => _selectedDayIndex = i),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
-                margin: EdgeInsets.only(right: i < trip.days.length - 1 ? 8 : 0),
+                margin:
+                    EdgeInsets.only(right: i < trip.days.length - 1 ? 8 : 0),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                   color: selected ? AppColors.ink : AppColors.parchment,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                      color: selected ? Colors.transparent : AppColors.lightGrey),
+                      color:
+                          selected ? Colors.transparent : AppColors.lightGrey),
                 ),
                 child: Column(
                   children: [
@@ -159,6 +177,24 @@ class _TripsScreenState extends State<TripsScreen> {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return days[d.weekday - 1];
   }
+
+  String _tripDateLabel(DateTime date) {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return '${months[date.month - 1]} ${date.year}';
+  }
 }
 
 class _SpotCard extends StatelessWidget {
@@ -183,7 +219,8 @@ class _SpotCard extends StatelessWidget {
                           fontSize: 11, color: AppColors.warmGrey)),
                   const SizedBox(height: 4),
                   Container(
-                    width: 10, height: 10,
+                    width: 10,
+                    height: 10,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColors.terracotta, width: 2),
@@ -192,7 +229,8 @@ class _SpotCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Container(
-                      width: 1, color: AppColors.lightGrey,
+                      width: 1,
+                      color: AppColors.lightGrey,
                       margin: const EdgeInsets.symmetric(vertical: 4),
                     ),
                   ),
@@ -225,7 +263,8 @@ class _SpotCard extends StatelessWidget {
                         children: [
                           const StripeTile(
                             color: AppColors.teal,
-                            width: 56, height: 56,
+                            width: 56,
+                            height: 56,
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                           ),
                           const SizedBox(width: 12),
@@ -241,7 +280,8 @@ class _SpotCard extends StatelessWidget {
                                 const SizedBox(height: 2),
                                 Text(spot.neighborhood,
                                     style: GoogleFonts.inter(
-                                        fontSize: 12, color: AppColors.warmGrey)),
+                                        fontSize: 12,
+                                        color: AppColors.warmGrey)),
                               ],
                             ),
                           ),

@@ -11,7 +11,7 @@ class OnboardingProvider extends ChangeNotifier {
   final List<String> _vibes = [];
   String _budget = '\$\$';
   final List<String> _atmosphere = [];
-  String _cityId = 'tokyo';
+  String _cityId = '';
   bool _isLoading = false;
   bool _completed = false;
 

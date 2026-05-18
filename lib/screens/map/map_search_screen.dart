@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/restaurant_provider.dart';
 import '../../providers/location_provider.dart';
+import '../../providers/seed_data_provider.dart';
 import '../../core/constants/route_names.dart';
 
 class MapSearchScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
   final MapController _mapController = MapController();
   List<Marker> _markers = [];
 
-  static const _defaultPosition = LatLng(35.6762, 139.6503);
+  static const _fallbackPosition = LatLng(0, 0);
 
   @override
   void initState() {
@@ -30,17 +31,31 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
 
   Future<void> _loadNearby() async {
     if (!mounted) return;
+    final seedProvider = context.read<SeedDataProvider>();
     final locationProvider = context.read<LocationProvider>();
     final restaurantProvider = context.read<RestaurantProvider>();
+
+    await seedProvider.load();
+    if (!mounted) return;
 
     final pos = await locationProvider.getCurrentPosition();
     if (!mounted) return;
 
     if (pos != null) {
-      // Convert geolocator Position to Firestore GeoPoint
       final geoPoint = GeoPoint(pos.latitude, pos.longitude);
       await restaurantProvider.loadNearby(geoPoint);
       _mapController.move(LatLng(pos.latitude, pos.longitude), 14);
+    } else {
+      final city = seedProvider.cityById(restaurantProvider.currentCityId) ??
+          seedProvider.defaultCity;
+      if (city != null) {
+        await seedProvider.loadCityDetails(city.id);
+        await restaurantProvider.loadFeed(cityId: city.id);
+        _mapController.move(
+          LatLng(city.geopoint.latitude, city.geopoint.longitude),
+          13,
+        );
+      }
     }
     if (mounted) _buildMarkers();
   }
@@ -85,7 +100,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
           FlutterMap(
             mapController: _mapController,
             options: const MapOptions(
-              initialCenter: _defaultPosition,
+              initialCenter: _fallbackPosition,
               initialZoom: 14,
             ),
             children: [
@@ -109,17 +124,19 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
-                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black12, blurRadius: 4)
+                    ]),
                 child: const Icon(Icons.arrow_back_ios_new,
                     size: 16, color: AppColors.ink),
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 80,
             left: 0,
             right: 0,
-            child: _CuisineFilterBar(),
+            child: _CuisineFilterBar(onChanged: _buildMarkers),
           ),
         ],
       ),
@@ -128,26 +145,33 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
 }
 
 class _CuisineFilterBar extends StatelessWidget {
-  const _CuisineFilterBar();
+  final VoidCallback onChanged;
 
-  static const _filters = ['All', 'Japanese', 'Cafe', 'Street Food', 'Bar'];
+  const _CuisineFilterBar({required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
+    final seedProvider = context.watch<SeedDataProvider>();
+    final restaurantProvider = context.watch<RestaurantProvider>();
+    final filters = seedProvider
+        .categoriesForCity(restaurantProvider.currentCityId)
+        .take(8)
+        .toList();
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
-        children: _filters.map((f) {
+        children: ['All', ...filters].map((f) {
           return GestureDetector(
-            onTap: () {
+            onTap: () async {
               final provider = context.read<RestaurantProvider>();
               if (f == 'All') {
-                provider.loadFeed(cityId: provider.currentCityId);
+                await provider.loadFeed(cityId: provider.currentCityId);
               } else {
-                // Use search as a proxy for category filtering
-                provider.search(f);
+                await provider.loadCategory(f);
               }
+              onChanged();
             },
             child: Container(
               margin: const EdgeInsets.only(right: 8),

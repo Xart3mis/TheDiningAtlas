@@ -6,6 +6,7 @@ import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/saved_places_provider.dart';
+import '../../providers/seed_data_provider.dart';
 import '../../core/constants/route_names.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,12 +20,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async {
       if (!mounted) return;
       final auth = context.read<AuthProvider>();
+      final seedProvider = context.read<SeedDataProvider>();
+      await seedProvider.load();
       if (auth.user != null) {
-        context.read<UserProvider>().loadUser(auth.user!.uid);
-        context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
+        await context.read<UserProvider>().loadUser(auth.user!.uid);
+        await context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
+        await seedProvider
+            .loadPassportCities(context.read<SavedPlacesProvider>().savedIds);
       }
     });
   }
@@ -33,14 +38,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
     final savedCount = context.watch<SavedPlacesProvider>().savedIds.length;
+    final passportCities = context
+        .watch<SeedDataProvider>()
+        .passportCities
+        .map((city) => city.displayName)
+        .toList()
+      ..sort();
 
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildHeader(context, user, savedCount)),
-          SliverToBoxAdapter(child: _buildStats(user, savedCount)),
-          SliverToBoxAdapter(child: _buildPassport()),
+          SliverToBoxAdapter(
+              child: _buildStats(user, savedCount, passportCities.length)),
+          SliverToBoxAdapter(child: _buildPassport(passportCities)),
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
@@ -54,7 +66,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const StripeTile(
             color: AppColors.terracotta,
-            width: 56, height: 56,
+            width: 56,
+            height: 56,
             borderRadius: BorderRadius.all(Radius.circular(28)),
           ),
           const SizedBox(width: 14),
@@ -65,18 +78,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Text(
                   user?.displayName ?? 'Explorer',
                   style: GoogleFonts.fraunces(
-                      fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.ink),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.ink),
                 ),
                 Text('@local · DiningAtlas',
-                    style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
+                    style: GoogleFonts.inter(
+                        fontSize: 12, color: AppColors.warmGrey)),
                 const SizedBox(height: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: _tierColor(user?.tier ?? 'explorer').withValues(alpha: 0.15),
+                    color: _tierColor(user?.tier ?? 'explorer')
+                        .withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                        color: _tierColor(user?.tier ?? 'explorer').withValues(alpha: 0.3)),
+                        color: _tierColor(user?.tier ?? 'explorer')
+                            .withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     _tierLabel(user?.tier ?? 'explorer').toUpperCase(),
@@ -99,12 +118,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildStats(dynamic user, int savedCount) {
+  Widget _buildStats(dynamic user, int savedCount, int cityCount) {
     final stats = [
       ('${user?.score ?? 0}', 'SCORE'),
       ('$savedCount', 'SAVED'),
-      ('0', 'REVIEWS'),
-      ('1', 'CITIES'),
+      ('$cityCount', 'CITIES'),
     ];
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -121,7 +139,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(s.$1,
                     style: GoogleFonts.fraunces(
-                        fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.ink)),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.ink)),
                 const SizedBox(height: 2),
                 Text(s.$2,
                     style: GoogleFonts.inter(
@@ -137,8 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildPassport() {
-    final cities = ['🇯🇵 Tokyo', '🇵🇹 Lisbon', '🇲🇽 CDMX', '🇹🇭 Bangkok', '🇮🇹 Rome'];
+  Widget _buildPassport(List<String> cities) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -148,38 +167,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         SizedBox(
           height: 36,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            scrollDirection: Axis.horizontal,
-            itemCount: cities.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 8),
-            itemBuilder: (_, i) => Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: AppColors.lightGrey),
-              ),
-              child: Text(cities[i],
-                  style: GoogleFonts.inter(fontSize: 13, color: AppColors.ink)),
-            ),
-          ),
+          child: cities.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Save places to build your passport.',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: AppColors.warmGrey,
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: cities.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (_, i) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: AppColors.lightGrey),
+                    ),
+                    child: Text(cities[i],
+                        style: GoogleFonts.inter(
+                            fontSize: 13, color: AppColors.ink)),
+                  ),
+                ),
         ),
       ],
     );
   }
 
   String _tierLabel(String tier) => switch (tier) {
-    'local' => 'Local',
-    'super_local' => 'Super Local',
-    'city_legend' => 'City Legend',
-    _ => 'Explorer',
-  };
+        'local' => 'Local',
+        'super_local' => 'Super Local',
+        'city_legend' => 'City Legend',
+        _ => 'Explorer',
+      };
 
   Color _tierColor(String tier) => switch (tier) {
-    'local' => AppColors.teal,
-    'super_local' => AppColors.terracotta,
-    'city_legend' => AppColors.gold,
-    _ => AppColors.warmGrey,
-  };
+        'local' => AppColors.teal,
+        'super_local' => AppColors.terracotta,
+        'city_legend' => AppColors.gold,
+        _ => AppColors.warmGrey,
+      };
 }

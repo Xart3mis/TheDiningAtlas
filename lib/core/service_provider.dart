@@ -12,8 +12,6 @@ import '../services/interfaces/i_subscription_service.dart';
 import '../services/interfaces/i_trip_service.dart';
 import '../services/interfaces/i_user_service.dart';
 
-import '../services/mock/mock_subscription_service.dart';
-
 import '../services/firebase/firestore_restaurant_service.dart';
 import '../services/firebase/firestore_review_service.dart';
 import '../services/firebase/firestore_user_service.dart';
@@ -22,8 +20,11 @@ import '../services/firebase/firebase_storage_service.dart';
 import '../services/firebase/geolocator_location_service.dart';
 import '../services/firebase/fcm_notification_service.dart';
 import '../services/firebase/firestore_trip_service.dart';
+import '../services/firebase/firestore_subscription_service.dart';
+import '../services/firebase/firestore_seed_data_service.dart';
 import '../services/ai/groq_ai_service.dart';
 
+import '../providers/seed_data_provider.dart';
 import '../providers/restaurant_provider.dart';
 import '../providers/review_provider.dart';
 import '../providers/user_provider.dart';
@@ -37,6 +38,7 @@ import '../providers/auth_provider.dart';
 
 class ServiceProvider {
   static List<SingleChildWidget> getProviders() {
+    final seedDataService = FirestoreSeedDataService();
     final restaurantService = FirestoreRestaurantService();
     final reviewService = FirestoreReviewService();
     final userService = FirestoreUserService();
@@ -46,10 +48,11 @@ class ServiceProvider {
     final locationService = GeolocatorLocationService();
     final notificationService = FcmNotificationService();
     final aiService = GroqAiService();
-    final subscriptionService = MockSubscriptionService();
+    final subscriptionService = FirestoreSubscriptionService();
 
     return [
       // Base Interfaces
+      Provider<FirestoreSeedDataService>(create: (_) => seedDataService),
       Provider<IRestaurantService>(create: (_) => restaurantService),
       Provider<IReviewService>(create: (_) => reviewService),
       Provider<IUserService>(create: (_) => userService),
@@ -62,16 +65,24 @@ class ServiceProvider {
       Provider<ISubscriptionService>(create: (_) => subscriptionService),
 
       // State Providers
+      ChangeNotifierProvider(create: (_) => SeedDataProvider(seedDataService)),
       ChangeNotifierProvider(create: (_) => AuthProvider(userService)),
-      ChangeNotifierProvider(create: (_) => RestaurantProvider(restaurantService)),
-      ChangeNotifierProvider(create: (_) => ReviewProvider(reviewService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => RestaurantProvider(restaurantService)),
+      ChangeNotifierProvider(
+          create: (_) => ReviewProvider(reviewService, aiService)),
       ChangeNotifierProvider(create: (_) => UserProvider(userService)),
       ChangeNotifierProvider(create: (_) => TripProvider(tripService)),
-      ChangeNotifierProvider(create: (_) => ChatProvider(chatService, aiService)),
-      ChangeNotifierProvider(create: (_) => SavedPlacesProvider(userService, notificationService)),
-      ChangeNotifierProvider(create: (_) => OnboardingProvider(userService, aiService)),
-      ChangeNotifierProvider(create: (_) => NotificationProvider(notificationService)),
-      ChangeNotifierProvider(create: (_) => AiProvider(aiService, reviewService)),
+      ChangeNotifierProvider(
+          create: (_) => ChatProvider(chatService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => SavedPlacesProvider(userService, notificationService)),
+      ChangeNotifierProvider(
+          create: (_) => OnboardingProvider(userService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => NotificationProvider(notificationService)),
+      ChangeNotifierProvider(
+          create: (_) => AiProvider(aiService, reviewService)),
     ];
   }
 }
