@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import '../models/models.dart';
+import '../core/constants/mock_data.dart';
 
 class WriteReviewScreen extends StatefulWidget {
   final Restaurant restaurant;
@@ -115,7 +115,7 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
             children: [
               Text(widget.restaurant.name,
                   style: GoogleFonts.fraunces(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink)),
-              Text('${widget.restaurant.cuisine} · ${widget.restaurant.neighborhood}',
+              Text('${widget.restaurant.category} · ${widget.restaurant.neighborhood}',
                   style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
             ],
           ),

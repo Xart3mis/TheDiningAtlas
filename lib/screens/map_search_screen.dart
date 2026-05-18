@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import '../models/models.dart';
+import '../core/constants/mock_data.dart';
 import 'restaurant_detail_screen.dart';
 
 class MapSearchScreen extends StatefulWidget {
@@ -189,7 +189,7 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(r.name, style: GoogleFonts.fraunces(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink)),
-                  Text('${r.cuisine} · ${r.priceRange} · ${r.neighborhood}',
+                  Text('${r.category} · ${r.priceRange} · ${r.neighborhood}',
                       style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
                   const SizedBox(height: 4),
                   Row(

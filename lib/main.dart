@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
-import 'providers/auth_provider.dart';
 import 'screens/auth_gate.dart';
 import 'screens/atlas_screen.dart';
 import 'screens/for_you_screen.dart';
@@ -12,6 +11,8 @@ import 'screens/stories_screen.dart';
 import 'screens/trips_screen.dart';
 import 'screens/profile_screen.dart';
 import 'widgets/shared_widgets.dart';
+
+import 'core/service_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,8 +31,10 @@ class DiningAtlasApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => AuthProvider(),
+    return MultiProvider(
+      providers: [
+        ...ServiceProvider.getProviders(),
+      ],
       child: MaterialApp(
         title: 'The Dining Atlas',
         debugShowCheckedModeBanner: false,

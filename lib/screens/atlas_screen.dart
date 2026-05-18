@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/shared_widgets.dart';
-import '../models/models.dart';
+import '../core/constants/mock_data.dart';
 import 'city_guide_screen.dart';
 
 class AtlasScreen extends StatefulWidget {
@@ -258,7 +258,7 @@ class _EditorPickCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${restaurant.cuisine} · ${restaurant.neighborhood}',
+                    '${restaurant.category} · ${restaurant.neighborhood}',
                     style: GoogleFonts.inter(fontSize: 11, color: AppColors.warmGrey),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

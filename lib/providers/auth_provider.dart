@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 
+import '../services/interfaces/i_user_service.dart';
+import '../models/user_model.dart';
+
 /// Provides auth state to the entire widget tree via Provider.
 class AuthProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
+  final IUserService _userService;
 
   User? _user;
   bool _isLoading = false;
@@ -15,10 +19,31 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated => _user != null;
   String? get error => _error;
 
-  AuthProvider() {
-    _authService.authStateChanges.listen((user) {
+  AuthProvider(this._userService) {
+    _authService.authStateChanges.listen((user) async {
       _user = user;
       notifyListeners();
+      if (user != null) {
+        try {
+          final userModel = await _userService.fetchUser(user.uid);
+          if (userModel == null) {
+            await _userService.createUser(UserModel(
+              uid: user.uid,
+              email: user.email ?? '',
+              displayName: user.displayName ?? '',
+              photoUrl: user.photoURL ?? '',
+              tier: 'Free',
+              score: 0,
+              isPremium: false,
+              onboardingComplete: false,
+              chatPrivacy: const ChatPrivacy(mode: 'private'),
+              createdAt: DateTime.now(),
+            ));
+          }
+        } catch (e) {
+          debugPrint('Failed to sync user profile: $e');
+        }
+      }
     });
   }
 
