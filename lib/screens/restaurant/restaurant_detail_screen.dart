@@ -452,6 +452,14 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                         fontSize: 12,
                         color: AppColors.warmGrey,
                         fontStyle: FontStyle.italic)),
+              ] else if (reviewProvider.isTranslating(review.id)) ...[
+                const SizedBox(height: 8),
+                const SizedBox(
+                  height: 14,
+                  width: 14,
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: AppColors.teal),
+                ),
               ] else ...[
                 const SizedBox(height: 8),
                 GestureDetector(
