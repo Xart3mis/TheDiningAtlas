@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import '../interfaces/i_trip_service.dart';
 import '../../models/trip_model.dart';
 import '../../core/constants/app_constants.dart';
-import '../../theme/app_theme.dart';
 
 class FirestoreTripService implements ITripService {
   final _db = FirebaseFirestore.instance;
@@ -47,8 +45,6 @@ class FirestoreTripService implements ITripService {
             name: sd['name'] ?? '',
             neighborhood: sd['neighborhood'] ?? '',
             statusLabel: sd['statusLabel'] ?? '',
-            statusColor: Colors.green,
-            tileColor: AppColors.teal,
           );
         }).toList();
 

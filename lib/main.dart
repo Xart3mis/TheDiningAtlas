@@ -134,12 +134,15 @@ class DiningAtlasApp extends StatelessWidget {
       case RouteNames.kSearch:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
       case RouteNames.kTripPlacePicker:
-        final args = settings.arguments as Map<String, String>;
+        final raw = settings.arguments;
+        if (raw is! Map<String, String>) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
           builder: (_) => TripPlacePickerScreen(
-            tripId: args['tripId']!,
-            dayId: args['dayId']!,
-            uid: args['uid']!,
+            tripId: raw['tripId'] ?? '',
+            dayId: raw['dayId'] ?? '',
+            uid: raw['uid'] ?? '',
           ),
         );
       default:
