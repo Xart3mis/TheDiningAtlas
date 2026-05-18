@@ -51,15 +51,20 @@ class FirestoreRestaurantService implements IRestaurantService {
 
   @override
   Future<List<RestaurantModel>> search({required String query, required String cityId}) async {
-    // Firestore prefix search — for production use Algolia
     final snap = await _col
         .where('cityId', isEqualTo: cityId)
         .where('status', isEqualTo: 'approved')
-        .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: '$query')
-        .limit(20)
+        .limit(200)
         .get();
-    return snap.docs.map(RestaurantModel.fromFirestore).toList();
+    final q = query.toLowerCase();
+    return snap.docs
+        .map(RestaurantModel.fromFirestore)
+        .where((r) =>
+            r.name.toLowerCase().contains(q) ||
+            r.category.toLowerCase().contains(q) ||
+            r.neighborhood.toLowerCase().contains(q))
+        .take(20)
+        .toList();
   }
 
   @override
