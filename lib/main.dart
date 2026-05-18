@@ -19,6 +19,7 @@ import 'screens/home/stories_screen.dart';
 import 'screens/notifications/notifications_screen.dart';
 import 'screens/trips/trips_screen.dart';
 import 'screens/profile/profile_screen.dart';
+import 'screens/profile/saved_places_screen.dart';
 import 'screens/profile/settings_screen.dart';
 import 'screens/onboarding/onboarding_shell.dart';
 import 'screens/restaurant/restaurant_detail_screen.dart';
@@ -141,6 +142,8 @@ class DiningAtlasApp extends StatelessWidget {
         );
       case RouteNames.kNotifications:
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
+      case RouteNames.kSavedPlaces:
+        return MaterialPageRoute(builder: (_) => const SavedPlacesScreen());
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }

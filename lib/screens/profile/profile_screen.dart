@@ -203,24 +203,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Row(
         children: stats.map((s) {
-          return Expanded(
-            child: Column(
-              children: [
-                Text(s.$1,
-                    style: GoogleFonts.fraunces(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.ink)),
-                const SizedBox(height: 2),
-                Text(s.$2,
-                    style: GoogleFonts.inter(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.warmGrey,
-                        letterSpacing: 1.1)),
-              ],
-            ),
+          final col = Column(
+            children: [
+              Text(s.$1,
+                  style: GoogleFonts.fraunces(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.ink)),
+              const SizedBox(height: 2),
+              Text(s.$2,
+                  style: GoogleFonts.inter(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.warmGrey,
+                      letterSpacing: 1.1)),
+            ],
           );
+          if (s.$2 == 'SAVED') {
+            return Expanded(
+              child: GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.kSavedPlaces),
+                child: col,
+              ),
+            );
+          }
+          return Expanded(child: col);
         }).toList(),
       ),
     );
