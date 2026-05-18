@@ -51,12 +51,14 @@ class FirestoreRestaurantService implements IRestaurantService {
 
   @override
   Future<List<RestaurantModel>> search({required String query, required String cityId}) async {
+    final q = query.trim().toLowerCase();
+    if (q.isEmpty) return [];
+
     final snap = await _col
         .where('cityId', isEqualTo: cityId)
         .where('status', isEqualTo: 'approved')
         .limit(200)
         .get();
-    final q = query.toLowerCase();
     return snap.docs
         .map(RestaurantModel.fromFirestore)
         .where((r) =>
