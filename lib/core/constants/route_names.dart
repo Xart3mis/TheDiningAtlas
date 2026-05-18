@@ -18,4 +18,5 @@ class RouteNames {
   static const String kPlanTrip = '/plan-trip';
   static const String kSavedPlaces = '/saved-places';
   static const String kSearch = '/search';
+  static const String kTripPlacePicker = '/trip-place-picker';
 }

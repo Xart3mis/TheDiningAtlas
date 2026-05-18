@@ -10,6 +10,7 @@ class ReviewProvider extends ChangeNotifier {
 
   final Map<String, List<ReviewModel>> _reviews = {};
   final Map<String, String> _translations = {}; // key: 'reviewId_lang'
+  final Set<String> _translating = {};
   bool _isLoading = false;
   String? _error;
 
@@ -17,6 +18,8 @@ class ReviewProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   String? translationFor(String reviewId, String lang) => _translations['${reviewId}_$lang'];
+  bool isTranslating(String reviewId, String targetLang) =>
+      _translating.contains('${reviewId}_$targetLang');
 
   Future<void> loadReviews(String restaurantId) async {
     _isLoading = true;
@@ -83,25 +86,75 @@ class ReviewProvider extends ChangeNotifier {
   }
 
   Future<void> upvote({required String restaurantId, required String reviewId}) async {
-    await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId);
+    final list = _reviews[restaurantId];
+    if (list == null) return;
+    final idx = list.indexWhere((r) => r.id == reviewId);
+    if (idx == -1) return;
+
+    // Store old state for rollback
+    final old = list[idx];
+    // Optimistic update
+    _reviews[restaurantId]![idx] = ReviewModel(
+      id: old.id,
+      restaurantId: old.restaurantId,
+      authorId: old.authorId,
+      authorName: old.authorName,
+      authorPhotoUrl: old.authorPhotoUrl,
+      text: old.text,
+      rating: old.rating,
+      upvotes: old.upvotes + 1,
+      createdAt: old.createdAt,
+    );
     notifyListeners();
+
+    try {
+      await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId);
+    } catch (_) {
+      // Inline rollback — just restore old model, single notifyListeners
+      _reviews[restaurantId]![idx] = old;
+      notifyListeners();
+    }
   }
 
-  Future<void> translate({required String restaurantId, required String reviewId, required String text, required String targetLang}) async {
+  Future<void> translate({
+    required String restaurantId,
+    required String reviewId,
+    required String text,
+    required String targetLang,
+  }) async {
     final key = '${reviewId}_$targetLang';
-    if (_translations.containsKey(key)) return;
+    if (_translations.containsKey(key) || _translating.contains(key)) return;
 
-    final cached = await _reviewService.fetchTranslation(
-      restaurantId: restaurantId, reviewId: reviewId, targetLang: targetLang,
-    );
-    if (cached != null) { _translations[key] = cached; notifyListeners(); return; }
+    _translating.add(key);
+    notifyListeners();
 
-    final translated = await _aiService.translate(text: text, targetLang: targetLang);
-    await _reviewService.cacheTranslation(
-      restaurantId: restaurantId, reviewId: reviewId,
-      targetLang: targetLang, translatedText: translated,
-    );
-    _translations[key] = translated;
+    try {
+      final cached = await _reviewService.fetchTranslation(
+        restaurantId: restaurantId, reviewId: reviewId, targetLang: targetLang,
+      );
+      if (cached != null) {
+        _translations[key] = cached;
+        return;
+      }
+
+      final translated = await _aiService.translate(text: text, targetLang: targetLang);
+      await _reviewService.cacheTranslation(
+        restaurantId: restaurantId, reviewId: reviewId,
+        targetLang: targetLang, translatedText: translated,
+      );
+      _translations[key] = translated;
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _translating.remove(key);
+      notifyListeners();
+    }
+  }
+
+  void reset() {
+    _reviews.clear();
+    _translations.clear();
+    _error = null;
     notifyListeners();
   }
 }

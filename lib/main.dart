@@ -31,6 +31,7 @@ import 'screens/map/map_search_screen.dart';
 import 'screens/chat/chat_thread_screen.dart';
 import 'screens/premium/premium_upgrade_screen.dart';
 import 'screens/trips/plan_trip_screen.dart';
+import 'screens/trips/trip_place_picker_screen.dart';
 import 'screens/search/search_screen.dart';
 import 'models/restaurant_model.dart';
 import 'widgets/offline_banner.dart';
@@ -132,6 +133,18 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SavedPlacesScreen());
       case RouteNames.kSearch:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
+      case RouteNames.kTripPlacePicker:
+        final raw = settings.arguments;
+        if (raw is! Map<String, String>) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
+        return MaterialPageRoute(
+          builder: (_) => TripPlacePickerScreen(
+            tripId: raw['tripId'] ?? '',
+            dayId: raw['dayId'] ?? '',
+            uid: raw['uid'] ?? '',
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }

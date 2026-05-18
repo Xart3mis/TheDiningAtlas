@@ -7,6 +7,11 @@ import 'package:provider/provider.dart';
 import '../../theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/chat_provider.dart';
+import '../../providers/saved_places_provider.dart';
+import '../../providers/trip_provider.dart';
+import '../../providers/notification_provider.dart';
+import '../../providers/review_provider.dart';
 import '../../services/interfaces/i_storage_service.dart';
 import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
@@ -57,6 +62,31 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           const Divider(),
+          const _SectionHeader(title: 'Chat'),
+          ListTile(
+            title: Text('My Chats',
+                style: GoogleFonts.inter(
+                    fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+            subtitle: Text('Chat with locals and AI assistant',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
+            trailing: const Icon(Icons.chevron_right, color: AppColors.warmGrey),
+            onTap: () {
+              if (context.read<AuthProvider>().user == null) {
+                Navigator.pushNamed(context, RouteNames.kLogin);
+                return;
+              }
+              Navigator.pushNamed(
+                context,
+                RouteNames.kChatThread,
+                arguments: {
+                  'otherUid': 'ai_assistant',
+                  'placeId': '',
+                  'otherName': 'AI Assistant',
+                },
+              );
+            },
+          ),
+          const Divider(),
           const _SectionHeader(title: 'Chat Privacy'),
           RadioListTile<String>(
             title: Text('Public — Anyone can message me',
@@ -103,6 +133,13 @@ class SettingsScreen extends StatelessWidget {
                     fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red)),
             onTap: () async {
               final navigator = Navigator.of(context);
+              // Reset all user-scoped state BEFORE sign-out
+              context.read<UserProvider>().reset();
+              context.read<ChatProvider>().reset();
+              context.read<SavedPlacesProvider>().reset();
+              context.read<TripProvider>().reset();
+              context.read<NotificationProvider>().reset();
+              context.read<ReviewProvider>().reset();
               await context.read<AuthProvider>().signOut();
               navigator.pushNamedAndRemoveUntil('/', (_) => false);
             },

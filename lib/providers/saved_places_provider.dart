@@ -120,4 +120,13 @@ class SavedPlacesProvider extends ChangeNotifier {
       rethrow;
     }
   }
+
+  void reset() {
+    _savedIds = {};
+    _savedRestaurants = [];
+    _isLoading = false;
+    _loaded = false;
+    _error = null;
+    notifyListeners();
+  }
 }

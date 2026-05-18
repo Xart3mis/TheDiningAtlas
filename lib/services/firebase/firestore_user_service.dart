@@ -91,4 +91,28 @@ class FirestoreUserService implements IUserService {
   Future<void> updateFcmToken(String uid, String token) async {
     await _userDoc(uid).update({'fcmToken': token});
   }
+
+  @override
+  Future<void> updateCountry(String uid, String countryId) async {
+    await _userDoc(uid).update({'onboardingCountryId': countryId});
+  }
+
+  @override
+  Future<void> adjustScore(String uid, int delta) async {
+    await _db.runTransaction((tx) async {
+      final ref = _db.collection(AppConstants.kColUsers).doc(uid);
+      final snap = await tx.get(ref);
+      final current = (snap.data() as Map<String, dynamic>?)?['score'] as int? ?? 0;
+      final newScore = (current + delta).clamp(0, 999999);
+      final tier = _tierForScore(newScore);
+      tx.set(ref, {'score': newScore, 'tier': tier}, SetOptions(merge: true));
+    });
+  }
+
+  String _tierForScore(int score) {
+    if (score >= 2000) return 'city_legend';
+    if (score >= 500) return 'super_local';
+    if (score >= 100) return 'local';
+    return 'explorer';
+  }
 }

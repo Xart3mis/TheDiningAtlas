@@ -266,6 +266,7 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
           ),
           child: TextField(
             controller: _orderedController,
+            keyboardType: TextInputType.text,
             style: GoogleFonts.inter(fontSize: 13, color: AppColors.ink),
             decoration: InputDecoration(
               hintText: "e.g. Chef's omakase, 15 pieces",
@@ -296,6 +297,8 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
             controller: _reviewController,
             maxLines: null, expands: true,
             textAlignVertical: TextAlignVertical.top,
+            keyboardType: TextInputType.multiline,
+            textInputAction: TextInputAction.newline,
             style: GoogleFonts.inter(fontSize: 13, color: AppColors.ink),
             decoration: InputDecoration(
               hintText: 'What made it special? What should the next traveler know?',

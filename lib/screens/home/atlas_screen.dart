@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/restaurant_provider.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../providers/user_provider.dart';
@@ -137,37 +138,92 @@ class _AtlasScreenState extends State<AtlasScreen> {
               ),
             ],
           ),
-          GestureDetector(
-            onTap: () => MainShell.switchTab(4),
-            child: SizedBox(
-              width: 36,
-              height: 36,
-              child: ClipOval(
-                child: user?.photoUrl.isNotEmpty == true
-                    ? CachedNetworkImage(
-                        imageUrl: user!.photoUrl,
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => const StripeTile(
-                          color: AppColors.terracotta,
-                          width: 36,
-                          height: 36,
-                          borderRadius: BorderRadius.all(Radius.circular(18)),
-                        ),
-                        errorWidget: (_, __, ___) => const StripeTile(
-                          color: AppColors.terracotta,
-                          width: 36,
-                          height: 36,
-                          borderRadius: BorderRadius.all(Radius.circular(18)),
-                        ),
-                      )
-                    : const StripeTile(
-                        color: AppColors.terracotta,
-                        width: 36,
-                        height: 36,
-                        borderRadius: BorderRadius.all(Radius.circular(18)),
-                      ),
+          Row(
+            children: [
+              // Map button
+              GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.kMapSearch),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.parchment,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.lightGrey),
+                  ),
+                  child: const Icon(Icons.map_outlined,
+                      size: 18, color: AppColors.ink),
+                ),
               ),
-            ),
+              // Chat button
+              GestureDetector(
+                onTap: () {
+                  if (context.read<AuthProvider>().user == null) {
+                    Navigator.pushNamed(context, RouteNames.kLogin);
+                    return;
+                  }
+                  Navigator.pushNamed(
+                    context,
+                    RouteNames.kChatThread,
+                    arguments: {
+                      'otherUid': 'ai_assistant',
+                      'placeId': '',
+                      'otherName': 'AI Assistant',
+                    },
+                  );
+                },
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.parchment,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.lightGrey),
+                  ),
+                  child: const Icon(Icons.chat_bubble_outline,
+                      size: 18, color: AppColors.ink),
+                ),
+              ),
+              // Avatar / profile
+              GestureDetector(
+                onTap: () => MainShell.switchTab(5),
+                child: SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: ClipOval(
+                    child: user?.photoUrl.isNotEmpty == true
+                        ? CachedNetworkImage(
+                            imageUrl: user!.photoUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (_, __) => const StripeTile(
+                              color: AppColors.terracotta,
+                              width: 36,
+                              height: 36,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                            errorWidget: (_, __, ___) => const StripeTile(
+                              color: AppColors.terracotta,
+                              width: 36,
+                              height: 36,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18)),
+                            ),
+                          )
+                        : const StripeTile(
+                            color: AppColors.terracotta,
+                            width: 36,
+                            height: 36,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(18)),
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -214,62 +270,153 @@ class _AtlasScreenState extends State<AtlasScreen> {
 
   Widget _buildExploreWidget(
       String countryCode, String countryName, int cityCount) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 14, 20, 0),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+    return GestureDetector(
+      onTap: () => _showDestinationPicker(context),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: AppColors.parchment,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppColors.lightGrey),
+              ),
+              alignment: Alignment.center,
+              child: Text(countryCode,
+                  style: GoogleFonts.inter(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.ink)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(countryName,
+                      style: GoogleFonts.fraunces(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.ink)),
+                  Text('$cityCount cities · Restaurants & Hidden Gems',
+                      style: GoogleFonts.inter(
+                          fontSize: 12, color: AppColors.warmGrey)),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+              decoration: BoxDecoration(
+                color: AppColors.terracotta.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.terracotta.withOpacity(0.3)),
+              ),
+              child: Text('Change',
+                  style: GoogleFonts.inter(
+                      fontSize: 11,
+                      color: AppColors.terracotta,
+                      fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: AppColors.parchment,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.lightGrey),
-            ),
-            alignment: Alignment.center,
-            child: Text(countryCode,
-                style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.ink)),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(countryName,
-                    style: GoogleFonts.fraunces(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.ink)),
-                Text('$cityCount cities · Restaurants & Hidden Gems',
-                    style: GoogleFonts.inter(
-                        fontSize: 12, color: AppColors.warmGrey)),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            decoration: BoxDecoration(
-              color: AppColors.terracotta.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.terracotta.withOpacity(0.3)),
-            ),
-            child: Text('Exploring',
-                style: GoogleFonts.inter(
-                    fontSize: 11,
-                    color: AppColors.terracotta,
-                    fontWeight: FontWeight.w600)),
-          ),
-        ],
+    );
+  }
+
+  Future<void> _showDestinationPicker(BuildContext context) async {
+    final seedProvider = context.read<SeedDataProvider>();
+    final userProvider = context.read<UserProvider>();
+    final authProvider = context.read<AuthProvider>();
+    final restaurantProvider = context.read<RestaurantProvider>();
+
+    await seedProvider.load();
+    if (!mounted) return;
+
+    // Build unique country list from seed data
+    // countryId stored as country name (matches citiesForCountry lookup)
+    final cities = seedProvider.cities;
+    final seen = <String>{};
+    final countries = <({String code, String id, String name})>[];
+    for (final city in cities) {
+      if (seen.add(city.country)) {
+        countries.add((code: city.countryCode, id: city.country, name: city.country));
+      }
+    }
+
+    if (!mounted) return;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.cream,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.lightGrey,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text('Change Destination',
+                  style: GoogleFonts.fraunces(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.ink)),
+              const SizedBox(height: 16),
+              ...countries.map((c) => ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.parchment,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(c.code,
+                      style: GoogleFonts.inter(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.ink)),
+                ),
+                title: Text(c.name,
+                    style: GoogleFonts.inter(fontSize: 15, color: AppColors.ink)),
+                onTap: () async {
+                  Navigator.pop(ctx);
+                  final uid = authProvider.user?.uid;
+                  if (uid != null) {
+                    await userProvider.updateCountry(uid, c.id);
+                  }
+                  if (!mounted) return;
+                  final countryCities = seedProvider.citiesForCountry(c.id);
+                  if (countryCities.isNotEmpty) {
+                    seedProvider.loadCityDetails(countryCities.first.id);
+                    restaurantProvider.loadFeed(cityId: countryCities.first.id);
+                  }
+                },
+              )),
+            ],
+          ),
+        );
+      },
     );
   }
 

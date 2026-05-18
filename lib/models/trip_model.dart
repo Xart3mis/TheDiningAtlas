@@ -49,7 +49,7 @@ class TripSpotModel {
     required this.name,
     required this.neighborhood,
     required this.statusLabel,
-    required this.statusColor,
-    required this.tileColor,
+    this.statusColor = Colors.green,
+    this.tileColor = const Color(0xFF2E5B52), // AppColors.teal
   });
 }
