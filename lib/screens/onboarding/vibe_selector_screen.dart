@@ -12,11 +12,20 @@ const _kVibes = [
   {'id': 'night_life', 'label': 'Nightlife', 'emoji': '🎵'},
   {'id': 'fine_dining', 'label': 'Fine Dining', 'emoji': '🍽️'},
   {'id': 'nature_spot', 'label': 'Nature Spot', 'emoji': '🌿'},
+  {'id': 'beach_vibes', 'label': 'Beach Vibes', 'emoji': '🏖️'},
+  {'id': 'craft_beer', 'label': 'Craft Beer', 'emoji': '🍺'},
+  {'id': 'wellness', 'label': 'Wellness', 'emoji': '🧘'},
+  {'id': 'cultural', 'label': 'Cultural', 'emoji': '🎭'},
 ];
 
 class VibeSelectorScreen extends StatelessWidget {
   final VoidCallback onNext;
-  const VibeSelectorScreen({super.key, required this.onNext});
+  final VoidCallback onBack;
+  const VibeSelectorScreen({
+    super.key,
+    required this.onNext,
+    required this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,40 +41,45 @@ class VibeSelectorScreen extends StatelessWidget {
           const SizedBox(height: 8),
           Text('Pick everything that speaks to you.',
               style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF6B6560))),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
           Expanded(
             child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 1.4,
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1.1,
               children: _kVibes.map((vibe) {
                 final selected = provider.vibes.contains(vibe['id']);
-                return GestureDetector(
-                  onTap: () => provider.toggleVibe(vibe['id']!),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    decoration: BoxDecoration(
-                      color: selected ? const Color(0xFFC17B4E) : Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: selected
-                              ? const Color(0xFFC17B4E)
-                              : const Color(0xFFE0D9D0)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(vibe['emoji']!, style: const TextStyle(fontSize: 28)),
-                        const SizedBox(height: 6),
-                        Text(vibe['label']!,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: selected
-                                    ? Colors.white
-                                    : const Color(0xFF2C2825))),
-                      ],
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => provider.toggleVibe(vibe['id']!),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      decoration: BoxDecoration(
+                        color: selected ? const Color(0xFFC17B4E) : Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: selected
+                                ? const Color(0xFFC17B4E)
+                                : const Color(0xFFE0D9D0)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(vibe['emoji']!, style: const TextStyle(fontSize: 24)),
+                          const SizedBox(height: 6),
+                          Text(vibe['label']!,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: selected
+                                      ? Colors.white
+                                      : const Color(0xFF2C2825)),
+                              textAlign: TextAlign.center),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -73,20 +87,35 @@ class VibeSelectorScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: provider.vibes.isNotEmpty ? onNext : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFC17B4E),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                elevation: 0,
-              ),
-              child: Text('Continue',
+          Row(
+            children: [
+              TextButton(
+                onPressed: onBack,
+                child: Text(
+                  'Back',
                   style: GoogleFonts.inter(
-                      color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-            ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF6B6560),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: provider.vibes.isNotEmpty ? onNext : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFC17B4E),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    elevation: 0,
+                  ),
+                  child: Text('Continue',
+                      style: GoogleFonts.inter(
+                          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                ),
+              ),
+            ],
           ),
         ],
       ),

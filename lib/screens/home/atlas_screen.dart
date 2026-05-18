@@ -6,9 +6,15 @@ import 'package:shimmer/shimmer.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../providers/restaurant_provider.dart';
+import '../../providers/onboarding_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../providers/seed_data_provider.dart';
 import '../../models/restaurant_model.dart';
+import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
+import '../../core/constants/app_constants.dart';
+// TODO(Task 7): move MainShell to its own file (lib/shell/main_shell.dart) and update import
+import '../../main.dart' show MainShell;
 
 class AtlasScreen extends StatefulWidget {
   const AtlasScreen({super.key});
@@ -37,32 +43,32 @@ class _AtlasScreenState extends State<AtlasScreen> {
   @override
   Widget build(BuildContext context) {
     final restaurantProvider = context.watch<RestaurantProvider>();
+    final onboardingProvider = context.watch<OnboardingProvider>();
     final seedProvider = context.watch<SeedDataProvider>();
+    final user = context.watch<UserProvider>().user;
+
     return Scaffold(
       backgroundColor: AppColors.cream,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.terracotta,
-        onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: _buildHeader()),
-          SliverToBoxAdapter(child: _buildMapCard(seedProvider)),
+          SliverToBoxAdapter(child: _buildHeader(user)),
+          SliverToBoxAdapter(
+              child: _buildSearchBanner(onboardingProvider.countryName)),
+          SliverToBoxAdapter(
+              child: _buildExploreWidget(onboardingProvider, seedProvider.cities.length)),
           SliverToBoxAdapter(
               child: _buildCityChips(restaurantProvider, seedProvider)),
-          SliverToBoxAdapter(child: _buildSearchBar()),
-          SliverToBoxAdapter(
-              child: _buildQuickFilters(restaurantProvider, seedProvider)),
           SliverToBoxAdapter(child: _buildEditorPicksHeader()),
           if (restaurantProvider.isLoading)
             const SliverToBoxAdapter(child: _FeedShimmer())
           else if (restaurantProvider.feed.isEmpty)
             const SliverToBoxAdapter(
-                child: Center(
-                    child: Padding(
-                        padding: EdgeInsets.all(32),
-                        child: Text('No places found.'))))
+                child: SizedBox(
+                    height: 120,
+                    child: Center(
+                        child: Padding(
+                            padding: EdgeInsets.all(32),
+                            child: Text('No places found.')))))
           else
             SliverToBoxAdapter(
               child: SizedBox(
@@ -83,7 +89,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(UserModel? user) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
       child: Row(
@@ -91,15 +97,12 @@ class _AtlasScreenState extends State<AtlasScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.language_outlined,
-                  size: 22, color: AppColors.ink),
+              const Icon(Icons.language_outlined, size: 22, color: AppColors.ink),
               const SizedBox(width: 8),
               RichText(
                 text: TextSpan(
                   style: GoogleFonts.fraunces(
-                      fontSize: 17,
-                      color: AppColors.ink,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 17, color: AppColors.ink, fontWeight: FontWeight.w600),
                   children: [
                     const TextSpan(text: 'The '),
                     TextSpan(
@@ -114,12 +117,35 @@ class _AtlasScreenState extends State<AtlasScreen> {
             ],
           ),
           GestureDetector(
-            onTap: () => Navigator.pushNamed(context, RouteNames.kSettings),
-            child: const StripeTile(
-              color: AppColors.terracotta,
-              width: 32,
-              height: 32,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
+            onTap: () => MainShell.switchTab(4),
+            child: SizedBox(
+              width: 36,
+              height: 36,
+              child: ClipOval(
+                child: user?.photoUrl.isNotEmpty == true
+                    ? CachedNetworkImage(
+                        imageUrl: user!.photoUrl,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => const StripeTile(
+                          color: AppColors.terracotta,
+                          width: 36,
+                          height: 36,
+                          borderRadius: BorderRadius.all(Radius.circular(18)),
+                        ),
+                        errorWidget: (_, __, ___) => const StripeTile(
+                          color: AppColors.terracotta,
+                          width: 36,
+                          height: 36,
+                          borderRadius: BorderRadius.all(Radius.circular(18)),
+                        ),
+                      )
+                    : const StripeTile(
+                        color: AppColors.terracotta,
+                        width: 36,
+                        height: 36,
+                        borderRadius: BorderRadius.all(Radius.circular(18)),
+                      ),
+              ),
             ),
           ),
         ],
@@ -127,62 +153,36 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildMapCard(SeedDataProvider seedProvider) {
-    final currentCity = seedProvider.cityById(
-      context.watch<RestaurantProvider>().currentCityId,
-    );
+  Widget _buildSearchBanner(String countryName) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
       child: Container(
-        margin: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-        height: 200,
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        height: 54,
         decoration: BoxDecoration(
-          color: AppColors.parchment,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.lightGrey),
+          color: AppColors.ink,
+          borderRadius: BorderRadius.circular(14),
         ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
           children: [
-            CustomPaint(
-                size: const Size(double.infinity, 200), painter: _MapPainter()),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: const BoxDecoration(color: AppColors.ink),
-                child: Row(
-                  children: [
-                    const Icon(Icons.place_outlined,
-                        size: 16, color: Colors.white),
-                    const SizedBox(width: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('EXPLORE ON MAP',
-                            style: GoogleFonts.inter(
-                                fontSize: 9,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white54,
-                                letterSpacing: 1.2)),
-                        Text(
-                          currentCity?.displayName ?? 'Choose a city',
-                          style: GoogleFonts.fraunces(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    const Icon(Icons.chevron_right,
-                        size: 16, color: Colors.white70),
-                  ],
-                ),
+            const Icon(Icons.search, color: Colors.white70, size: 18),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text('Search $countryName…',
+                  style: GoogleFonts.inter(fontSize: 14, color: Colors.white54)),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: AppColors.terracotta,
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: Text('SEARCH',
+                  style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white)),
             ),
           ],
         ),
@@ -190,8 +190,68 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildCityChips(
-      RestaurantProvider provider, SeedDataProvider seedProvider) {
+  Widget _buildExploreWidget(OnboardingProvider provider, int cityCount) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: AppColors.parchment,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppColors.lightGrey),
+            ),
+            alignment: Alignment.center,
+            child: Text(provider.countryCode,
+                style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.ink)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(provider.countryName,
+                    style: GoogleFonts.fraunces(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.ink)),
+                Text('$cityCount cities · restaurants & hidden gems',
+                    style: GoogleFonts.inter(
+                        fontSize: 12, color: AppColors.warmGrey)),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: AppColors.terracotta.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                  color: AppColors.terracotta.withValues(alpha: 0.3)),
+            ),
+            child: Text('Exploring',
+                style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: AppColors.terracotta,
+                    fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCityChips(RestaurantProvider provider, SeedDataProvider seedProvider) {
     final cities = seedProvider.cities;
     return SizedBox(
       height: 44,
@@ -212,54 +272,21 @@ class _AtlasScreenState extends State<AtlasScreen> {
     );
   }
 
-  Widget _buildSearchBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-      child: AtlasSearchBar(
-        hint: 'Ramen, kaiseki, late-night…',
-        onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
-        showVoice: true,
-      ),
-    );
-  }
-
-  Widget _buildQuickFilters(
-    RestaurantProvider restaurantProvider,
-    SeedDataProvider seedProvider,
-  ) {
-    final filters = seedProvider
-        .categoriesForCity(restaurantProvider.currentCityId)
-        .take(6)
-        .toList();
-    if (filters.isEmpty) return const SizedBox.shrink();
-    return SizedBox(
-      height: 44,
-      child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-        scrollDirection: Axis.horizontal,
-        itemCount: filters.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (_, i) => AtlasPill(
-          label: filters[i],
-          selected: false,
-          onTap: () => restaurantProvider.loadCategory(filters[i]),
-        ),
-      ),
-    );
-  }
-
   Widget _buildEditorPicksHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SectionLabel("Editor's Picks"),
-          Text('See all',
-              style: GoogleFonts.inter(
-                  fontSize: 13,
-                  color: AppColors.terracotta,
-                  fontWeight: FontWeight.w500)),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, RouteNames.kMapSearch),
+            child: Text('See all',
+                style: GoogleFonts.inter(
+                    fontSize: 13,
+                    color: AppColors.terracotta,
+                    fontWeight: FontWeight.w500)),
+          ),
         ],
       ),
     );
@@ -273,11 +300,8 @@ class _EditorPickCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-        context,
-        RouteNames.kRestaurantDetail,
-        arguments: restaurant,
-      ),
+      onTap: () => Navigator.pushNamed(context, RouteNames.kRestaurantDetail,
+          arguments: restaurant),
       child: Container(
         width: 160,
         decoration: BoxDecoration(
@@ -314,15 +338,13 @@ class _EditorPickCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    restaurant.name,
-                    style: GoogleFonts.fraunces(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.ink),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  Text(restaurant.name,
+                      style: GoogleFonts.fraunces(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.ink),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 2),
                   Text(
                     '${restaurant.category} · ${restaurant.neighborhood}',
@@ -369,37 +391,4 @@ class _FeedShimmer extends StatelessWidget {
       ),
     );
   }
-}
-
-class _MapPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final bg = Paint()..color = AppColors.parchment;
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), bg);
-    final regionPaint = Paint()
-      ..color = AppColors.lightGrey.withValues(alpha: 0.6);
-    final blobs = [
-      Offset(size.width * 0.22, size.height * 0.35),
-      Offset(size.width * 0.48, size.height * 0.4),
-      Offset(size.width * 0.72, size.height * 0.32),
-    ];
-    for (final b in blobs) {
-      canvas.drawCircle(b, 36, regionPaint);
-    }
-    final dotPaint = Paint()..color = AppColors.ink;
-    final dots = [
-      Offset(size.width * 0.18, size.height * 0.42),
-      Offset(size.width * 0.44, size.height * 0.48),
-      Offset(size.width * 0.52, size.height * 0.35),
-      Offset(size.width * 0.70, size.height * 0.28),
-    ];
-    for (final d in dots) {
-      canvas.drawCircle(d, 3, dotPaint);
-    }
-    canvas.drawCircle(Offset(size.width * 0.78, size.height * 0.5), 4,
-        Paint()..color = AppColors.terracotta);
-  }
-
-  @override
-  bool shouldRepaint(_) => false;
 }

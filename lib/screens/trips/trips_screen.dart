@@ -7,6 +7,7 @@ import '../../providers/auth_provider.dart';
 import '../../providers/trip_provider.dart';
 import '../../providers/seed_data_provider.dart';
 import '../../models/trip_model.dart';
+import '../../core/constants/route_names.dart';
 
 class TripsScreen extends StatefulWidget {
   const TripsScreen({super.key});
@@ -35,14 +36,23 @@ class _TripsScreenState extends State<TripsScreen> {
   Widget build(BuildContext context) {
     final tripProvider = context.watch<TripProvider>();
 
+    TripDayModel? currentDay;
+    int spotCount = 0;
+    if (tripProvider.trips.isNotEmpty) {
+      final trip = tripProvider.trips.first;
+      currentDay = trip.days.isNotEmpty
+          ? trip.days[_selectedDayIndex % trip.days.length]
+          : null;
+      spotCount = currentDay?.spots.length ?? 0;
+    }
+
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-              child: _buildHeader(tripProvider.trips.isEmpty
-                  ? null
-                  : tripProvider.trips.first)),
+              child: _buildHeader(
+                  tripProvider.trips.isNotEmpty ? tripProvider.trips.first : null)),
           if (tripProvider.isLoading)
             const SliverToBoxAdapter(
                 child: Padding(
@@ -59,25 +69,8 @@ class _TripsScreenState extends State<TripsScreen> {
                 child: _buildDaySelector(tripProvider.trips.first)),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (_, i) {
-                  final trip = tripProvider.trips.first;
-                  final day = trip.days.isNotEmpty
-                      ? trip.days[_selectedDayIndex % trip.days.length]
-                      : null;
-                  if (day == null || i >= day.spots.length) {
-                    return const SizedBox.shrink();
-                  }
-                  return _SpotCard(spot: day.spots[i]);
-                },
-                childCount: tripProvider.trips.first.days.isNotEmpty
-                    ? tripProvider
-                        .trips
-                        .first
-                        .days[_selectedDayIndex %
-                            tripProvider.trips.first.days.length]
-                        .spots
-                        .length
-                    : 0,
+                (_, i) => _SpotCard(spot: currentDay!.spots[i]),
+                childCount: spotCount,
               ),
             ),
           ],
@@ -88,37 +81,66 @@ class _TripsScreenState extends State<TripsScreen> {
   }
 
   Widget _buildHeader(TripModel? trip) {
-    final city = trip == null
-        ? null
-        : context.watch<SeedDataProvider>().cityById(trip.cityId);
-    final cityName = city?.name ?? trip?.cityId.replaceAll('-', ' ') ?? 'Trip';
-    final dateLabel = trip == null ? '' : _tripDateLabel(trip.startDate);
+    final cityDisplay = trip != null
+        ? trip.cityId
+            .split('_')
+            .map((w) => w.isNotEmpty ? '${w[0].toUpperCase()}${w.substring(1)}' : w)
+            .join(' ')
+        : 'My Trips';
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text('MY TRIP',
-              style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.warmGrey,
-                  letterSpacing: 1.2)),
-          const SizedBox(height: 4),
-          RichText(
-            text: TextSpan(
-              style: GoogleFonts.fraunces(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.ink),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                    text: cityName,
+                Text('MY TRIPS',
+                    style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.warmGrey,
+                        letterSpacing: 1.2)),
+                const SizedBox(height: 4),
+                RichText(
+                  text: TextSpan(
                     style: GoogleFonts.fraunces(
-                        fontStyle: FontStyle.italic,
-                        color: AppColors.terracotta)),
-                TextSpan(text: dateLabel.isEmpty ? '' : ', $dateLabel'),
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.ink),
+                    children: [
+                      TextSpan(
+                          text: cityDisplay,
+                          style: GoogleFonts.fraunces(
+                              fontStyle: FontStyle.italic,
+                              color: AppColors.terracotta)),
+                      if (trip != null)
+                        TextSpan(
+                            text:
+                                ', ${_monthName(trip.startDate.month)} ${trip.startDate.year}'),
+                    ],
+                  ),
+                ),
               ],
+            ),
+          ),
+          ElevatedButton.icon(
+            onPressed: () =>
+                Navigator.pushNamed(context, RouteNames.kPlanTrip),
+            icon: const Icon(Icons.add, size: 16),
+            label: Text('Plan Trip',
+                style: GoogleFonts.inter(
+                    fontSize: 13, fontWeight: FontWeight.w600)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.terracotta,
+              foregroundColor: Colors.white,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
             ),
           ),
         ],
@@ -178,22 +200,13 @@ class _TripsScreenState extends State<TripsScreen> {
     return days[d.weekday - 1];
   }
 
-  String _tripDateLabel(DateTime date) {
+<<<<<<< HEAD
+  String _monthName(int month) {
     const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
     ];
-    return '${months[date.month - 1]} ${date.year}';
+    return months[month - 1];
   }
 }
 

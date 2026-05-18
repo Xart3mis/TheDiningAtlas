@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
 import 'core/service_provider.dart';
@@ -29,6 +30,8 @@ import 'models/restaurant_model.dart';
 import 'widgets/offline_banner.dart';
 import 'widgets/shared_widgets.dart';
 import 'providers/location_provider.dart';
+
+final mainShellKey = GlobalKey<_MainShellState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,21 +77,33 @@ class DiningAtlasApp extends StatelessWidget {
       case RouteNames.kOnboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingShell());
       case RouteNames.kMain:
-        return MaterialPageRoute(builder: (_) => const MainShell());
+        return MaterialPageRoute(builder: (_) => MainShell(key: mainShellKey));
       case RouteNames.kRestaurantDetail:
-        final restaurant = settings.arguments as RestaurantModel;
+        if (settings.arguments is! RestaurantModel) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
-            builder: (_) => RestaurantDetailScreen(restaurant: restaurant));
+            builder: (_) => RestaurantDetailScreen(
+                restaurant: settings.arguments as RestaurantModel));
       case RouteNames.kWriteReview:
-        final restaurant = settings.arguments as RestaurantModel;
+        if (settings.arguments is! RestaurantModel) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
-            builder: (_) => WriteReviewScreen(restaurant: restaurant));
+            builder: (_) => WriteReviewScreen(
+                restaurant: settings.arguments as RestaurantModel));
       case RouteNames.kAddPlace:
         return MaterialPageRoute(builder: (_) => const AddPlaceScreen());
       case RouteNames.kMapSearch:
         return MaterialPageRoute(builder: (_) => const MapSearchScreen());
       case RouteNames.kChatThread:
-        final args = settings.arguments as Map<String, String>;
+        final args = settings.arguments;
+        if (args is! Map<String, String> ||
+            !args.containsKey('otherUid') ||
+            !args.containsKey('placeId') ||
+            !args.containsKey('otherName')) {
+          return MaterialPageRoute(builder: (_) => const AuthGate());
+        }
         return MaterialPageRoute(
             builder: (_) => ChatThreadScreen(
                   otherUid: args['otherUid']!,
@@ -99,6 +114,24 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case RouteNames.kPremiumUpgrade:
         return MaterialPageRoute(builder: (_) => const PremiumUpgradeScreen());
+      case RouteNames.kPlanTrip:
+        return MaterialPageRoute(
+          builder: (_) => Scaffold(
+            backgroundColor: AppColors.cream,
+            appBar: AppBar(
+              backgroundColor: AppColors.cream,
+              elevation: 0,
+              leading: const BackButton(color: AppColors.ink),
+              title: Text('Plan a Trip',
+                  style: GoogleFonts.fraunces(
+                      fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.ink)),
+            ),
+            body: Center(
+              child: Text('Coming soon',
+                  style: GoogleFonts.inter(fontSize: 15, color: AppColors.warmGrey)),
+            ),
+          ),
+        );
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }
@@ -107,6 +140,10 @@ class DiningAtlasApp extends StatelessWidget {
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
+
+  static void switchTab(int index) {
+    mainShellKey.currentState?._switchTab(index);
+  }
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -123,6 +160,13 @@ class _MainShellState extends State<MainShell> {
     ProfileScreen(),
   ];
 
+  void _switchTab(int index) {
+    if (index < 0 || index >= _screens.length || index == _currentIndex) {
+      return;
+    }
+    setState(() => _currentIndex = index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,13 +176,15 @@ class _MainShellState extends State<MainShell> {
       ),
       bottomNavigationBar: AtlasBottomNav(
         currentIndex: _currentIndex,
-        onTap: (i) => setState(() => _currentIndex = i),
+        onTap: _switchTab,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
-        backgroundColor: AppColors.terracotta,
-        child: const Icon(Icons.add_location_alt, color: Colors.white),
-      ),
+      floatingActionButton: _currentIndex <= 1
+          ? FloatingActionButton(
+              onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
+              backgroundColor: AppColors.terracotta,
+              child: const Icon(Icons.add_location_alt, color: Colors.white),
+            )
+          : null,
     );
   }
 }

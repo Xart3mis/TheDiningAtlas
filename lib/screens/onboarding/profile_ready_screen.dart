@@ -4,6 +4,29 @@ import 'package:provider/provider.dart';
 import '../../providers/onboarding_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../core/constants/route_names.dart';
+import '../../theme/app_theme.dart';
+
+const _kVibeLabels = {
+  'hidden_cafe':  ('Hidden Café',  '☕'),
+  'street_food':  ('Street Food',  '🌮'),
+  'rooftop_bar':  ('Rooftop Bar',  '🍸'),
+  'local_market': ('Local Market', '🛒'),
+  'art_gallery':  ('Art Gallery',  '🎨'),
+  'night_life':   ('Nightlife',    '🎵'),
+  'fine_dining':  ('Fine Dining',  '🍽️'),
+  'nature_spot':  ('Nature Spot',  '🌿'),
+  'beach_vibes':  ('Beach Vibes',  '🏖️'),
+  'craft_beer':   ('Craft Beer',   '🍺'),
+  'wellness':     ('Wellness',     '🧘'),
+  'cultural':     ('Cultural',     '🎭'),
+};
+
+const _kBudgetLabels = {
+  r'$':    r'Under $15',
+  r'$$':   r'$15 – $50',
+  r'$$$':  r'$50 – $100',
+  r'$$$$': r'$100+',
+};
 
 class ProfileReadyScreen extends StatelessWidget {
   const ProfileReadyScreen({super.key});
@@ -18,26 +41,80 @@ class ProfileReadyScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Your taste profile is ready!',
+          const Text('🎉', style: TextStyle(fontSize: 56)),
+          const SizedBox(height: 16),
+          Text("You're all set!",
               textAlign: TextAlign.center,
               style: GoogleFonts.fraunces(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xFF1C1C1A))),
-          const SizedBox(height: 24),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            alignment: WrapAlignment.center,
-            children: [
-              ...onboarding.vibes.map(
-                  (v) => Chip(label: Text(v.replaceAll('_', ' ')))),
-              Chip(label: Text(onboarding.budget)),
-              ...onboarding.atmosphere
-                  .map((a) => Chip(label: Text(a.replaceAll('_', ' ')))),
-            ],
+                  color: AppColors.ink)),
+          const SizedBox(height: 6),
+          Text('Your taste profile is ready.',
+              style: GoogleFonts.fraunces(
+                  fontSize: 15,
+                  fontStyle: FontStyle.italic,
+                  color: AppColors.terracotta)),
+          const SizedBox(height: 28),
+
+          // Profile summary card
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                  color: AppColors.lightGrey.withValues(alpha: 0.6)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('YOUR PROFILE',
+                    style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.warmGrey,
+                        letterSpacing: 1.2)),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: onboarding.vibes.map((id) {
+                    final entry = _kVibeLabels[id];
+                    final display = entry != null
+                        ? '${entry.$2} ${entry.$1}'
+                        : id.replaceAll('_', ' ');
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: AppColors.terracotta.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            color: AppColors.terracotta
+                                .withValues(alpha: 0.3)),
+                      ),
+                      child: Text(display,
+                          style: GoogleFonts.inter(
+                              fontSize: 12,
+                              color: AppColors.terracotta,
+                              fontWeight: FontWeight.w500)),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '📍 ${onboarding.countryName}  ·  💰 ${_kBudgetLabels[onboarding.budget] ?? onboarding.budget}',
+                  style: GoogleFonts.inter(
+                      fontSize: 13, color: AppColors.warmGrey),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 28),
+
+          // CTA button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -46,14 +123,25 @@ class ProfileReadyScreen extends StatelessWidget {
                   : () async {
                       final uid = auth.user?.uid;
                       if (uid == null) return;
-                      await onboarding.completeOnboarding(uid);
+                      try {
+                        await onboarding.completeOnboarding(uid);
+                      } catch (_) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Could not save your profile. Please try again.')),
+                          );
+                        }
+                        return;
+                      }
                       if (context.mounted) {
                         Navigator.pushReplacementNamed(
                             context, RouteNames.kMain);
                       }
                     },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFC17B4E),
+                backgroundColor: AppColors.terracotta,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
@@ -65,7 +153,7 @@ class ProfileReadyScreen extends StatelessWidget {
                       height: 20,
                       child: CircularProgressIndicator(
                           color: Colors.white, strokeWidth: 2))
-                  : Text("Let's go!",
+                  : Text('Start Exploring',
                       style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 16,

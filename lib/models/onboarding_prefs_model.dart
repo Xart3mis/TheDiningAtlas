@@ -4,14 +4,14 @@ class OnboardingPrefsModel {
   final List<String> vibes;       // e.g. ['hidden_cafe','street_food','rooftop_bar']
   final String budget;            // '$' | '$$' | '$$$'
   final List<String> atmosphere;  // e.g. ['quiet','outdoor','artsy']
-  final String cityId;
+  final String countryId;
   final Map<String, double> aiWeights; // category → weight score
 
   const OnboardingPrefsModel({
     required this.vibes,
     required this.budget,
     required this.atmosphere,
-    required this.cityId,
+    required this.countryId,
     required this.aiWeights,
   });
 
@@ -21,7 +21,7 @@ class OnboardingPrefsModel {
       vibes: List<String>.from(d['vibes'] ?? []),
       budget: d['budget'] ?? '\$',
       atmosphere: List<String>.from(d['atmosphere'] ?? []),
-      cityId: d['cityId'] ?? '',
+      countryId: d['countryId'] ?? d['cityId'] ?? '',
       aiWeights: Map<String, double>.from(
         (d['aiWeights'] ?? {}).map((k, v) => MapEntry(k, (v as num).toDouble())),
       ),
@@ -32,7 +32,7 @@ class OnboardingPrefsModel {
     'vibes': vibes,
     'budget': budget,
     'atmosphere': atmosphere,
-    'cityId': cityId,
+    'countryId': countryId,
     'aiWeights': aiWeights,
     'updatedAt': FieldValue.serverTimestamp(),
   };

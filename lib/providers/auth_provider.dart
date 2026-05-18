@@ -27,10 +27,15 @@ class AuthProvider extends ChangeNotifier {
         try {
           final userModel = await _userService.fetchUser(user.uid);
           if (userModel == null) {
+            if (_pendingDisplayName.isNotEmpty) {
+              await user.updateDisplayName(_pendingDisplayName);
+            }
             await _userService.createUser(UserModel(
               uid: user.uid,
               email: user.email ?? '',
-              displayName: user.displayName ?? '',
+              displayName: _pendingDisplayName.isNotEmpty
+                  ? _pendingDisplayName
+                  : user.displayName ?? '',
               photoUrl: user.photoURL ?? '',
               tier: 'Free',
               score: 0,
@@ -38,7 +43,13 @@ class AuthProvider extends ChangeNotifier {
               onboardingComplete: false,
               chatPrivacy: const ChatPrivacy(mode: 'private'),
               createdAt: DateTime.now(),
+              username: _pendingUsername,
+              countryCode: _pendingCountryCode,
+              onboardingCountryId: '',
             ));
+            _pendingUsername = '';
+            _pendingCountryCode = '';
+            _pendingDisplayName = '';
           }
         } catch (e) {
           debugPrint('Failed to sync user profile: $e');
@@ -47,8 +58,26 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
+  // Pending registration metadata — stored temporarily so the authStateChanges
+  // listener can pick them up when it fires after signUpWithEmail completes.
+  String _pendingUsername = '';
+  String _pendingCountryCode = '';
+  String _pendingDisplayName = '';
+
   /// Sign up with email/password.
-  Future<bool> signUp(String email, String password) async {
+  ///
+  /// [username], [countryCode] and [displayName] are stored in Firestore via
+  /// [UserModel]. [displayName] is also applied to the Firebase Auth profile.
+  Future<bool> signUp(
+    String email,
+    String password, {
+    String username = '',
+    String countryCode = '',
+    String displayName = '',
+  }) async {
+    _pendingUsername = username;
+    _pendingCountryCode = countryCode;
+    _pendingDisplayName = displayName;
     _setLoading(true);
     try {
       await _authService.signUpWithEmail(email, password);
@@ -56,6 +85,9 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       _error = _friendlyError(e.code);
+      _pendingUsername = '';
+      _pendingCountryCode = '';
+      _pendingDisplayName = '';
       return false;
     } finally {
       _setLoading(false);

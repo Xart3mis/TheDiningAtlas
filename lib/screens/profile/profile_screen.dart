@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/saved_places_provider.dart';
 import '../../providers/seed_data_provider.dart';
+import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
+import '../../core/constants/app_constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -59,55 +63,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildHeader(BuildContext context, dynamic user, int savedCount) {
+  Widget _buildHeader(BuildContext context, UserModel? user, int savedCount) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 56, 20, 0),
       child: Row(
         children: [
-          const StripeTile(
-            color: AppColors.terracotta,
+          SizedBox(
             width: 56,
             height: 56,
-            borderRadius: BorderRadius.all(Radius.circular(28)),
+            child: ClipOval(
+              child: user?.photoUrl.isNotEmpty == true
+                  ? CachedNetworkImage(
+                      imageUrl: user!.photoUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) => const StripeTile(
+                          color: AppColors.terracotta,
+                          width: 56,
+                          height: 56,
+                          borderRadius: BorderRadius.all(Radius.circular(28))),
+                      errorWidget: (_, __, ___) => const StripeTile(
+                          color: AppColors.terracotta,
+                          width: 56,
+                          height: 56,
+                          borderRadius: BorderRadius.all(Radius.circular(28))),
+                    )
+                  : const StripeTile(
+                      color: AppColors.terracotta,
+                      width: 56,
+                      height: 56,
+                      borderRadius: BorderRadius.all(Radius.circular(28))),
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user?.displayName ?? 'Explorer',
-                  style: GoogleFonts.fraunces(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.ink),
-                ),
-                Text('@local · DiningAtlas',
-                    style: GoogleFonts.inter(
-                        fontSize: 12, color: AppColors.warmGrey)),
-                const SizedBox(height: 4),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: _tierColor(user?.tier ?? 'explorer')
-                        .withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                        color: _tierColor(user?.tier ?? 'explorer')
-                            .withValues(alpha: 0.3)),
+            child: user == null
+                ? _buildNameShimmer()
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.displayName.isNotEmpty ? user.displayName : 'Explorer',
+                        style: GoogleFonts.fraunces(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.ink),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '@${user.username.isNotEmpty ? user.username : 'local'}',
+                            style: GoogleFonts.inter(
+                                fontSize: 12, color: AppColors.warmGrey),
+                          ),
+                          if (user.countryCode.isNotEmpty) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: AppColors.parchment,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Text(user.countryCode,
+                                  style: GoogleFonts.inter(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.ink)),
+                            ),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: _tierColor(user.tier).withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                              color: _tierColor(user.tier).withValues(alpha: 0.3)),
+                        ),
+                        child: Text(
+                          _tierLabel(user.tier).toUpperCase(),
+                          style: GoogleFonts.inter(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: _tierColor(user.tier),
+                              letterSpacing: 1.2),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    _tierLabel(user?.tier ?? 'explorer').toUpperCase(),
-                    style: GoogleFonts.inter(
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700,
-                        color: _tierColor(user?.tier ?? 'explorer'),
-                        letterSpacing: 1.2),
-                  ),
-                ),
-              ],
-            ),
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: AppColors.ink),
@@ -118,7 +164,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildStats(dynamic user, int savedCount, int cityCount) {
+  Widget _buildNameShimmer() {
+    return Shimmer.fromColors(
+      baseColor: const Color(0xFFE0D9D0),
+      highlightColor: const Color(0xFFF5EFE6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+              width: 120,
+              height: 18,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(4))),
+          const SizedBox(height: 6),
+          Container(
+              width: 80,
+              height: 12,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(4))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStats(UserModel? user, int savedCount, int cityCount) {
     final stats = [
       ('${user?.score ?? 0}', 'SCORE'),
       ('$savedCount', 'SAVED'),
@@ -173,9 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(
                     'Save places to build your passport.',
                     style: GoogleFonts.inter(
-                      fontSize: 13,
-                      color: AppColors.warmGrey,
-                    ),
+                        fontSize: 13, color: AppColors.warmGrey),
                   ),
                 )
               : ListView.separated(

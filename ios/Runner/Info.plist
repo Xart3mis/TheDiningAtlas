@@ -68,5 +68,7 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>DiningAtlas needs your location to show nearby restaurants.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>DiningAtlas needs access to your photos to set your profile picture.</string>
 </dict>
 </plist>
