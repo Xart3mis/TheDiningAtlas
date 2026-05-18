@@ -113,6 +113,10 @@ class DiningAtlasApp extends StatelessWidget {
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
+  static void switchTab(int index) {
+    // stub — wired in Task 7 with GlobalKey
+  }
+
   @override
   State<MainShell> createState() => _MainShellState();
 }
