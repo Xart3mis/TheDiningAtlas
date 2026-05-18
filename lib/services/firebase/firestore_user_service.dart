@@ -105,7 +105,7 @@ class FirestoreUserService implements IUserService {
       final current = (snap.data() as Map<String, dynamic>?)?['score'] as int? ?? 0;
       final newScore = (current + delta).clamp(0, 999999);
       final tier = _tierForScore(newScore);
-      tx.update(ref, {'score': newScore, 'tier': tier});
+      tx.set(ref, {'score': newScore, 'tier': tier}, SetOptions(merge: true));
     });
   }
 
