@@ -11,10 +11,11 @@ class BudgetScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
-    final options = [
-      {'\$': 'Under 100 EGP'},
-      {'\$\$': '100 – 300 EGP'},
-      {'\$\$\$': '300+ EGP'},
+    final budgets = [
+      {r'$':    r'Under $15 · Budget'},
+      {r'$$':   r'$15 – $50 · Mid-range'},
+      {r'$$$':  r'$50 – $100 · Upscale'},
+      {r'$$$$': r'$100+ · Fine Dining'},
     ];
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -28,7 +29,7 @@ class BudgetScreen extends StatelessWidget {
           Text('Per meal or outing, roughly.',
               style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF6B6560))),
           const SizedBox(height: 32),
-          ...options.map((opt) {
+          ...budgets.map((opt) {
             final key = opt.keys.first;
             final label = opt.values.first;
             final selected = provider.budget == key;

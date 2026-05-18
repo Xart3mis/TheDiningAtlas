@@ -4,19 +4,24 @@ import 'package:provider/provider.dart';
 import '../../providers/onboarding_provider.dart';
 
 const _kVibes = [
-  {'id': 'hidden_cafe', 'label': 'Hidden Café', 'emoji': '☕'},
-  {'id': 'street_food', 'label': 'Street Food', 'emoji': '🌮'},
-  {'id': 'rooftop_bar', 'label': 'Rooftop Bar', 'emoji': '🍸'},
+  {'id': 'hidden_cafe',  'label': 'Hidden Café',  'emoji': '☕'},
+  {'id': 'street_food',  'label': 'Street Food',  'emoji': '🌮'},
+  {'id': 'rooftop_bar',  'label': 'Rooftop Bar',  'emoji': '🍸'},
   {'id': 'local_market', 'label': 'Local Market', 'emoji': '🛒'},
-  {'id': 'art_gallery', 'label': 'Art Gallery', 'emoji': '🎨'},
-  {'id': 'night_life', 'label': 'Nightlife', 'emoji': '🎵'},
-  {'id': 'fine_dining', 'label': 'Fine Dining', 'emoji': '🍽️'},
-  {'id': 'nature_spot', 'label': 'Nature Spot', 'emoji': '🌿'},
+  {'id': 'art_gallery',  'label': 'Art Gallery',  'emoji': '🎨'},
+  {'id': 'night_life',   'label': 'Nightlife',    'emoji': '🎵'},
+  {'id': 'fine_dining',  'label': 'Fine Dining',  'emoji': '🍽️'},
+  {'id': 'nature_spot',  'label': 'Nature Spot',  'emoji': '🌿'},
+  {'id': 'beach_vibes',  'label': 'Beach Vibes',  'emoji': '🏖️'},
+  {'id': 'craft_beer',   'label': 'Craft Beer',   'emoji': '🍺'},
+  {'id': 'wellness',     'label': 'Wellness',     'emoji': '🧘'},
+  {'id': 'cultural',     'label': 'Cultural',     'emoji': '🎭'},
 ];
 
 class VibeSelectorScreen extends StatelessWidget {
   final VoidCallback onNext;
-  const VibeSelectorScreen({super.key, required this.onNext});
+  final VoidCallback? onBack;
+  const VibeSelectorScreen({super.key, required this.onNext, this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +31,16 @@ class VibeSelectorScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          if (onBack != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: onBack,
+                child: const Icon(Icons.arrow_back_ios_new_rounded,
+                    size: 20, color: Color(0xFF6B6560)),
+              ),
+            ),
+          if (onBack != null) const SizedBox(height: 12),
           Text("What's your vibe?",
               style: GoogleFonts.fraunces(
                   fontSize: 28, fontWeight: FontWeight.w700, color: const Color(0xFF1C1C1A))),
@@ -35,10 +50,10 @@ class VibeSelectorScreen extends StatelessWidget {
           const SizedBox(height: 32),
           Expanded(
             child: GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: 3,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.4,
+              childAspectRatio: 1.1,
               children: _kVibes.map((vibe) {
                 final selected = provider.vibes.contains(vibe['id']);
                 return GestureDetector(

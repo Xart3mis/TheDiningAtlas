@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'vibe_selector_screen.dart';
 import 'budget_screen.dart';
 import 'atmosphere_screen.dart';
-import 'city_screen.dart';
+import 'destination_screen.dart';
 import 'profile_ready_screen.dart';
 
 class OnboardingShell extends StatefulWidget {
@@ -70,10 +70,10 @@ class _OnboardingShellState extends State<OnboardingShell> {
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
-                  VibeSelectorScreen(onNext: _next),
+                  VibeSelectorScreen(onNext: _next, onBack: () => Navigator.pop(context)),
                   BudgetScreen(onNext: _next, onBack: _back),
                   AtmosphereScreen(onNext: _next, onBack: _back),
-                  CityScreen(onNext: _next, onBack: _back),
+                  DestinationScreen(onNext: _next, onBack: _back),
                   const ProfileReadyScreen(),
                 ],
               ),
