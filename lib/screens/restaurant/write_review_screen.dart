@@ -50,12 +50,14 @@ class _WriteReviewScreenState extends State<WriteReviewScreen> {
     setState(() => _isSubmitting = true);
     try {
       final auth = context.read<AuthProvider>();
+      final isGuest = auth.user == null;
+      
       final review = ReviewModel(
         id: '',
         restaurantId: widget.restaurant.id,
-        authorId: auth.user!.uid,
-        authorName: auth.user!.displayName ?? 'Anonymous',
-        authorPhotoUrl: auth.user!.photoURL ?? '',
+        authorId: isGuest ? 'guest_user' : auth.user!.uid,
+        authorName: isGuest ? 'Guest Explorer' : (auth.user!.displayName ?? 'Anonymous'),
+        authorPhotoUrl: isGuest ? '' : (auth.user!.photoURL ?? ''),
         text: _reviewController.text.trim(),
         rating: _rating,
         upvotes: 0,

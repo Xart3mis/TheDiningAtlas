@@ -19,15 +19,20 @@ class RestaurantProvider extends ChangeNotifier {
   String? get error => _error;
   String get currentCityId => _currentCityId;
 
+  static const _timeout = Duration(seconds: 10);
+
   Future<void> loadFeed({String? cityId}) async {
     _currentCityId = cityId ?? _currentCityId;
     _isLoading = true;
     _error = null;
     notifyListeners();
     try {
-      _feed = await _service.fetchFeed(cityId: _currentCityId);
+      _feed = await _service
+          .fetchFeed(cityId: _currentCityId)
+          .timeout(_timeout, onTimeout: () => []);
     } catch (e) {
       _error = e.toString();
+      _feed = [];
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -36,11 +41,15 @@ class RestaurantProvider extends ChangeNotifier {
 
   Future<void> loadNearby(GeoPoint center) async {
     _isLoading = true;
+    _error = null;
     notifyListeners();
     try {
-      _feed = await _service.fetchNearby(center: center);
+      _feed = await _service
+          .fetchNearby(center: center)
+          .timeout(_timeout, onTimeout: () => []);
     } catch (e) {
       _error = e.toString();
+      _feed = [];
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -48,13 +57,20 @@ class RestaurantProvider extends ChangeNotifier {
   }
 
   Future<void> search(String query) async {
-    if (query.isEmpty) { _searchResults = []; notifyListeners(); return; }
+    if (query.isEmpty) {
+      _searchResults = [];
+      notifyListeners();
+      return;
+    }
     _isLoading = true;
     notifyListeners();
     try {
-      _searchResults = await _service.search(query: query, cityId: _currentCityId);
+      _searchResults = await _service
+          .search(query: query, cityId: _currentCityId)
+          .timeout(_timeout, onTimeout: () => []);
     } catch (e) {
       _error = e.toString();
+      _searchResults = [];
     } finally {
       _isLoading = false;
       notifyListeners();

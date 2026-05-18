@@ -44,24 +44,41 @@ class _AuthenticatedGateState extends State<_AuthenticatedGate> {
   @override
   void initState() {
     super.initState();
-    _init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _init();
+    });
   }
 
   Future<void> _init() async {
     final userProvider = context.read<UserProvider>();
     final notifProvider = context.read<NotificationProvider>();
 
+    // Load user first — this determines routing
     await userProvider.loadUser(widget.userId);
-    await notifProvider.initialize();
-    await notifProvider.getToken();
 
     if (!mounted) return;
 
+    // Route immediately so the user sees the screen
     if (!(userProvider.user?.onboardingComplete ?? true)) {
       setState(() => _state = _GateState.needsOnboarding);
     } else {
       setState(() => _state = _GateState.ready);
     }
+
+    // Init notifications in background — don't block rendering
+    _initNotificationsAsync(notifProvider);
+  }
+
+  void _initNotificationsAsync(NotificationProvider notifProvider) {
+    // Fire-and-forget: permission dialog & FCM token shouldn't block the UI
+    Future(() async {
+      try {
+        await notifProvider.initialize();
+        await notifProvider.getToken();
+      } catch (_) {
+        // Non-fatal: app works without push notifications
+      }
+    });
   }
 
   @override

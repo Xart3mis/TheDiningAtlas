@@ -37,7 +37,7 @@ class CityScreen extends StatelessWidget {
               children: _kCities.map((city) {
                 final selected = provider.cityId == city['id'];
                 return GestureDetector(
-                  onTap: () => provider.cityId = city['id']!,
+                  onTap: () => provider.setCity(city['id']!),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.only(bottom: 10),

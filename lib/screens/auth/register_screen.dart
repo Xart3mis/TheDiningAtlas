@@ -39,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (success && mounted) {
       // Update display name after sign-up
       await auth.user?.updateDisplayName(_nameController.text.trim());
+      if (mounted) Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
     }
   }
 

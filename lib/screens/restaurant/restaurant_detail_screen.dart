@@ -118,8 +118,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  final uid = authProvider.user?.uid;
-                  if (uid == null) return;
+                  final uid = authProvider.user?.uid ?? 'guest_user';
                   final messenger = ScaffoldMessenger.of(context);
                   try {
                     await savedProvider.toggleSave(uid: uid, restaurant: r);

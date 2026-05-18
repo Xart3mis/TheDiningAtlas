@@ -75,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
             onTap: () async {
               final navigator = Navigator.of(context);
               await context.read<AuthProvider>().signOut();
-              navigator.pushNamedAndRemoveUntil(RouteNames.kLogin, (_) => false);
+              navigator.pushNamedAndRemoveUntil('/', (_) => false);
             },
           ),
         ],
