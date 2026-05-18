@@ -18,6 +18,7 @@ class ChatInboxScreen extends StatefulWidget {
 class _ChatInboxScreenState extends State<ChatInboxScreen> {
   List<_ConversationRow>? _rows;
   bool _loading = true;
+  bool _loadInProgress = false;
   String? _error;
 
   @override
@@ -27,7 +28,9 @@ class _ChatInboxScreenState extends State<ChatInboxScreen> {
   }
 
   Future<void> _load() async {
-    if (!mounted) return;
+    if (!mounted || _loadInProgress) return;
+    _loadInProgress = true;
+    setState(() { _loading = true; _error = null; });
     final uid = context.read<AuthProvider>().user?.uid;
     if (uid == null) {
       setState(() { _loading = false; });
@@ -37,21 +40,23 @@ class _ChatInboxScreenState extends State<ChatInboxScreen> {
       final chatService = context.read<IChatService>();
       final userService = context.read<IUserService>();
       final chats = await chatService.fetchUserChats(uid);
-      final rows = <_ConversationRow>[];
-      for (final chat in chats) {
+      final futures = chats.map((chat) async {
         final otherUid = chat.participantUids.firstWhere(
           (id) => id != uid,
           orElse: () => '',
         );
-        if (otherUid.isEmpty) continue;
+        if (otherUid.isEmpty) return null;
         final other = await userService.fetchUser(otherUid);
-        rows.add(_ConversationRow(chat: chat, otherUid: otherUid, otherName: other?.displayName ?? 'User'));
-      }
+        return _ConversationRow(chat: chat, otherUid: otherUid, otherName: other?.displayName ?? 'User');
+      });
+      final settled = await Future.wait(futures);
       if (!mounted) return;
-      setState(() { _rows = rows; _loading = false; });
+      setState(() { _rows = settled.whereType<_ConversationRow>().toList(); _loading = false; });
     } catch (e) {
       if (!mounted) return;
       setState(() { _error = e.toString(); _loading = false; });
+    } finally {
+      _loadInProgress = false;
     }
   }
 
