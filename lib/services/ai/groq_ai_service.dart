@@ -88,4 +88,9 @@ Return ONLY a valid JSON object with these exact fields:
       throw Exception('Failed to parse AI summary response');
     }
   }
+
+  @override
+  Future<void> cacheSummary(String restaurantId, PlaceSummaryModel summary) async {
+    // GroqAiService is replaced by GeminiAiService; this is kept for reference only
+  }
 }
