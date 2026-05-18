@@ -179,6 +179,7 @@ class _CuisineFilterBarState extends State<_CuisineFilterBar> {
               } else {
                 await provider.loadCategory(f);
               }
+              if (!mounted) return;
               widget.onChanged();
             },
             child: Container(
