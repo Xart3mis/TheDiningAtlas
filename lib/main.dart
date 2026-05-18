@@ -16,16 +16,22 @@ import 'screens/auth/forgot_password_screen.dart';
 import 'screens/home/atlas_screen.dart';
 import 'screens/home/for_you_screen.dart';
 import 'screens/home/stories_screen.dart';
+import 'screens/notifications/notifications_screen.dart';
 import 'screens/trips/trips_screen.dart';
 import 'screens/profile/profile_screen.dart';
+import 'screens/profile/saved_places_screen.dart';
 import 'screens/profile/settings_screen.dart';
 import 'screens/onboarding/onboarding_shell.dart';
 import 'screens/restaurant/restaurant_detail_screen.dart';
 import 'screens/restaurant/write_review_screen.dart';
+import 'screens/restaurant/edit_review_screen.dart';
+import 'models/review_model.dart';
 import 'screens/restaurant/add_place_screen.dart';
 import 'screens/map/map_search_screen.dart';
 import 'screens/chat/chat_thread_screen.dart';
 import 'screens/premium/premium_upgrade_screen.dart';
+import 'screens/trips/plan_trip_screen.dart';
+import 'screens/search/search_screen.dart';
 import 'models/restaurant_model.dart';
 import 'widgets/offline_banner.dart';
 import 'widgets/shared_widgets.dart';
@@ -114,24 +120,18 @@ class DiningAtlasApp extends StatelessWidget {
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
       case RouteNames.kPremiumUpgrade:
         return MaterialPageRoute(builder: (_) => const PremiumUpgradeScreen());
-      case RouteNames.kPlanTrip:
+      case RouteNames.kEditReview:
+        final review = settings.arguments as ReviewModel;
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            backgroundColor: AppColors.cream,
-            appBar: AppBar(
-              backgroundColor: AppColors.cream,
-              elevation: 0,
-              leading: const BackButton(color: AppColors.ink),
-              title: Text('Plan a Trip',
-                  style: GoogleFonts.fraunces(
-                      fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.ink)),
-            ),
-            body: Center(
-              child: Text('Coming soon',
-                  style: GoogleFonts.inter(fontSize: 15, color: AppColors.warmGrey)),
-            ),
-          ),
-        );
+            builder: (_) => EditReviewScreen(review: review));
+      case RouteNames.kPlanTrip:
+        return MaterialPageRoute(builder: (_) => const PlanTripScreen());
+      case RouteNames.kNotifications:
+        return MaterialPageRoute(builder: (_) => const NotificationsScreen());
+      case RouteNames.kSavedPlaces:
+        return MaterialPageRoute(builder: (_) => const SavedPlacesScreen());
+      case RouteNames.kSearch:
+        return MaterialPageRoute(builder: (_) => const SearchScreen());
       default:
         return MaterialPageRoute(builder: (_) => const AuthGate());
     }
@@ -156,6 +156,7 @@ class _MainShellState extends State<MainShell> {
     AtlasScreen(),
     ForYouScreen(),
     StoriesScreen(),
+    NotificationsScreen(),
     TripsScreen(),
     ProfileScreen(),
   ];

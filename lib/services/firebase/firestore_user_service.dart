@@ -86,4 +86,9 @@ class FirestoreUserService implements IUserService {
     final snap = await _userDoc(uid).collection(AppConstants.kColSavedPlaces).count().get();
     return snap.count ?? 0;
   }
+
+  @override
+  Future<void> updateFcmToken(String uid, String token) async {
+    await _userDoc(uid).update({'fcmToken': token});
+  }
 }

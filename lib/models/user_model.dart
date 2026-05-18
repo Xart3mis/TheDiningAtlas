@@ -14,6 +14,7 @@ class UserModel {
   final String username;
   final String countryCode; // ISO-2
   final String onboardingCountryId; // e.g. 'japan', 'egypt'
+  final String? fcmToken;
 
   const UserModel({
     required this.uid,
@@ -29,7 +30,32 @@ class UserModel {
     this.username = '',
     this.countryCode = '',
     this.onboardingCountryId = '',
+    this.fcmToken,
   });
+
+  UserModel copyWith({
+    String? displayName,
+    String? photoUrl,
+    String? username,
+    String? fcmToken,
+  }) {
+    return UserModel(
+      uid: uid,
+      displayName: displayName ?? this.displayName,
+      email: email,
+      photoUrl: photoUrl ?? this.photoUrl,
+      tier: tier,
+      score: score,
+      isPremium: isPremium,
+      onboardingComplete: onboardingComplete,
+      chatPrivacy: chatPrivacy,
+      createdAt: createdAt,
+      username: username ?? this.username,
+      countryCode: countryCode,
+      onboardingCountryId: onboardingCountryId,
+      fcmToken: fcmToken ?? this.fcmToken,
+    );
+  }
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
@@ -47,6 +73,7 @@ class UserModel {
       username: d['username'] ?? '',
       countryCode: d['countryCode'] ?? '',
       onboardingCountryId: d['onboardingCountryId'] ?? '',
+      fcmToken: d['fcmToken'] as String?,
     );
   }
 
@@ -63,6 +90,7 @@ class UserModel {
     'username': username,
     'countryCode': countryCode,
     'onboardingCountryId': onboardingCountryId,
+    if (fcmToken != null) 'fcmToken': fcmToken,
   };
 }
 

@@ -8,6 +8,7 @@ class RouteNames {
   static const String kRestaurantDetail = '/restaurant';
   static const String kCityGuide = '/city-guide';
   static const String kWriteReview = '/write-review';
+  static const String kEditReview = '/edit-review';
   static const String kAddPlace = '/add-place';
   static const String kMapSearch = '/map-search';
   static const String kChatThread = '/chat';
@@ -15,4 +16,6 @@ class RouteNames {
   static const String kPremiumUpgrade = '/premium';
   static const String kNotifications = '/notifications';
   static const String kPlanTrip = '/plan-trip';
+  static const String kSavedPlaces = '/saved-places';
+  static const String kSearch = '/search';
 }

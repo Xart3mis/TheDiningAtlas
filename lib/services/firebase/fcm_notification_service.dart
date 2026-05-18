@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import '../../models/notification_model.dart';
 import '../interfaces/i_notification_service.dart';
 
 @pragma('vm:entry-point')
@@ -75,5 +77,17 @@ class FcmNotificationService implements INotificationService {
   @override
   Future<void> cancelGeofenceNotification(String placeId) async {
     // Cancel by notification id derived from placeId
+  }
+
+  @override
+  Future<List<NotificationModel>> fetchNotifications(String uid) async {
+    final snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('notifications')
+        .orderBy('createdAt', descending: true)
+        .limit(50)
+        .get();
+    return snap.docs.map(NotificationModel.fromFirestore).toList();
   }
 }

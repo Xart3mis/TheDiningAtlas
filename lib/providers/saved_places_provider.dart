@@ -9,6 +9,7 @@ class SavedPlacesProvider extends ChangeNotifier {
   final IUserService _userService;
   final INotificationService _notificationService;
   final IRestaurantService _restaurantService;
+
   SavedPlacesProvider(
       this._userService, this._notificationService, this._restaurantService);
 
@@ -44,7 +45,34 @@ class SavedPlacesProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> toggleSave({required String uid, required RestaurantModel restaurant}) async {
+  Future<void> loadSavedRestaurants(String uid) async {
+    _error = null;
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final ids = await _userService.fetchSavedPlaceIds(uid);
+      _savedIds = ids.toSet();
+      final results = <RestaurantModel>[];
+      for (final id in ids) {
+        try {
+          final restaurant = await _restaurantService.fetchById(id);
+          results.add(restaurant);
+        } catch (_) {
+          // Skip restaurants that can no longer be found
+        }
+      }
+      _savedRestaurants = results;
+      _loaded = true;
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> toggleSave(
+      {required String uid, required RestaurantModel restaurant}) async {
     _error = null;
     final wasSaved = _savedIds.contains(restaurant.id);
     if (wasSaved) {
@@ -60,10 +88,13 @@ class SavedPlacesProvider extends ChangeNotifier {
         await _userService.unsavePlace(uid: uid, placeId: restaurant.id);
         await _notificationService.cancelGeofenceNotification(restaurant.id);
       } else {
-        await _userService.savePlace(uid: uid, placeId: restaurant.id, reminderEnabled: true);
+        await _userService.savePlace(
+            uid: uid, placeId: restaurant.id, reminderEnabled: true);
         await _notificationService.scheduleGeofenceNotification(
-          placeId: restaurant.id, placeName: restaurant.name,
-          lat: restaurant.geopoint.latitude, lng: restaurant.geopoint.longitude,
+          placeId: restaurant.id,
+          placeName: restaurant.name,
+          lat: restaurant.geopoint.latitude,
+          lng: restaurant.geopoint.longitude,
         );
       }
     } on QuotaException catch (e) {

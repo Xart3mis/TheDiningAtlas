@@ -49,6 +49,39 @@ class ReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> editReview({
+    required String restaurantId,
+    required String reviewId,
+    required String text,
+    required double rating,
+  }) async {
+    await _reviewService.editReview(
+      restaurantId: restaurantId,
+      reviewId: reviewId,
+      text: text,
+      rating: rating,
+    );
+    final list = _reviews[restaurantId];
+    if (list != null) {
+      final idx = list.indexWhere((r) => r.id == reviewId);
+      if (idx != -1) {
+        final old = list[idx];
+        _reviews[restaurantId]![idx] = ReviewModel(
+          id: reviewId,
+          restaurantId: restaurantId,
+          authorId: old.authorId,
+          authorName: old.authorName,
+          authorPhotoUrl: old.authorPhotoUrl,
+          text: text,
+          rating: rating,
+          upvotes: old.upvotes,
+          createdAt: old.createdAt,
+        );
+      }
+    }
+    notifyListeners();
+  }
+
   Future<void> upvote({required String restaurantId, required String reviewId}) async {
     await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId);
     notifyListeners();

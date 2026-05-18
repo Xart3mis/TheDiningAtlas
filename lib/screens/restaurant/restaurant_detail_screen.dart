@@ -355,19 +355,89 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     ],
                   ),
                   const Spacer(),
-                  GestureDetector(
-                    onTap: () => reviewProvider.upvote(
-                        restaurantId: r.id, reviewId: review.id),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.thumb_up_outlined,
-                            size: 14, color: AppColors.warmGrey),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () => reviewProvider.upvote(
+                            restaurantId: r.id, reviewId: review.id),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.thumb_up_outlined,
+                                size: 14, color: AppColors.warmGrey),
+                            const SizedBox(width: 4),
+                            Text('${review.upvotes}',
+                                style: GoogleFonts.inter(
+                                    fontSize: 12, color: AppColors.warmGrey)),
+                          ],
+                        ),
+                      ),
+                      if (review.authorId ==
+                          context.read<AuthProvider>().user?.uid) ...[
                         const SizedBox(width: 4),
-                        Text('${review.upvotes}',
-                            style: GoogleFonts.inter(
-                                fontSize: 12, color: AppColors.warmGrey)),
+                        PopupMenuButton<String>(
+                          icon: const Icon(Icons.more_vert,
+                              size: 18, color: AppColors.warmGrey),
+                          onSelected: (value) async {
+                            if (value == 'edit') {
+                              Navigator.pushNamed(
+                                  context, RouteNames.kEditReview,
+                                  arguments: review);
+                            } else if (value == 'delete') {
+                              final confirmed = await showDialog<bool>(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  title: Text('Delete Review',
+                                      style: GoogleFonts.fraunces(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          color: AppColors.ink)),
+                                  content: Text(
+                                      'Are you sure you want to delete this review?',
+                                      style: GoogleFonts.inter(
+                                          fontSize: 14,
+                                          color: AppColors.warmGrey)),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                      child: Text('Delete',
+                                          style: GoogleFonts.inter(
+                                              color: Colors.red)),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (confirmed == true && context.mounted) {
+                                await context
+                                    .read<ReviewProvider>()
+                                    .deleteReview(
+                                        restaurantId: r.id,
+                                        reviewId: review.id);
+                              }
+                            }
+                          },
+                          itemBuilder: (_) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Text('Edit',
+                                  style: GoogleFonts.inter(fontSize: 14)),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Text('Delete',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: Colors.red)),
+                            ),
+                          ],
+                        ),
                       ],
-                    ),
+                    ],
                   ),
                 ],
               ),

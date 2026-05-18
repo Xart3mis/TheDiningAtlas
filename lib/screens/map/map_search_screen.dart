@@ -144,10 +144,16 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
   }
 }
 
-class _CuisineFilterBar extends StatelessWidget {
+class _CuisineFilterBar extends StatefulWidget {
   final VoidCallback onChanged;
-
   const _CuisineFilterBar({required this.onChanged});
+
+  @override
+  State<_CuisineFilterBar> createState() => _CuisineFilterBarState();
+}
+
+class _CuisineFilterBarState extends State<_CuisineFilterBar> {
+  String _selected = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -163,21 +169,25 @@ class _CuisineFilterBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: ['All', ...filters].map((f) {
+          final isSelected = _selected == f;
           return GestureDetector(
             onTap: () async {
+              setState(() => _selected = f);
               final provider = context.read<RestaurantProvider>();
               if (f == 'All') {
                 await provider.loadFeed(cityId: provider.currentCityId);
               } else {
                 await provider.loadCategory(f);
               }
-              onChanged();
+              if (!mounted) return;
+              widget.onChanged();
             },
             child: Container(
               margin: const EdgeInsets.only(right: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: isSelected ? AppColors.terracotta : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(color: Colors.black12, blurRadius: 4)
@@ -187,7 +197,7 @@ class _CuisineFilterBar extends StatelessWidget {
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
-                      color: AppColors.ink)),
+                      color: isSelected ? Colors.white : AppColors.ink)),
             ),
           );
         }).toList(),
