@@ -41,4 +41,20 @@ class UserProvider extends ChangeNotifier {
     _user = updated;
     notifyListeners();
   }
+
+  Future<void> updateProfile({
+    String? displayName,
+    String? photoUrl,
+    String? username,
+  }) async {
+    if (_user == null) return;
+    final updated = _user!.copyWith(
+      displayName: displayName,
+      photoUrl: photoUrl,
+      username: username,
+    );
+    await _service.updateUser(updated);
+    _user = updated;
+    notifyListeners();
+  }
 }
