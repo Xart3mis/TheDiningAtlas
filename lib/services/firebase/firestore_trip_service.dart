@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import '../interfaces/i_trip_service.dart';
 import '../../models/trip_model.dart';
 import '../../core/constants/app_constants.dart';
+import '../../theme/app_theme.dart';
 
 class FirestoreTripService implements ITripService {
   final _db = FirebaseFirestore.instance;
@@ -14,18 +16,61 @@ class FirestoreTripService implements ITripService {
   @override
   Future<List<TripModel>> fetchTrips(String uid) async {
     final snap = await _tripsCol(uid).orderBy('startDate', descending: true).get();
-    return snap.docs.map((doc) {
+    final trips = <TripModel>[];
+
+    for (final doc in snap.docs) {
       final d = doc.data() as Map<String, dynamic>;
-      return TripModel(
-        id: doc.id, uid: uid,
+      final daysSnap = await _tripsCol(uid)
+          .doc(doc.id)
+          .collection(AppConstants.kColDays)
+          .orderBy('date')
+          .get();
+
+      final days = <TripDayModel>[];
+      for (final dayDoc in daysSnap.docs) {
+        final dd = dayDoc.data() as Map<String, dynamic>;
+        final spotsSnap = await _tripsCol(uid)
+            .doc(doc.id)
+            .collection(AppConstants.kColDays)
+            .doc(dayDoc.id)
+            .collection(AppConstants.kColSpots)
+            .orderBy('time')
+            .get();
+
+        final spots = spotsSnap.docs.map((s) {
+          final sd = s.data() as Map<String, dynamic>;
+          return TripSpotModel(
+            id: s.id,
+            time: sd['time'] ?? '',
+            mealType: sd['mealType'] ?? '',
+            restaurantId: sd['restaurantId'] ?? '',
+            name: sd['name'] ?? '',
+            neighborhood: sd['neighborhood'] ?? '',
+            statusLabel: sd['statusLabel'] ?? '',
+            statusColor: Colors.green,
+            tileColor: AppColors.teal,
+          );
+        }).toList();
+
+        days.add(TripDayModel(
+          id: dayDoc.id,
+          date: (dd['date'] as Timestamp?)?.toDate() ?? DateTime.now(),
+          spots: spots,
+        ));
+      }
+
+      trips.add(TripModel(
+        id: doc.id,
+        uid: uid,
         title: d['title'] ?? '',
         cityId: d['cityId'] ?? '',
         startDate: (d['startDate'] as Timestamp).toDate(),
         endDate: (d['endDate'] as Timestamp).toDate(),
         participantUids: List<String>.from(d['participantUids'] ?? []),
-        days: [],
-      );
-    }).toList();
+        days: days,
+      ));
+    }
+    return trips;
   }
 
   @override
@@ -37,6 +82,19 @@ class FirestoreTripService implements ITripService {
       'endDate': Timestamp.fromDate(trip.endDate),
       'participantUids': trip.participantUids,
     });
+
+    // Seed empty day documents so the day selector has entries
+    if (trip.days.isNotEmpty) {
+      final batch = _db.batch();
+      for (final day in trip.days) {
+        final dayRef = _tripsCol(trip.uid)
+            .doc(ref.id)
+            .collection(AppConstants.kColDays)
+            .doc(day.id);
+        batch.set(dayRef, {'date': Timestamp.fromDate(day.date)});
+      }
+      await batch.commit();
+    }
     return ref.id;
   }
 

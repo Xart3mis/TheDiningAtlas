@@ -73,6 +73,41 @@ class _TripsScreenState extends State<TripsScreen> {
                 childCount: spotCount,
               ),
             ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    final trip = tripProvider.trips.first;
+                    final day = trip.days.isNotEmpty
+                        ? trip.days[_selectedDayIndex % trip.days.length]
+                        : null;
+                    if (day == null) return;
+                    final uid = context.read<AuthProvider>().user?.uid ?? '';
+                    Navigator.pushNamed(
+                      context,
+                      RouteNames.kTripPlacePicker,
+                      arguments: {
+                        'tripId': trip.id,
+                        'dayId': day.id,
+                        'uid': uid,
+                      },
+                    );
+                  },
+                  icon: const Icon(Icons.add_location_alt_outlined, size: 18),
+                  label: Text('Add a Place',
+                      style: GoogleFonts.inter(
+                          fontSize: 14, fontWeight: FontWeight.w600)),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.terracotta,
+                    side: const BorderSide(color: AppColors.terracotta),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              ),
+            ),
           ],
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
