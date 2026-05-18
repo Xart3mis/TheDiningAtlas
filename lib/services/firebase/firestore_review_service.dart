@@ -56,20 +56,23 @@ class FirestoreReviewService implements IReviewService {
     final stats = await _computeRatingStats(review.restaurantId);
     await _restaurantRef(review.restaurantId).update(stats);
 
-    // 3. Award +5 score to the restaurant's contributor (if any)
+    // 3. Award +5 score to the restaurant's contributor (real users only)
     final restaurantDoc = await _restaurantRef(review.restaurantId).get();
     final data = restaurantDoc.data() as Map<String, dynamic>?;
     final contributorId = data?['contributorId'] as String?;
-    if (contributorId != null && contributorId.isNotEmpty) {
+    if (contributorId != null &&
+        contributorId.isNotEmpty &&
+        !contributorId.startsWith('seed:')) {
       await _db.runTransaction((tx) async {
         final userSnap = await tx.get(_userRef(contributorId));
         final currentScore = (userSnap.data() as Map<String, dynamic>?)?['score'] as int? ?? 0;
         final newScore = currentScore + 5;
         final newTier = _tierForScore(newScore);
-        tx.update(_userRef(contributorId), {
-          'score': newScore,
-          'tier': newTier,
-        });
+        tx.set(
+          _userRef(contributorId),
+          {'score': newScore, 'tier': newTier},
+          SetOptions(merge: true),
+        );
       });
     }
   }

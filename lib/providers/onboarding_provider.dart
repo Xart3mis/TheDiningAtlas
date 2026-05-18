@@ -3,7 +3,6 @@ import '../services/interfaces/i_user_service.dart';
 import '../services/interfaces/i_ai_service.dart';
 import '../models/onboarding_prefs_model.dart';
 import '../models/user_model.dart';
-import '../core/constants/app_constants.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   final IUserService _userService;
@@ -14,6 +13,8 @@ class OnboardingProvider extends ChangeNotifier {
   String _budget = '\$\$';
   final List<String> _atmosphere = [];
   String _countryId = '';
+  String _countryCode = '';
+  String _countryName = '';
   bool _isLoading = false;
   bool _completed = false;
 
@@ -21,20 +22,8 @@ class OnboardingProvider extends ChangeNotifier {
   String get budget => _budget;
   List<String> get atmosphere => List.unmodifiable(_atmosphere);
   String get countryId => _countryId;
-  String get countryCode {
-    final entry = kSupportedCountries.firstWhere(
-      (c) => c['id'] == _countryId,
-      orElse: () => {'code': ''},
-    );
-    return entry['code'] ?? '';
-  }
-  String get countryName {
-    final entry = kSupportedCountries.firstWhere(
-      (c) => c['id'] == _countryId,
-      orElse: () => {'name': ''},
-    );
-    return entry['name'] ?? '';
-  }
+  String get countryCode => _countryCode;
+  String get countryName => _countryName;
   bool get isLoading => _isLoading;
   bool get completed => _completed;
 
@@ -61,8 +50,10 @@ class OnboardingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCountry(String id) {
-    _countryId = id;
+  void setCountry(String code, String name) {
+    _countryId = name.toLowerCase();
+    _countryCode = code;
+    _countryName = name;
     notifyListeners();
   }
 

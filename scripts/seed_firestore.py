@@ -67,6 +67,12 @@ def main() -> None:
         help="Print generated documents.",
     )
 
+    parser.add_argument(
+        "--clear",
+        action="store_true",
+        help="Delete all existing documents in cities and restaurants before seeding.",
+    )
+
     args = parser.parse_args()
 
     seed_path = Path(args.seed)
@@ -90,6 +96,10 @@ def main() -> None:
         project_id=args.project_id,
         credentials_path=args.credentials,
     )
+
+    if args.clear:
+        clear_collection(db, "cities")
+        clear_collection(db, "restaurants")
 
     cities, restaurants = build_documents(seed)
 
@@ -280,7 +290,7 @@ def restaurant_document(
 
         "musicGenre": venue.get("music_genre"),
 
-        "mediaUrls": [],
+        "mediaUrls": [venue["image_url"]] if venue.get("image_url") else [],
 
         "avgRating": seed_rating(restaurant_id),
         "reviewCount": 0,
@@ -317,6 +327,28 @@ def restaurant_document(
     }
 
     return clean_document(document)
+
+
+def clear_collection(db, collection_name: str) -> None:
+    batch_size = 450
+    deleted = 0
+
+    while True:
+        docs = list(db.collection(collection_name).limit(batch_size).stream())
+
+        if not docs:
+            break
+
+        batch = db.batch()
+
+        for doc in docs:
+            batch.delete(doc.reference)
+
+        batch.commit()
+        deleted += len(docs)
+        print(f"Deleted {deleted} {collection_name} documents...")
+
+    print(f"Cleared {collection_name} ({deleted} total)")
 
 
 def write_documents(

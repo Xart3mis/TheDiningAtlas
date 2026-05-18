@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geoflutterfire_plus/geoflutterfire_plus.dart';
 import '../interfaces/i_restaurant_service.dart';
 import '../../models/restaurant_model.dart';
 import '../../core/constants/app_constants.dart';
@@ -22,15 +21,20 @@ class FirestoreRestaurantService implements IRestaurantService {
 
   @override
   Future<List<RestaurantModel>> fetchNearby({required GeoPoint center, double radiusKm = 0.5}) async {
-    final geoFirePoint = GeoFirePoint(GeoPoint(center.latitude, center.longitude));
-    final stream = GeoCollectionReference(_col).subscribeWithin(
-      center: geoFirePoint,
-      radiusInKm: radiusKm,
-      field: 'geopoint',
-      geopointFrom: (data) => (data as Map<String, dynamic>)['geopoint'] as GeoPoint,
-    );
-    final docs = await stream.first;
-    return docs.map((d) => RestaurantModel.fromFirestore(d)).toList();
+    // GeoPoint ordering is (latitude, longitude) — a latitude band query gives a
+    // good-enough bounding box for venue-scale radii without needing a geohash field.
+    final latDelta = radiusKm / 111.0;
+    final snap = await _col
+        .where('coordinates',
+            isGreaterThanOrEqualTo: GeoPoint(center.latitude - latDelta, -180))
+        .where('coordinates',
+            isLessThanOrEqualTo: GeoPoint(center.latitude + latDelta, 180))
+        .limit(50)
+        .get();
+    return snap.docs
+        .map(RestaurantModel.fromFirestore)
+        .where((r) => r.status == 'approved')
+        .toList();
   }
 
   @override

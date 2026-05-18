@@ -22,6 +22,10 @@ class SeedDataProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   SeedCityModel? get defaultCity => _cities.isEmpty ? null : _cities.first;
+
+  List<SeedCityModel> citiesForCountry(String countryId) => countryId.isEmpty
+      ? _cities
+      : _cities.where((c) => c.country.toLowerCase() == countryId.toLowerCase()).toList();
   List<SeedCityModel> get passportCities => _passportCities;
 
   Future<void> load() async {
