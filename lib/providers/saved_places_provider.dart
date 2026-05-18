@@ -34,6 +34,7 @@ class SavedPlacesProvider extends ChangeNotifier {
   }
 
   Future<void> loadSavedRestaurants(String uid) async {
+    _error = null;
     _loadingRestaurants = true;
     notifyListeners();
     try {
