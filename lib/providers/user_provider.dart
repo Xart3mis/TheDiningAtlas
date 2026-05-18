@@ -58,6 +58,14 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateCountry(String uid, String countryId) async {
+    await _service.updateCountry(uid, countryId);
+    if (_user != null) {
+      _user = _user!.copyWith(onboardingCountryId: countryId);
+      notifyListeners();
+    }
+  }
+
   void reset() {
     _user = null;
     _isLoading = false;

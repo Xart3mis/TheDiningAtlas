@@ -91,4 +91,9 @@ class FirestoreUserService implements IUserService {
   Future<void> updateFcmToken(String uid, String token) async {
     await _userDoc(uid).update({'fcmToken': token});
   }
+
+  @override
+  Future<void> updateCountry(String uid, String countryId) async {
+    await _userDoc(uid).update({'onboardingCountryId': countryId});
+  }
 }

@@ -38,6 +38,7 @@ class UserModel {
     String? photoUrl,
     String? username,
     String? fcmToken,
+    String? onboardingCountryId,
   }) {
     return UserModel(
       uid: uid,
@@ -52,7 +53,7 @@ class UserModel {
       createdAt: createdAt,
       username: username ?? this.username,
       countryCode: countryCode,
-      onboardingCountryId: onboardingCountryId,
+      onboardingCountryId: onboardingCountryId ?? this.onboardingCountryId,
       fcmToken: fcmToken ?? this.fcmToken,
     );
   }
