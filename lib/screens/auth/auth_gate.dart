@@ -66,15 +66,14 @@ class _AuthenticatedGateState extends State<_AuthenticatedGate> {
     }
 
     // Init notifications in background — don't block rendering
-    _initNotificationsAsync(notifProvider);
+    _initNotificationsAsync(notifProvider, widget.userId);
   }
 
-  void _initNotificationsAsync(NotificationProvider notifProvider) {
-    // Fire-and-forget: permission dialog & FCM token shouldn't block the UI
+  void _initNotificationsAsync(NotificationProvider notifProvider, String uid) {
     Future(() async {
       try {
         await notifProvider.initialize();
-        await notifProvider.getToken();
+        await notifProvider.saveToken(uid);
       } catch (_) {
         // Non-fatal: app works without push notifications
       }

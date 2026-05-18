@@ -16,6 +16,7 @@ import 'screens/auth/forgot_password_screen.dart';
 import 'screens/home/atlas_screen.dart';
 import 'screens/home/for_you_screen.dart';
 import 'screens/home/stories_screen.dart';
+import 'screens/notifications/notifications_screen.dart';
 import 'screens/trips/trips_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'screens/profile/settings_screen.dart';
@@ -162,6 +163,7 @@ class _MainShellState extends State<MainShell> {
     AtlasScreen(),
     ForYouScreen(),
     StoriesScreen(),
+    NotificationsScreen(),
     TripsScreen(),
     ProfileScreen(),
   ];
