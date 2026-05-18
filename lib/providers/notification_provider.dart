@@ -32,6 +32,11 @@ class NotificationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> seedDemoNotifications(String uid) async {
+    await _service.seedDemoNotifications(uid);
+    await loadNotifications(uid);
+  }
+
   void incrementBadge() {
     _badgeCount++;
     notifyListeners();

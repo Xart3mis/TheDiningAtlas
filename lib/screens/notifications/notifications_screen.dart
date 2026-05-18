@@ -20,7 +20,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       if (!mounted) return;
       final uid = context.read<AuthProvider>().user?.uid;
       if (uid != null) {
-        context.read<NotificationProvider>().loadNotifications(uid);
+        context.read<NotificationProvider>().seedDemoNotifications(uid);
         context.read<NotificationProvider>().clearBadge();
       }
     });
@@ -36,7 +36,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.cream,
         elevation: 0,
-        leading: const BackButton(color: AppColors.ink),
+        automaticallyImplyLeading: false,
         title: Text('Notifications',
             style: GoogleFonts.fraunces(
                 fontSize: 18,

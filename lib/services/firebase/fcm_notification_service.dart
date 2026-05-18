@@ -90,4 +90,48 @@ class FcmNotificationService implements INotificationService {
         .get();
     return snap.docs.map(NotificationModel.fromFirestore).toList();
   }
+
+  @override
+  Future<void> seedDemoNotifications(String uid) async {
+    final col = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('notifications');
+    final existing = await col.limit(1).get();
+    if (existing.docs.isNotEmpty) return; // already seeded
+
+    final now = DateTime.now();
+    final demos = [
+      {
+        'title': 'New review on your spot!',
+        'body': 'Someone left a 5-star review on Café Marais.',
+        'type': 'new_review',
+        'relatedId': '',
+        'createdAt': Timestamp.fromDate(now.subtract(const Duration(minutes: 10))),
+        'read': false,
+      },
+      {
+        'title': 'You\'re near a saved place!',
+        'body': 'La Brasserie du Coin is 200m away. Good time to visit?',
+        'type': 'nearby_saved',
+        'relatedId': '',
+        'createdAt': Timestamp.fromDate(now.subtract(const Duration(hours: 2))),
+        'read': false,
+      },
+      {
+        'title': 'Someone wants to chat',
+        'body': 'A local has a question about your recommendation.',
+        'type': 'chat',
+        'relatedId': '',
+        'createdAt': Timestamp.fromDate(now.subtract(const Duration(days: 1))),
+        'read': true,
+      },
+    ];
+
+    final batch = FirebaseFirestore.instance.batch();
+    for (final n in demos) {
+      batch.set(col.doc(), n);
+    }
+    await batch.commit();
+  }
 }

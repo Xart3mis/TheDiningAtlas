@@ -7,4 +7,5 @@ abstract class INotificationService {
   Future<void> scheduleGeofenceNotification({required String placeId, required String placeName, required double lat, required double lng});
   Future<void> cancelGeofenceNotification(String placeId);
   Future<List<NotificationModel>> fetchNotifications(String uid);
+  Future<void> seedDemoNotifications(String uid);
 }
