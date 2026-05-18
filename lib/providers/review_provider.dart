@@ -78,6 +78,7 @@ class ReviewProvider extends ChangeNotifier {
           text: text,
           rating: rating,
           upvotes: old.upvotes,
+          likedBy: old.likedBy,
           createdAt: old.createdAt,
         );
       }
@@ -85,14 +86,15 @@ class ReviewProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> upvote({required String restaurantId, required String reviewId}) async {
+  Future<void> upvote({required String restaurantId, required String reviewId, required String uid}) async {
     final list = _reviews[restaurantId];
     if (list == null) return;
     final idx = list.indexWhere((r) => r.id == reviewId);
     if (idx == -1) return;
 
-    // Store old state for rollback
     final old = list[idx];
+    if (old.hasLiked(uid)) return; // already liked — ignore tap
+
     // Optimistic update
     _reviews[restaurantId]![idx] = ReviewModel(
       id: old.id,
@@ -103,14 +105,15 @@ class ReviewProvider extends ChangeNotifier {
       text: old.text,
       rating: old.rating,
       upvotes: old.upvotes + 1,
+      likedBy: [...old.likedBy, uid],
       createdAt: old.createdAt,
     );
     notifyListeners();
 
     try {
-      await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId);
+      await _reviewService.upvoteReview(restaurantId: restaurantId, reviewId: reviewId, uid: uid);
     } catch (_) {
-      // Inline rollback — just restore old model, single notifyListeners
+      // Rollback on failure
       _reviews[restaurantId]![idx] = old;
       notifyListeners();
     }

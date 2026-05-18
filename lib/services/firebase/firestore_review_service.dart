@@ -112,9 +112,18 @@ class FirestoreReviewService implements IReviewService {
   Future<void> upvoteReview({
     required String restaurantId,
     required String reviewId,
+    required String uid,
   }) async {
-    await _reviewsCol(restaurantId).doc(reviewId).update({
-      'upvotes': FieldValue.increment(1),
+    final ref = _reviewsCol(restaurantId).doc(reviewId);
+    await _db.runTransaction((tx) async {
+      final snap = await tx.get(ref);
+      final data = snap.data() as Map<String, dynamic>?;
+      final liked = List<String>.from(data?['likedBy'] ?? []);
+      if (liked.contains(uid)) return; // already liked — no-op
+      tx.update(ref, {
+        'upvotes': FieldValue.increment(1),
+        'likedBy': FieldValue.arrayUnion([uid]),
+      });
     });
   }
 

@@ -9,7 +9,7 @@ import '../../providers/trip_provider.dart';
 import '../../models/restaurant_model.dart';
 import '../../models/trip_model.dart';
 
-class TripPlacePickerScreen extends StatelessWidget {
+class TripPlacePickerScreen extends StatefulWidget {
   final String tripId;
   final String dayId;
   final String uid;
@@ -20,6 +20,23 @@ class TripPlacePickerScreen extends StatelessWidget {
     required this.dayId,
     required this.uid,
   });
+
+  @override
+  State<TripPlacePickerScreen> createState() => _TripPlacePickerScreenState();
+}
+
+class _TripPlacePickerScreenState extends State<TripPlacePickerScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (!mounted) return;
+      final rp = context.read<RestaurantProvider>();
+      if (rp.feed.isEmpty) {
+        rp.loadFeed(cityId: rp.currentCityId.isNotEmpty ? rp.currentCityId : 'paris_france');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +149,9 @@ class TripPlacePickerScreen extends StatelessWidget {
     );
     try {
       await tripProvider.addSpot(
-        uid: uid,
-        tripId: tripId,
-        dayId: dayId,
+        uid: widget.uid,
+        tripId: widget.tripId,
+        dayId: widget.dayId,
         spot: spot,
       );
       if (context.mounted) {
