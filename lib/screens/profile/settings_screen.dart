@@ -62,6 +62,25 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           const Divider(),
+          const _SectionHeader(title: 'Chat'),
+          ListTile(
+            title: Text('My Chats',
+                style: GoogleFonts.inter(
+                    fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.ink)),
+            subtitle: Text('Chat with locals and AI assistant',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
+            trailing: const Icon(Icons.chevron_right, color: AppColors.warmGrey),
+            onTap: () => Navigator.pushNamed(
+              context,
+              RouteNames.kChatThread,
+              arguments: {
+                'otherUid': 'ai_assistant',
+                'placeId': '',
+                'otherName': 'AI Assistant',
+              },
+            ),
+          ),
+          const Divider(),
           const _SectionHeader(title: 'Chat Privacy'),
           RadioListTile<String>(
             title: Text('Public — Anyone can message me',
