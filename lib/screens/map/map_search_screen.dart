@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,18 +28,23 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
   }
 
   Future<void> _loadNearby() async {
+    if (!mounted) return;
     final locationProvider = context.read<LocationProvider>();
+    final restaurantProvider = context.read<RestaurantProvider>();
+
     final pos = await locationProvider.getCurrentPosition();
     if (!mounted) return;
+
     if (pos != null) {
-      await context
-          .read<RestaurantProvider>()
-          .loadNearby(pos);
+      // Convert geolocator Position to Firestore GeoPoint
+      final geoPoint = GeoPoint(pos.latitude, pos.longitude);
+      await restaurantProvider.loadNearby(geoPoint);
     }
-    _buildMarkers();
+    if (mounted) _buildMarkers();
   }
 
   void _buildMarkers() {
+    if (!mounted) return;
     final restaurants = context.read<RestaurantProvider>().feed;
     setState(() {
       _markers = restaurants.map((r) {
@@ -54,6 +60,12 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
         );
       }).toSet();
     });
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,17 +89,21 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
             child: GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Container(
-                width: 36, height: 36,
-                decoration: BoxDecoration(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                     boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)]),
-                child: const Icon(Icons.arrow_back_ios_new, size: 16, color: AppColors.ink),
+                child: const Icon(Icons.arrow_back_ios_new,
+                    size: 16, color: AppColors.ink),
               ),
             ),
           ),
-          Positioned(
-            bottom: 80, left: 0, right: 0,
+          const Positioned(
+            bottom: 80,
+            left: 0,
+            right: 0,
             child: _CuisineFilterBar(),
           ),
         ],
@@ -97,7 +113,9 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
 }
 
 class _CuisineFilterBar extends StatelessWidget {
-  final _filters = ['All', 'Japanese', 'Cafe', 'Street Food', 'Bar'];
+  const _CuisineFilterBar();
+
+  static const _filters = ['All', 'Japanese', 'Cafe', 'Street Food', 'Bar'];
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +130,8 @@ class _CuisineFilterBar extends StatelessWidget {
               if (f == 'All') {
                 provider.loadFeed(cityId: provider.currentCityId);
               } else {
-                provider.fetchByCategory(f);
+                // Use search as a proxy for category filtering
+                provider.search(f);
               }
             },
             child: Container(
@@ -121,10 +140,15 @@ class _CuisineFilterBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                boxShadow: const [
+                  BoxShadow(color: Colors.black12, blurRadius: 4)
+                ],
               ),
               child: Text(f,
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.ink)),
+                  style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: AppColors.ink)),
             ),
           );
         }).toList(),

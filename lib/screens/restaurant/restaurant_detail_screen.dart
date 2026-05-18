@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../models/restaurant_model.dart';
-import '../../models/ai_summary_model.dart';
+import '../../models/place_summary_model.dart';
 import '../../providers/review_provider.dart';
 import '../../providers/saved_places_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -29,6 +29,7 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      if (!mounted) return;
       context.read<ReviewProvider>().loadReviews(widget.restaurant.id);
       context.read<AiProvider>().loadSummary(widget.restaurant.id);
     });
@@ -117,14 +118,14 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
             children: [
               GestureDetector(
                 onTap: () async {
+                  final uid = authProvider.user?.uid;
+                  if (uid == null) return;
+                  final messenger = ScaffoldMessenger.of(context);
                   try {
-                    await savedProvider.toggleSave(
-                        uid: authProvider.user!.uid, restaurant: r);
+                    await savedProvider.toggleSave(uid: uid, restaurant: r);
                   } catch (e) {
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(e.toString())));
-                    }
+                    messenger.showSnackBar(
+                        SnackBar(content: Text(e.toString())));
                   }
                 },
                 child: Container(
@@ -440,7 +441,7 @@ class _AiSummaryCard extends StatelessWidget {
 }
 
 class _AiSummaryContent extends StatelessWidget {
-  final AiSummaryModel summary;
+  final PlaceSummaryModel summary;
   const _AiSummaryContent({required this.summary});
 
   @override

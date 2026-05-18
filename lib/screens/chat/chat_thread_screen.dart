@@ -29,9 +29,11 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final auth = context.read<AuthProvider>();
+      if (!mounted) return;
+      final uid = context.read<AuthProvider>().user?.uid;
+      if (uid == null) return;
       context.read<ChatProvider>().openChat(
-            currentUid: auth.user!.uid,
+            currentUid: uid,
             otherUid: widget.otherUid,
             placeId: widget.placeId,
           );

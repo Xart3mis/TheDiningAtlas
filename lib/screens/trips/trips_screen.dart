@@ -21,9 +21,10 @@ class _TripsScreenState extends State<TripsScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final auth = context.read<AuthProvider>();
-      if (auth.user != null) {
-        context.read<TripProvider>().loadTrips(auth.user!.uid);
+      if (!mounted) return;
+      final uid = context.read<AuthProvider>().user?.uid;
+      if (uid != null) {
+        context.read<TripProvider>().loadTrips(uid);
       }
     });
   }
@@ -232,7 +233,7 @@ class _SpotCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(spot.restaurantName,
+                                Text(spot.name,
                                     style: GoogleFonts.fraunces(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w600,

@@ -4,16 +4,31 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'theme/app_theme.dart';
-import 'screens/auth_gate.dart';
-import 'screens/atlas_screen.dart';
-import 'screens/for_you_screen.dart';
-import 'screens/stories_screen.dart';
-import 'screens/trips_screen.dart';
-import 'screens/profile_screen.dart';
-import 'widgets/shared_widgets.dart';
-import 'widgets/offline_banner.dart';
-
 import 'core/service_provider.dart';
+import 'core/constants/route_names.dart';
+
+// Screens
+import 'screens/auth/auth_gate.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart';
+import 'screens/auth/forgot_password_screen.dart';
+import 'screens/home/atlas_screen.dart';
+import 'screens/home/for_you_screen.dart';
+import 'screens/home/stories_screen.dart';
+import 'screens/trips/trips_screen.dart';
+import 'screens/profile/profile_screen.dart';
+import 'screens/profile/settings_screen.dart';
+import 'screens/onboarding/onboarding_shell.dart';
+import 'screens/restaurant/restaurant_detail_screen.dart';
+import 'screens/restaurant/write_review_screen.dart';
+import 'screens/restaurant/add_place_screen.dart';
+import 'screens/map/map_search_screen.dart';
+import 'screens/chat/chat_thread_screen.dart';
+import 'screens/premium/premium_upgrade_screen.dart';
+import 'models/restaurant_model.dart';
+import 'widgets/offline_banner.dart';
+import 'widgets/shared_widgets.dart';
+import 'providers/location_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,17 +50,8 @@ class DiningAtlasApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ...ServiceProvider.getProviders(),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => RestaurantProvider()),
-        ChangeNotifierProvider(create: (_) => ReviewProvider()),
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => SavedPlacesProvider()),
-        ChangeNotifierProvider(create: (_) => OnboardingProvider()),
-        ChangeNotifierProvider(create: (_) => AiProvider()),
-        ChangeNotifierProvider(create: (_) => ChatProvider()),
-        ChangeNotifierProvider(create: (_) => TripProvider()),
+        // LocationProvider is standalone (no service interface needed)
         ChangeNotifierProvider(create: (_) => LocationProvider()),
-        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(
         title: 'The Dining Atlas',

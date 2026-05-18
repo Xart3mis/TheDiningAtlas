@@ -70,4 +70,18 @@ class RestaurantProvider extends ChangeNotifier {
       return null;
     }
   }
+
+  Future<void> addRestaurant(RestaurantModel restaurant) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      await _service.addRestaurant(restaurant);
+    } catch (e) {
+      _error = e.toString();
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

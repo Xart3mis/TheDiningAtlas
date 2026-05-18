@@ -14,6 +14,7 @@ class SavedPlacesProvider extends ChangeNotifier {
 
   bool get isLoading => false;
   String? get error => _error;
+  Set<String> get savedIds => _savedIds;
   bool isSaved(String placeId) => _savedIds.contains(placeId);
 
   Future<void> loadSaved(String uid) async {
