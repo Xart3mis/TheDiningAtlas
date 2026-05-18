@@ -180,13 +180,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Divider
                 Row(
                   children: [
-                    Expanded(child: Divider(color: AppColors.lightGrey.withValues(alpha: 0.8))),
+                    Expanded(child: Divider(color: AppColors.lightGrey.withOpacity(0.8))),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text('or',
                           style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
                     ),
-                    Expanded(child: Divider(color: AppColors.lightGrey.withValues(alpha: 0.8))),
+                    Expanded(child: Divider(color: AppColors.lightGrey.withOpacity(0.8))),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w500)),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.ink,
-                      side: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.8)),
+                      side: BorderSide(color: AppColors.lightGrey.withOpacity(0.8)),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
@@ -256,17 +256,17 @@ class _LoginScreenState extends State<LoginScreen> {
   InputDecoration _inputDecoration(String hint) {
     return InputDecoration(
       hintText: hint,
-      hintStyle: GoogleFonts.inter(fontSize: 14, color: AppColors.warmGrey.withValues(alpha: 0.6)),
+      hintStyle: GoogleFonts.inter(fontSize: 14, color: AppColors.warmGrey.withOpacity(0.6)),
       filled: true,
       fillColor: AppColors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+        borderSide: BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+        borderSide: BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),

@@ -346,7 +346,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       hintText: hint,
       hintStyle: GoogleFonts.inter(
           fontSize: 14,
-          color: AppColors.warmGrey.withValues(alpha: 0.6)),
+          color: AppColors.warmGrey.withOpacity(0.6)),
       filled: true,
       fillColor: AppColors.white,
       contentPadding:
@@ -354,12 +354,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide:
-            BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+            BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide:
-            BorderSide(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+            BorderSide(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -463,7 +463,7 @@ class _CountryField extends StatelessWidget {
             fontSize: 14,
             color: hasValue
                 ? AppColors.ink
-                : AppColors.warmGrey.withValues(alpha: 0.6),
+                : AppColors.warmGrey.withOpacity(0.6),
           ),
         ),
       ),
@@ -605,7 +605,7 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.warmGrey.withValues(alpha: 0.4),
+                color: AppColors.warmGrey.withOpacity(0.4),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -638,7 +638,7 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
                 hintText: 'Search…',
                 hintStyle: GoogleFonts.inter(
                     fontSize: 14,
-                    color: AppColors.warmGrey.withValues(alpha: 0.6)),
+                    color: AppColors.warmGrey.withOpacity(0.6)),
                 prefixIcon: const Icon(Icons.search,
                     size: 18, color: AppColors.warmGrey),
                 filled: true,
@@ -648,12 +648,12 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
-                      color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                      color: AppColors.lightGrey.withOpacity(0.6)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
-                      color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                      color: AppColors.lightGrey.withOpacity(0.6)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -681,7 +681,7 @@ class _CountryPickerSheetState extends State<_CountryPickerSheet> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AppColors.terracotta.withValues(alpha: 0.12),
+                      color: AppColors.terracotta.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(

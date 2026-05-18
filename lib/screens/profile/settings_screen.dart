@@ -27,31 +27,29 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         children: [
           const _SectionHeader(title: 'Chat Privacy'),
-          RadioGroup<String>(
+          RadioListTile<String>(
+            title: Text('Public — Anyone can message me',
+                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+            value: 'public',
             groupValue: currentMode,
+            activeColor: AppColors.terracotta,
             onChanged: (v) => _updateChatMode(context, v!, user),
-            child: Column(
-              children: [
-                RadioListTile<String>(
-                  title: Text('Public — Anyone can message me',
-                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-                  value: 'public',
-                  activeColor: AppColors.terracotta,
-                ),
-                RadioListTile<String>(
-                  title: Text('Private — No messages',
-                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-                  value: 'private',
-                  activeColor: AppColors.terracotta,
-                ),
-                RadioListTile<String>(
-                  title: Text('Scheduled — Set availability hours',
-                      style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
-                  value: 'scheduled',
-                  activeColor: AppColors.terracotta,
-                ),
-              ],
-            ),
+          ),
+          RadioListTile<String>(
+            title: Text('Private — No messages',
+                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+            value: 'private',
+            groupValue: currentMode,
+            activeColor: AppColors.terracotta,
+            onChanged: (v) => _updateChatMode(context, v!, user),
+          ),
+          RadioListTile<String>(
+            title: Text('Scheduled — Set availability hours',
+                style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
+            value: 'scheduled',
+            groupValue: currentMode,
+            activeColor: AppColors.terracotta,
+            onChanged: (v) => _updateChatMode(context, v!, user),
           ),
 
           const Divider(),

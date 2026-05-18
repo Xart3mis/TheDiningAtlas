@@ -25,7 +25,7 @@ class FcmNotificationService implements INotificationService {
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosInit = DarwinInitializationSettings();
     await _localNotifications.initialize(
-      settings: const InitializationSettings(android: androidInit, iOS: iosInit),
+      const InitializationSettings(android: androidInit, iOS: iosInit),
     );
 
     // Listen for foreground messages
@@ -55,10 +55,10 @@ class FcmNotificationService implements INotificationService {
       priority: Priority.high,
     );
     await _localNotifications.show(
-      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      title: title,
-      body: body,
-      notificationDetails: const NotificationDetails(android: androidDetails),
+      DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title,
+      body,
+      const NotificationDetails(android: androidDetails),
     );
   }
 

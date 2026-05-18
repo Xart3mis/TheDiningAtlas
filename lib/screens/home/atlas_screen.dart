@@ -197,7 +197,7 @@ class _AtlasScreenState extends State<AtlasScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+        border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
       ),
       child: Row(
         children: [
@@ -235,10 +235,10 @@ class _AtlasScreenState extends State<AtlasScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
-              color: AppColors.terracotta.withValues(alpha: 0.1),
+              color: AppColors.terracotta.withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                  color: AppColors.terracotta.withValues(alpha: 0.3)),
+                  color: AppColors.terracotta.withOpacity(0.3)),
             ),
             child: Text('Exploring',
                 style: GoogleFonts.inter(
@@ -307,7 +307,7 @@ class _EditorPickCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withValues(alpha: 0.6)),
+          border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
         ),
         clipBehavior: Clip.hardEdge,
         child: Column(

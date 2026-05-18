@@ -200,7 +200,6 @@ class _TripsScreenState extends State<TripsScreen> {
     return days[d.weekday - 1];
   }
 
-<<<<<<< HEAD
   String _monthName(int month) {
     const months = [
       'January', 'February', 'March', 'April', 'May', 'June',
@@ -270,7 +269,7 @@ class _SpotCard extends StatelessWidget {
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color: AppColors.lightGrey.withValues(alpha: 0.6)),
+                            color: AppColors.lightGrey.withOpacity(0.6)),
                       ),
                       child: Row(
                         children: [
