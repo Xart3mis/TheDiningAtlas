@@ -130,7 +130,8 @@ class FcmNotificationService implements INotificationService {
 
     final batch = FirebaseFirestore.instance.batch();
     for (final n in demos) {
-      batch.set(col.doc(), n);
+      final docId = 'seed_${n['type']}';
+      batch.set(col.doc(docId), n);
     }
     await batch.commit();
   }

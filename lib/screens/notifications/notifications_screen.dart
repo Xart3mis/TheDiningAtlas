@@ -16,13 +16,17 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async {
       if (!mounted) return;
       final uid = context.read<AuthProvider>().user?.uid;
-      if (uid != null) {
-        context.read<NotificationProvider>().seedDemoNotifications(uid);
-        context.read<NotificationProvider>().clearBadge();
+      if (uid == null) return;
+      try {
+        await context.read<NotificationProvider>().seedDemoNotifications(uid);
+      } catch (_) {
+        // Demo seeding failed silently — not critical
       }
+      if (!mounted) return;
+      context.read<NotificationProvider>().clearBadge();
     });
   }
 
