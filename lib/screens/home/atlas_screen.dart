@@ -157,36 +157,6 @@ class _AtlasScreenState extends State<AtlasScreen> {
                       size: 18, color: AppColors.ink),
                 ),
               ),
-              // Chat button
-              GestureDetector(
-                onTap: () {
-                  if (context.read<AuthProvider>().user == null) {
-                    Navigator.pushNamed(context, RouteNames.kLogin);
-                    return;
-                  }
-                  Navigator.pushNamed(
-                    context,
-                    RouteNames.kChatThread,
-                    arguments: {
-                      'otherUid': 'ai_assistant',
-                      'placeId': '',
-                      'otherName': 'AI Assistant',
-                    },
-                  );
-                },
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  margin: const EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                    color: AppColors.parchment,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.lightGrey),
-                  ),
-                  child: const Icon(Icons.chat_bubble_outline,
-                      size: 18, color: AppColors.ink),
-                ),
-              ),
               // Avatar / profile
               GestureDetector(
                 onTap: () => MainShell.switchTab(5),
