@@ -38,7 +38,12 @@ class AuthProvider extends ChangeNotifier {
               onboardingComplete: false,
               chatPrivacy: const ChatPrivacy(mode: 'private'),
               createdAt: DateTime.now(),
+              username: _pendingUsername,
+              countryCode: _pendingCountryCode,
+              onboardingCountryId: '',
             ));
+            _pendingUsername = '';
+            _pendingCountryCode = '';
           }
         } catch (e) {
           debugPrint('Failed to sync user profile: $e');
@@ -47,8 +52,22 @@ class AuthProvider extends ChangeNotifier {
     });
   }
 
+  // Pending registration metadata — stored temporarily so the authStateChanges
+  // listener can pick them up when it fires after signUpWithEmail completes.
+  String _pendingUsername = '';
+  String _pendingCountryCode = '';
+
   /// Sign up with email/password.
-  Future<bool> signUp(String email, String password) async {
+  ///
+  /// [username] and [countryCode] are stored in Firestore via [UserModel].
+  Future<bool> signUp(
+    String email,
+    String password, {
+    String username = '',
+    String countryCode = '',
+  }) async {
+    _pendingUsername = username;
+    _pendingCountryCode = countryCode;
     _setLoading(true);
     try {
       await _authService.signUpWithEmail(email, password);
@@ -56,6 +75,8 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       _error = _friendlyError(e.code);
+      _pendingUsername = '';
+      _pendingCountryCode = '';
       return false;
     } finally {
       _setLoading(false);
