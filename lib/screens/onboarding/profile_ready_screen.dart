@@ -123,7 +123,18 @@ class ProfileReadyScreen extends StatelessWidget {
                   : () async {
                       final uid = auth.user?.uid;
                       if (uid == null) return;
-                      await onboarding.completeOnboarding(uid);
+                      try {
+                        await onboarding.completeOnboarding(uid);
+                      } catch (_) {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Could not save your profile. Please try again.')),
+                          );
+                        }
+                        return;
+                      }
                       if (context.mounted) {
                         Navigator.pushReplacementNamed(
                             context, RouteNames.kMain);
