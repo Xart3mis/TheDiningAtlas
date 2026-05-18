@@ -3,6 +3,7 @@ class AppConstants {
   static const String kColRestaurants = 'restaurants';
   static const String kColReviews = 'reviews';
   static const String kColUsers = 'users';
+  static const String kColCities = 'cities';
   static const String kColChats = 'chats';
   static const String kColMessages = 'messages';
   static const String kColTrips = 'trips';
@@ -11,6 +12,7 @@ class AppConstants {
   static const String kColSpots = 'spots';
   static const String kColSavedPlaces = 'savedPlaces';
   static const String kColTranslations = 'translations';
+  static const String kColDailyUsage = 'dailyUsage';
   static const String kDocSummary = 'summary';
   static const String kDocPreferences = 'preferences';
 

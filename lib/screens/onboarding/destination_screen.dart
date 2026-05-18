@@ -12,6 +12,7 @@ class DestinationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -19,7 +20,9 @@ class DestinationScreen extends StatelessWidget {
         children: [
           Text('Where are you headed?',
               style: GoogleFonts.fraunces(
-                  fontSize: 28, fontWeight: FontWeight.w700, color: const Color(0xFF1C1C1A))),
+                  fontSize: 28,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF1C1C1A))),
           const SizedBox(height: 8),
           Text('Pick your destination.',
               style: GoogleFonts.inter(fontSize: 16, color: const Color(0xFF6B6560))),
@@ -48,8 +51,8 @@ class DestinationScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: selected
-                                ? Colors.white.withValues(alpha:0.25)
-                                : const Color(0xFFC17B4E).withValues(alpha:0.12),
+                                ? Colors.white.withValues(alpha: 0.25)
+                                : const Color(0xFFC17B4E).withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -87,12 +90,15 @@ class DestinationScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFC17B4E),
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     elevation: 0,
                   ),
                   child: Text('Continue',
                       style: GoogleFonts.inter(
-                          color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600)),
                 ),
               ),
             ],

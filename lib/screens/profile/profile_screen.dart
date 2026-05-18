@@ -8,6 +8,7 @@ import '../../widgets/shared_widgets.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/saved_places_provider.dart';
+import '../../providers/seed_data_provider.dart';
 import '../../models/user_model.dart';
 import '../../core/constants/route_names.dart';
 import '../../core/constants/app_constants.dart';
@@ -23,12 +24,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async {
       if (!mounted) return;
       final auth = context.read<AuthProvider>();
+      final seedProvider = context.read<SeedDataProvider>();
+      await seedProvider.load();
       if (auth.user != null) {
-        context.read<UserProvider>().loadUser(auth.user!.uid);
-        context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
+        await context.read<UserProvider>().loadUser(auth.user!.uid);
+        await context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
+        await seedProvider
+            .loadPassportCities(context.read<SavedPlacesProvider>().savedIds);
       }
     });
   }
@@ -37,14 +42,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
     final savedCount = context.watch<SavedPlacesProvider>().savedIds.length;
+    final passportCities = context
+        .watch<SeedDataProvider>()
+        .passportCities
+        .map((city) => city.displayName)
+        .toList()
+      ..sort();
 
     return Scaffold(
       backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: _buildHeader(context, user, savedCount)),
-          SliverToBoxAdapter(child: _buildStats(user, savedCount)),
-          SliverToBoxAdapter(child: _buildPassport(user)),
+          SliverToBoxAdapter(
+              child: _buildStats(user, savedCount, passportCities.length)),
+          SliverToBoxAdapter(child: _buildPassport(passportCities)),
           const SliverToBoxAdapter(child: SizedBox(height: 32)),
         ],
       ),
@@ -60,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 56,
             height: 56,
             child: ClipOval(
-              child: user?.photoUrl?.isNotEmpty == true
+              child: user?.photoUrl.isNotEmpty == true
                   ? CachedNetworkImage(
                       imageUrl: user!.photoUrl,
                       fit: BoxFit.cover,
@@ -68,21 +80,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: AppColors.terracotta,
                           width: 56,
                           height: 56,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(28))),
+                          borderRadius: BorderRadius.all(Radius.circular(28))),
                       errorWidget: (_, __, ___) => const StripeTile(
                           color: AppColors.terracotta,
                           width: 56,
                           height: 56,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(28))),
+                          borderRadius: BorderRadius.all(Radius.circular(28))),
                     )
                   : const StripeTile(
                       color: AppColors.terracotta,
                       width: 56,
                       height: 56,
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(28))),
+                      borderRadius: BorderRadius.all(Radius.circular(28))),
             ),
           ),
           const SizedBox(width: 14),
@@ -93,9 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        user.displayName.isNotEmpty
-                            ? user.displayName
-                            : 'Explorer',
+                        user.displayName.isNotEmpty ? user.displayName : 'Explorer',
                         style: GoogleFonts.fraunces(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
@@ -106,8 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             '@${user.username.isNotEmpty ? user.username : 'local'}',
                             style: GoogleFonts.inter(
-                                fontSize: 12,
-                                color: AppColors.warmGrey),
+                                fontSize: 12, color: AppColors.warmGrey),
                           ),
                           if (user.countryCode.isNotEmpty) ...[
                             const SizedBox(width: 6),
@@ -132,12 +138,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: _tierColor(user.tier)
-                              .withValues(alpha: 0.15),
+                          color: _tierColor(user.tier).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                              color: _tierColor(user.tier)
-                                  .withValues(alpha: 0.3)),
+                              color: _tierColor(user.tier).withValues(alpha: 0.3)),
                         ),
                         child: Text(
                           _tierLabel(user.tier).toUpperCase(),
@@ -153,8 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: AppColors.ink),
-            onPressed: () =>
-                Navigator.pushNamed(context, RouteNames.kSettings),
+            onPressed: () => Navigator.pushNamed(context, RouteNames.kSettings),
           ),
         ],
       ),
@@ -172,26 +175,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: 120,
               height: 18,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4))),
+                  color: Colors.white, borderRadius: BorderRadius.circular(4))),
           const SizedBox(height: 6),
           Container(
               width: 80,
               height: 12,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(4))),
+                  color: Colors.white, borderRadius: BorderRadius.circular(4))),
         ],
       ),
     );
   }
 
-  Widget _buildStats(UserModel? user, int savedCount) {
+  Widget _buildStats(UserModel? user, int savedCount, int cityCount) {
     final stats = [
       ('${user?.score ?? 0}', 'SCORE'),
       ('$savedCount', 'SAVED'),
-      ('0', 'REVIEWS'),
-      ('1', 'CITIES'),
+      ('$cityCount', 'CITIES'),
     ];
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -208,7 +208,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Text(s.$1,
                     style: GoogleFonts.fraunces(
-                        fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.ink)),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.ink)),
                 const SizedBox(height: 2),
                 Text(s.$2,
                     style: GoogleFonts.inter(
@@ -224,36 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildPassport(UserModel? user) {
-    if (user == null) return const SizedBox.shrink();
-
-    final countryId = user.onboardingCountryId.trim();
-    if (countryId.isEmpty) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-            child: SectionLabel('Dining Passport'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              'Complete onboarding to unlock your passport',
-              style: GoogleFonts.inter(fontSize: 13, color: AppColors.warmGrey),
-            ),
-          ),
-        ],
-      );
-    }
-
-    final country = kSupportedCountries.firstWhere(
-      (entry) => entry['id'] == countryId,
-      orElse: () => {'name': countryId, 'code': ''},
-    );
-    final countryName = country['name'] ?? countryId;
-    final countryCode = country['code'] ?? '';
-
+  Widget _buildPassport(List<String> cities) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -261,60 +234,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: SectionLabel('Dining Passport'),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: AppColors.lightGrey),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (countryCode.isNotEmpty) ...[
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppColors.parchment,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      countryCode,
-                      style: GoogleFonts.inter(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.ink,
-                      ),
-                    ),
+        SizedBox(
+          height: 36,
+          child: cities.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    'Save places to build your passport.',
+                    style: GoogleFonts.inter(
+                        fontSize: 13, color: AppColors.warmGrey),
                   ),
-                  const SizedBox(width: 6),
-                ],
-                Text(
-                  countryName,
-                  style: GoogleFonts.inter(fontSize: 13, color: AppColors.ink),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: cities.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (_, i) => Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: AppColors.lightGrey),
+                    ),
+                    child: Text(cities[i],
+                        style: GoogleFonts.inter(
+                            fontSize: 13, color: AppColors.ink)),
+                  ),
                 ),
-              ],
-            ),
-          ),
         ),
       ],
     );
   }
 
   String _tierLabel(String tier) => switch (tier) {
-    'local' => 'Local',
-    'super_local' => 'Super Local',
-    'city_legend' => 'City Legend',
-    _ => 'Explorer',
-  };
+        'local' => 'Local',
+        'super_local' => 'Super Local',
+        'city_legend' => 'City Legend',
+        _ => 'Explorer',
+      };
 
   Color _tierColor(String tier) => switch (tier) {
-    'local' => AppColors.teal,
-    'super_local' => AppColors.terracotta,
-    'city_legend' => AppColors.gold,
-    _ => AppColors.warmGrey,
-  };
+        'local' => AppColors.teal,
+        'super_local' => AppColors.terracotta,
+        'city_legend' => AppColors.gold,
+        _ => AppColors.warmGrey,
+      };
 }

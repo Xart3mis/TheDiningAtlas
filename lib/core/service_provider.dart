@@ -12,17 +12,6 @@ import '../services/interfaces/i_subscription_service.dart';
 import '../services/interfaces/i_trip_service.dart';
 import '../services/interfaces/i_user_service.dart';
 
-import '../services/mock/mock_ai_service.dart';
-import '../services/mock/mock_chat_service.dart';
-import '../services/mock/mock_location_service.dart';
-import '../services/mock/mock_notification_service.dart';
-import '../services/mock/mock_restaurant_service.dart';
-import '../services/mock/mock_review_service.dart';
-import '../services/mock/mock_storage_service.dart';
-import '../services/mock/mock_subscription_service.dart';
-import '../services/mock/mock_trip_service.dart';
-import '../services/mock/mock_user_service.dart';
-
 import '../services/firebase/firestore_restaurant_service.dart';
 import '../services/firebase/firestore_review_service.dart';
 import '../services/firebase/firestore_user_service.dart';
@@ -30,10 +19,12 @@ import '../services/firebase/firestore_chat_service.dart';
 import '../services/firebase/firebase_storage_service.dart';
 import '../services/firebase/geolocator_location_service.dart';
 import '../services/firebase/fcm_notification_service.dart';
+import '../services/firebase/firestore_trip_service.dart';
+import '../services/firebase/firestore_subscription_service.dart';
+import '../services/firebase/firestore_seed_data_service.dart';
 import '../services/ai/groq_ai_service.dart';
 
-import '../services/firebase/firestore_trip_service.dart';
-
+import '../providers/seed_data_provider.dart';
 import '../providers/restaurant_provider.dart';
 import '../providers/review_provider.dart';
 import '../providers/user_provider.dart';
@@ -46,22 +37,22 @@ import '../providers/ai_provider.dart';
 import '../providers/auth_provider.dart';
 
 class ServiceProvider {
-  static const bool useFirebase = true;
-
   static List<SingleChildWidget> getProviders() {
-    final restaurantService = useFirebase ? FirestoreRestaurantService() : MockRestaurantService();
-    final reviewService = useFirebase ? FirestoreReviewService() : MockReviewService();
-    final userService = useFirebase ? FirestoreUserService() : MockUserService();
-    final tripService = useFirebase ? FirestoreTripService() : MockTripService();
-    final chatService = useFirebase ? FirestoreChatService() : MockChatService();
-    final storageService = useFirebase ? FirebaseStorageService() : MockStorageService();
-    final locationService = useFirebase ? GeolocatorLocationService() : MockLocationService();
-    final notificationService = useFirebase ? FcmNotificationService() : MockNotificationService();
-    final aiService = useFirebase ? GroqAiService() : MockAiService();
-    final subscriptionService = MockSubscriptionService();
+    final seedDataService = FirestoreSeedDataService();
+    final restaurantService = FirestoreRestaurantService();
+    final reviewService = FirestoreReviewService();
+    final userService = FirestoreUserService();
+    final tripService = FirestoreTripService();
+    final chatService = FirestoreChatService();
+    final storageService = FirebaseStorageService();
+    final locationService = GeolocatorLocationService();
+    final notificationService = FcmNotificationService();
+    final aiService = GroqAiService();
+    final subscriptionService = FirestoreSubscriptionService();
 
     return [
       // Base Interfaces
+      Provider<FirestoreSeedDataService>(create: (_) => seedDataService),
       Provider<IRestaurantService>(create: (_) => restaurantService),
       Provider<IReviewService>(create: (_) => reviewService),
       Provider<IUserService>(create: (_) => userService),
@@ -74,16 +65,24 @@ class ServiceProvider {
       Provider<ISubscriptionService>(create: (_) => subscriptionService),
 
       // State Providers
+      ChangeNotifierProvider(create: (_) => SeedDataProvider(seedDataService)),
       ChangeNotifierProvider(create: (_) => AuthProvider(userService)),
-      ChangeNotifierProvider(create: (_) => RestaurantProvider(restaurantService)),
-      ChangeNotifierProvider(create: (_) => ReviewProvider(reviewService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => RestaurantProvider(restaurantService)),
+      ChangeNotifierProvider(
+          create: (_) => ReviewProvider(reviewService, aiService)),
       ChangeNotifierProvider(create: (_) => UserProvider(userService)),
       ChangeNotifierProvider(create: (_) => TripProvider(tripService)),
-      ChangeNotifierProvider(create: (_) => ChatProvider(chatService, aiService)),
-      ChangeNotifierProvider(create: (_) => SavedPlacesProvider(userService, notificationService)),
-      ChangeNotifierProvider(create: (_) => OnboardingProvider(userService, aiService)),
-      ChangeNotifierProvider(create: (_) => NotificationProvider(notificationService)),
-      ChangeNotifierProvider(create: (_) => AiProvider(aiService, reviewService)),
+      ChangeNotifierProvider(
+          create: (_) => ChatProvider(chatService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => SavedPlacesProvider(userService, notificationService)),
+      ChangeNotifierProvider(
+          create: (_) => OnboardingProvider(userService, aiService)),
+      ChangeNotifierProvider(
+          create: (_) => NotificationProvider(notificationService)),
+      ChangeNotifierProvider(
+          create: (_) => AiProvider(aiService, reviewService)),
     ];
   }
 }
