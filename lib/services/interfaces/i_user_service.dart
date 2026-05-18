@@ -14,4 +14,5 @@ abstract class IUserService {
   Future<int> savedPlaceCount(String uid);
   Future<void> updateFcmToken(String uid, String token);
   Future<void> updateCountry(String uid, String countryId);
+  Future<void> adjustScore(String uid, int delta);
 }

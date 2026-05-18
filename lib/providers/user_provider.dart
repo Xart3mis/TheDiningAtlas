@@ -61,6 +61,10 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> adjustScore(String uid, int delta) async {
+    await _service.adjustScore(uid, delta);
+  }
+
   void reset() {
     _user = null;
     _isLoading = false;

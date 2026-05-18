@@ -11,6 +11,7 @@ import '../../providers/review_provider.dart';
 import '../../providers/saved_places_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/ai_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../core/constants/route_names.dart';
 
 class RestaurantDetailScreen extends StatefulWidget {
@@ -372,71 +373,117 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                           ],
                         ),
                       ),
-                      if (review.authorId ==
-                          context.read<AuthProvider>().user?.uid) ...[
-                        const SizedBox(width: 4),
-                        PopupMenuButton<String>(
-                          icon: const Icon(Icons.more_vert,
-                              size: 18, color: AppColors.warmGrey),
-                          onSelected: (value) async {
-                            if (value == 'edit') {
-                              Navigator.pushNamed(
-                                  context, RouteNames.kEditReview,
-                                  arguments: review);
-                            } else if (value == 'delete') {
-                              final confirmed = await showDialog<bool>(
-                                context: context,
-                                builder: (_) => AlertDialog(
-                                  title: Text('Delete Review',
-                                      style: GoogleFonts.fraunces(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: AppColors.ink)),
-                                  content: Text(
-                                      'Are you sure you want to delete this review?',
-                                      style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          color: AppColors.warmGrey)),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, false),
-                                      child: const Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, true),
-                                      child: Text('Delete',
+                      Builder(builder: (context) {
+                        final currentUid = context.read<AuthProvider>().user?.uid;
+                        final isOwner = review.authorId == currentUid;
+                        // Admin check — update this UID to your Firebase UID
+                        const adminUid = 'ADMIN_UID_PLACEHOLDER';
+                        final isAdmin = currentUid == adminUid;
+
+                        if (!isOwner && !isAdmin) return const SizedBox.shrink();
+
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const SizedBox(width: 4),
+                            PopupMenuButton<String>(
+                              icon: const Icon(Icons.more_vert,
+                                  size: 18, color: AppColors.warmGrey),
+                              onSelected: (value) async {
+                                if (value == 'edit') {
+                                  Navigator.pushNamed(
+                                      context, RouteNames.kEditReview,
+                                      arguments: review);
+                                } else if (value == 'delete') {
+                                  final confirmed = await showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: Text('Delete Review',
+                                          style: GoogleFonts.fraunces(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.ink)),
+                                      content: Text(
+                                          'Are you sure you want to delete this review?',
                                           style: GoogleFonts.inter(
-                                              color: Colors.red)),
+                                              fontSize: 14,
+                                              color: AppColors.warmGrey)),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: Text('Delete',
+                                              style: GoogleFonts.inter(
+                                                  color: Colors.red)),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              );
-                              if (confirmed == true && context.mounted) {
-                                await context
-                                    .read<ReviewProvider>()
-                                    .deleteReview(
-                                        restaurantId: r.id,
-                                        reviewId: review.id);
-                              }
-                            }
-                          },
-                          itemBuilder: (_) => [
-                            PopupMenuItem(
-                              value: 'edit',
-                              child: Text('Edit',
-                                  style: GoogleFonts.inter(fontSize: 14)),
-                            ),
-                            PopupMenuItem(
-                              value: 'delete',
-                              child: Text('Delete',
-                                  style: GoogleFonts.inter(
-                                      fontSize: 14, color: Colors.red)),
+                                  );
+                                  if (confirmed == true && context.mounted) {
+                                    await context
+                                        .read<ReviewProvider>()
+                                        .deleteReview(
+                                            restaurantId: r.id,
+                                            reviewId: review.id);
+                                  }
+                                } else if (value == 'score_plus' && isAdmin) {
+                                  await context
+                                      .read<UserProvider>()
+                                      .adjustScore(review.authorId, 10);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('+10 points awarded')));
+                                  }
+                                } else if (value == 'score_minus' && isAdmin) {
+                                  await context
+                                      .read<UserProvider>()
+                                      .adjustScore(review.authorId, -10);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('-10 points removed')));
+                                  }
+                                }
+                              },
+                              itemBuilder: (_) => [
+                                if (isOwner) ...[
+                                  PopupMenuItem(
+                                    value: 'edit',
+                                    child: Text('Edit',
+                                        style: GoogleFonts.inter(fontSize: 14)),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: Text('Delete',
+                                        style: GoogleFonts.inter(
+                                            fontSize: 14, color: Colors.red)),
+                                  ),
+                                ],
+                                if (isAdmin) ...[
+                                  PopupMenuItem(
+                                    value: 'score_plus',
+                                    child: Text('+10 Points',
+                                        style: GoogleFonts.inter(
+                                            fontSize: 14, color: Colors.green)),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'score_minus',
+                                    child: Text('-10 Points',
+                                        style: GoogleFonts.inter(
+                                            fontSize: 14, color: Colors.orange)),
+                                  ),
+                                ],
+                              ],
                             ),
                           ],
-                        ),
-                      ],
+                        );
+                      }),
                     ],
                   ),
                 ],
