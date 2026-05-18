@@ -11,6 +11,9 @@ class UserModel {
   final bool onboardingComplete;
   final ChatPrivacy chatPrivacy;
   final DateTime createdAt;
+  final String username;
+  final String countryCode; // ISO-2
+  final String onboardingCountryId; // e.g. 'japan', 'egypt'
 
   const UserModel({
     required this.uid,
@@ -23,6 +26,9 @@ class UserModel {
     required this.onboardingComplete,
     required this.chatPrivacy,
     required this.createdAt,
+    this.username = '',
+    this.countryCode = '',
+    this.onboardingCountryId = '',
   });
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
@@ -38,6 +44,9 @@ class UserModel {
       onboardingComplete: d['onboardingComplete'] ?? false,
       chatPrivacy: ChatPrivacy.fromMap(d['chatPrivacy'] ?? {}),
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      username: d['username'] ?? '',
+      countryCode: d['countryCode'] ?? '',
+      onboardingCountryId: d['onboardingCountryId'] ?? '',
     );
   }
 
@@ -51,6 +60,9 @@ class UserModel {
     'onboardingComplete': onboardingComplete,
     'chatPrivacy': chatPrivacy.toMap(),
     'createdAt': FieldValue.serverTimestamp(),
+    'username': username,
+    'countryCode': countryCode,
+    'onboardingCountryId': onboardingCountryId,
   };
 }
 

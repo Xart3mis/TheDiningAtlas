@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/interfaces/i_user_service.dart';
 import '../services/interfaces/i_ai_service.dart';
 import '../models/onboarding_prefs_model.dart';
+import '../core/constants/app_constants.dart';
 
 class OnboardingProvider extends ChangeNotifier {
   final IUserService _userService;
@@ -11,14 +12,21 @@ class OnboardingProvider extends ChangeNotifier {
   final List<String> _vibes = [];
   String _budget = '\$\$';
   final List<String> _atmosphere = [];
-  String _cityId = 'tokyo';
+  String _countryId = '';
   bool _isLoading = false;
   bool _completed = false;
 
   List<String> get vibes => List.unmodifiable(_vibes);
   String get budget => _budget;
   List<String> get atmosphere => List.unmodifiable(_atmosphere);
-  String get cityId => _cityId;
+  String get countryId => _countryId;
+  String get countryCode {
+    final entry = kSupportedCountries.firstWhere(
+      (c) => c['id'] == _countryId,
+      orElse: () => {'code': ''},
+    );
+    return entry['code'] ?? '';
+  }
   bool get isLoading => _isLoading;
   bool get completed => _completed;
 
@@ -45,8 +53,8 @@ class OnboardingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCity(String id) {
-    _cityId = id;
+  void setCountry(String id) {
+    _countryId = id;
     notifyListeners();
   }
 
@@ -58,7 +66,7 @@ class OnboardingProvider extends ChangeNotifier {
         vibes: _vibes,
         budget: _budget,
         atmosphere: _atmosphere,
-        cityId: _cityId,
+        countryId: _countryId,
         aiWeights: {},
       );
       final weights = await _aiService.generateTasteWeights(prefs);
@@ -66,7 +74,7 @@ class OnboardingProvider extends ChangeNotifier {
         vibes: _vibes,
         budget: _budget,
         atmosphere: _atmosphere,
-        cityId: _cityId,
+        countryId: _countryId,
         aiWeights: weights,
       );
       await _userService.savePreferences(uid, prefsWithWeights);

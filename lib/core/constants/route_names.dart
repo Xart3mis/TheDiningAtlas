@@ -14,4 +14,5 @@ class RouteNames {
   static const String kSettings = '/settings';
   static const String kPremiumUpgrade = '/premium';
   static const String kNotifications = '/notifications';
+  static const String kPlanTrip = '/plan-trip';
 }
