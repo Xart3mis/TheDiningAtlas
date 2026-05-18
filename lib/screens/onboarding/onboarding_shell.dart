@@ -27,6 +27,8 @@ class _OnboardingShellState extends State<OnboardingShell> {
     if (_currentPage > 0) {
       _controller.previousPage(
           duration: const Duration(milliseconds: 350), curve: Curves.easeInOut);
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -70,7 +72,7 @@ class _OnboardingShellState extends State<OnboardingShell> {
                 physics: const NeverScrollableScrollPhysics(),
                 onPageChanged: (page) => setState(() => _currentPage = page),
                 children: [
-                  VibeSelectorScreen(onNext: _next, onBack: () => Navigator.pop(context)),
+                  VibeSelectorScreen(onNext: _next, onBack: _back),
                   BudgetScreen(onNext: _next, onBack: _back),
                   AtmosphereScreen(onNext: _next, onBack: _back),
                   DestinationScreen(onNext: _next, onBack: _back),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/interfaces/i_user_service.dart';
 import '../services/interfaces/i_ai_service.dart';
 import '../models/onboarding_prefs_model.dart';
+import '../models/user_model.dart';
 import '../core/constants/app_constants.dart';
 
 class OnboardingProvider extends ChangeNotifier {
@@ -85,6 +86,26 @@ class OnboardingProvider extends ChangeNotifier {
         aiWeights: weights,
       );
       await _userService.savePreferences(uid, prefsWithWeights);
+      final UserModel? user = await _userService.fetchUser(uid);
+      if (user == null) {
+        throw StateError('Unable to complete onboarding without user profile');
+      }
+      final updatedUser = UserModel(
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoUrl: user.photoUrl,
+        tier: user.tier,
+        score: user.score,
+        isPremium: user.isPremium,
+        onboardingComplete: true,
+        chatPrivacy: user.chatPrivacy,
+        createdAt: user.createdAt,
+        username: user.username,
+        countryCode: user.countryCode,
+        onboardingCountryId: _countryId,
+      );
+      await _userService.updateUser(updatedUser);
       await _userService.markOnboardingComplete(uid);
       _completed = true;
     } finally {
