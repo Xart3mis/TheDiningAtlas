@@ -20,13 +20,16 @@ class MapSearchScreen extends StatefulWidget {
 class _MapSearchScreenState extends State<MapSearchScreen> {
   final MapController _mapController = MapController();
   List<Marker> _markers = [];
+  bool _mapReady = false;
 
   static const _fallbackPosition = LatLng(0, 0);
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => _loadNearby());
+    // Use addPostFrameCallback so FlutterMap is mounted and the controller
+    // is linked before we call _mapController.move().
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadNearby());
   }
 
   Future<void> _loadNearby() async {
@@ -44,17 +47,21 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
     if (pos != null) {
       final geoPoint = GeoPoint(pos.latitude, pos.longitude);
       await restaurantProvider.loadNearby(geoPoint);
-      _mapController.move(LatLng(pos.latitude, pos.longitude), 14);
+      if (mounted && _mapReady) {
+        _mapController.move(LatLng(pos.latitude, pos.longitude), 14);
+      }
     } else {
       final city = seedProvider.cityById(restaurantProvider.currentCityId) ??
           seedProvider.defaultCity;
       if (city != null) {
         await seedProvider.loadCityDetails(city.id);
         await restaurantProvider.loadFeed(cityId: city.id);
-        _mapController.move(
-          LatLng(city.geopoint.latitude, city.geopoint.longitude),
-          13,
-        );
+        if (mounted && _mapReady) {
+          _mapController.move(
+            LatLng(city.geopoint.latitude, city.geopoint.longitude),
+            13,
+          );
+        }
       }
     }
     if (mounted) _buildMarkers();
@@ -99,9 +106,10 @@ class _MapSearchScreenState extends State<MapSearchScreen> {
         children: [
           FlutterMap(
             mapController: _mapController,
-            options: const MapOptions(
+            options: MapOptions(
               initialCenter: _fallbackPosition,
               initialZoom: 14,
+              onMapReady: () => setState(() => _mapReady = true),
             ),
             children: [
               TileLayer(
