@@ -9,7 +9,7 @@ import '../../core/constants/env.dart';
 
 class GeminiAiService implements IAiService {
   static const _baseUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
   Future<String> _generate(String prompt) async {
     final uri = Uri.parse('$_baseUrl?key=${Env.geminiApiKey}');
