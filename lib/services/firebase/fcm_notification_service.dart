@@ -112,9 +112,9 @@ class FcmNotificationService implements INotificationService {
       'read': false,
     });
 
-    // Also show a local notification (covers same-device foreground testing
-    // and the case where the recipient hasn't set up a Cloud Function yet)
-    await showLocalNotification(title: senderName, body: messagePreview);
+    // Local notification is intentionally omitted here — this method runs on
+    // the sender's device. The recipient receives the notification via FCM,
+    // which triggers the onMessage listener on their device.
   }
 
   @override

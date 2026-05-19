@@ -23,9 +23,9 @@ class AppConstants {
   static const int kMaxAiRecsResultsFree = 5;
 
   // AI / summarizer
-  static const int kSummaryMinReviews = 5;
+  static const int kSummaryMinReviews = 3;
   static const int kSummaryTriggerNewReviews = 10;
-  static const int kSummaryBatchSize = 50;
+  static const int kSummaryBatchSize = 1;
   static const int kSummaryTtlDays = 7;
 
   // Geofence

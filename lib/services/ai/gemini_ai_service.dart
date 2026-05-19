@@ -9,30 +9,87 @@ import '../../core/constants/env.dart';
 
 class GeminiAiService implements IAiService {
   static const _baseUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
   Future<String> _generate(String prompt) async {
     final uri = Uri.parse('$_baseUrl?key=${Env.geminiApiKey}');
-    final response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'contents': [
-          {
-            'parts': [
-              {'text': prompt}
-            ]
-          }
-        ],
-        'generationConfig': {'temperature': 0.7},
-      }),
-    ).timeout(const Duration(seconds: 12));
+    try {
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'contents': [
+            {
+              'parts': [
+                {'text': prompt}
+              ]
+            }
+          ],
+          'generationConfig': {
+            'temperature': 0.7,
+            'responseMimeType': 'text/plain',
+          },
+        }),
+      ).timeout(const Duration(seconds: 12));
 
-    if (response.statusCode != 200) {
-      throw Exception('Gemini API error: ${response.statusCode}');
+      if (response.statusCode != 200) {
+        final errorMsg = _tryExtractErrorMessage(response.body);
+        throw Exception('Gemini API error: ${response.statusCode} - $errorMsg');
+      }
+
+      final data = jsonDecode(response.body);
+      final candidates = data['candidates'] as List?;
+      
+      if (candidates == null || candidates.isEmpty) {
+        throw Exception('Gemini returned no response. This may be due to safety filters.');
+      }
+
+      final firstCandidate = candidates[0] as Map<String, dynamic>;
+      final content = firstCandidate['content'] as Map<String, dynamic>?;
+      
+      if (content == null || content['parts'] == null) {
+        final finishReason = firstCandidate['finishReason'] ?? 'Unknown';
+        throw Exception('No content in Gemini response (Finish reason: $finishReason)');
+      }
+
+      final parts = content['parts'] as List;
+      if (parts.isEmpty) throw Exception('Empty parts in Gemini response');
+      
+      return parts[0]['text'] as String;
+    } catch (e) {
+      if (e is http.ClientException) {
+        throw Exception('Network error: Check your connection');
+      }
+      rethrow;
     }
-    final data = jsonDecode(response.body);
-    return data['candidates'][0]['content']['parts'][0]['text'] as String;
+  }
+
+  String _tryExtractErrorMessage(String body) {
+    try {
+      final data = jsonDecode(body);
+      return data['error']?['message'] ?? body;
+    } catch (_) {
+      return body;
+    }
+  }
+
+  String _extractJson(String raw) {
+    final start = raw.indexOf('{');
+    final end = raw.lastIndexOf('}');
+    if (start == -1 || end == -1 || end < start) {
+      throw Exception('No valid JSON found in response');
+    }
+    return raw.substring(start, end + 1);
+  }
+
+  String _extractText(String raw) {
+    // Remove markdown code blocks like ```text ... ``` or just ``` ... ```
+    final regExp = RegExp(r'```(?:\w+)?\n?([\s\S]*?)```');
+    final match = regExp.firstMatch(raw);
+    if (match != null) {
+      return match.group(1)?.trim() ?? raw.trim();
+    }
+    return raw.trim();
   }
 
   @override
@@ -46,7 +103,7 @@ Example: {"Japanese": 0.9, "Street Food": 0.8}
 ''';
     try {
       final raw = await _generate(prompt);
-      final jsonStr = raw.trim().replaceAll('```json', '').replaceAll('```', '').trim();
+      final jsonStr = _extractJson(raw);
       final json = jsonDecode(jsonStr) as Map<String, dynamic>;
       return json.map((k, v) => MapEntry(k, (v as num).toDouble()));
     } catch (_) {
@@ -63,7 +120,7 @@ Return ONLY the translated text, no explanation.
 Text: $text
 ''';
     final raw = await _generate(prompt);
-    return raw.trim().replaceAll('```', '').trim();
+    return _extractText(raw);
   }
 
   @override
@@ -86,22 +143,18 @@ Return ONLY a valid JSON object with these exact fields:
   "bestTime": "best time to visit based on reviews"
 }
 ''';
-    try {
-      final raw = await _generate(prompt);
-      final jsonStr = raw.trim().replaceAll('```json', '').replaceAll('```', '').trim();
-      final json = jsonDecode(jsonStr) as Map<String, dynamic>;
-      return PlaceSummaryModel(
-        vibeOneLiner: json['vibeOneLiner'] ?? '',
-        topAspects: List<String>.from(json['topAspects'] ?? []),
-        mainDish: json['mainDish'] ?? '',
-        caveats: List<String>.from(json['caveats'] ?? []),
-        bestTime: json['bestTime'] ?? '',
-        generatedAt: DateTime.now(),
-        reviewCountAtGeneration: reviews.length,
-      );
-    } catch (_) {
-      throw Exception('Failed to parse Gemini summary response');
-    }
+    final raw = await _generate(prompt);
+    final jsonStr = _extractJson(raw);
+    final json = jsonDecode(jsonStr) as Map<String, dynamic>;
+    return PlaceSummaryModel(
+      vibeOneLiner: json['vibeOneLiner'] ?? '',
+      topAspects: List<String>.from(json['topAspects'] ?? []),
+      mainDish: json['mainDish'] ?? '',
+      caveats: List<String>.from(json['caveats'] ?? []),
+      bestTime: json['bestTime'] ?? '',
+      generatedAt: DateTime.now(),
+      reviewCountAtGeneration: reviews.length,
+    );
   }
 
   @override

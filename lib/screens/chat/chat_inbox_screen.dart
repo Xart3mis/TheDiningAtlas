@@ -76,6 +76,7 @@ class _ChatInboxScreenState extends State<ChatInboxScreen> {
       floatingActionButton: uid == null
           ? null
           : FloatingActionButton(
+              heroTag: 'fab_new_chat',
               onPressed: () => Navigator.pushNamed(context, RouteNames.kUserSearch)
                   .then((_) => _load()),
               backgroundColor: AppColors.terracotta,

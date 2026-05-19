@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../services/interfaces/i_restaurant_service.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 import '../models/restaurant_model.dart';
+import '../services/interfaces/i_restaurant_service.dart';
 
 class RestaurantProvider extends ChangeNotifier {
   final IRestaurantService _service;
@@ -24,16 +28,37 @@ class RestaurantProvider extends ChangeNotifier {
   Future<void> loadFeed({String? cityId}) async {
     _currentCityId = cityId ?? _currentCityId;
     if (_currentCityId.isEmpty) return;
+
+    // Serve cached data immediately so the UI is never blank
+    final cacheBox = Hive.box<String>('restaurant_feed');
+    final cached = cacheBox.get(_currentCityId);
+    if (cached != null) {
+      try {
+        _feed = (jsonDecode(cached) as List)
+            .map((e) => RestaurantModel.fromJson(e as Map<String, dynamic>))
+            .toList();
+        notifyListeners();
+      } catch (_) {}
+    }
+
+    // Fetch fresh data from Firestore in the background
     _isLoading = true;
     _error = null;
     notifyListeners();
     try {
-      _feed = await _service
+      final fresh = await _service
           .fetchFeed(cityId: _currentCityId)
           .timeout(_timeout, onTimeout: () => []);
+      if (fresh.isNotEmpty) {
+        _feed = fresh;
+        cacheBox.put(
+          _currentCityId,
+          jsonEncode(fresh.map((r) => r.toJson()).toList()),
+        );
+      }
     } catch (e) {
-      _error = e.toString();
-      _feed = [];
+      // Keep stale cache data visible; only surface error if nothing to show
+      if (_feed.isEmpty) _error = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();

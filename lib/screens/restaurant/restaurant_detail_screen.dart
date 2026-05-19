@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../core/constants/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../models/restaurant_model.dart';
@@ -26,6 +27,7 @@ class RestaurantDetailScreen extends StatefulWidget {
 class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   String _activeTab = 'Overview';
   final _tabs = ['Overview', 'Reviews', 'Photos'];
+  bool _descExpanded = false;
 
   @override
   void initState() {
@@ -33,7 +35,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     Future.microtask(() {
       if (!mounted) return;
       context.read<ReviewProvider>().loadReviews(widget.restaurant.id);
-      context.read<AiProvider>().loadSummary(widget.restaurant.id);
       final auth = context.read<AuthProvider>();
       if (auth.user != null) {
         context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
@@ -55,11 +56,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           SliverToBoxAdapter(child: _buildTabs()),
           if (_activeTab == 'Overview') ...[
             SliverToBoxAdapter(child: _buildTagline(r)),
+            SliverToBoxAdapter(child: _AiSummaryCard(restaurantId: r.id)),
             SliverToBoxAdapter(child: _buildInfoGrid(r)),
             SliverToBoxAdapter(child: _buildActions(r)),
           ] else if (_activeTab == 'Reviews') ...[
-            SliverToBoxAdapter(
-                child: _AiSummaryCard(restaurantId: r.id)),
             SliverToBoxAdapter(child: _buildReviewsList(r)),
           ],
           const SliverToBoxAdapter(child: SizedBox(height: 40)),
@@ -215,20 +215,26 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   }
 
   Widget _buildTagline(RestaurantModel r) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: AppColors.terracotta, width: 3)),
-        color: AppColors.parchment,
-        borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
+    final text = r.description.isNotEmpty ? r.description : r.tagline;
+    return GestureDetector(
+      onTap: () => setState(() => _descExpanded = !_descExpanded),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          border: Border(left: BorderSide(color: AppColors.terracotta, width: 3)),
+          color: AppColors.parchment,
+          borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
+        ),
+        child: Text(text,
+            style: GoogleFonts.fraunces(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+                color: AppColors.ink,
+                height: 1.5),
+            maxLines: _descExpanded ? null : 3,
+            overflow: _descExpanded ? TextOverflow.visible : TextOverflow.ellipsis),
       ),
-      child: Text(r.tagline,
-          style: GoogleFonts.fraunces(
-              fontSize: 15,
-              fontStyle: FontStyle.italic,
-              color: AppColors.ink,
-              height: 1.5)),
     );
   }
 
@@ -337,229 +343,262 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
         return Container(
           margin: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           padding: const EdgeInsets.all(14),
+          constraints: const BoxConstraints(minHeight: 110),
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.lightGrey.withOpacity(0.6)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 16,
-                    backgroundColor: AppColors.parchment,
-                    child: Text(review.authorName[0],
-                        style: GoogleFonts.fraunces(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.ink)),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // ── Left: avatar / name / review text / translate ──
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(review.authorName,
-                          style: GoogleFonts.inter(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.ink)),
-                      StarRating(rating: review.rating, size: 11),
-                    ],
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Builder(builder: (context) {
-                        final uid = context.read<AuthProvider>().user?.uid ?? '';
-                        final liked = review.hasLiked(uid);
-                        return GestureDetector(
-                          onTap: () => reviewProvider.upvote(
-                              restaurantId: r.id, reviewId: review.id, uid: uid),
-                          child: Row(
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 16,
+                            backgroundColor: AppColors.parchment,
+                            child: Text(review.authorName[0],
+                                style: GoogleFonts.fraunces(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.ink)),
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                liked ? Icons.thumb_up : Icons.thumb_up_outlined,
-                                size: 14,
-                                color: liked ? AppColors.terracotta : AppColors.warmGrey,
-                              ),
-                              const SizedBox(width: 4),
-                              Text('${review.upvotes}',
+                              Text(review.authorName,
                                   style: GoogleFonts.inter(
-                                      fontSize: 12,
-                                      color: liked ? AppColors.terracotta : AppColors.warmGrey)),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.ink)),
+                              StarRating(rating: review.rating, size: 11),
                             ],
                           ),
-                        );
-                      }),
-                      Builder(builder: (context) {
-                        final currentUid = context.read<AuthProvider>().user?.uid;
-                        final isOwner = review.authorId == currentUid;
-                        // Admin check — update this UID to your Firebase UID
-                        const adminUid = 'ADMIN_UID_PLACEHOLDER';
-                        final isAdmin = currentUid == adminUid;
-
-                        if (!isOwner && !isAdmin) return const SizedBox.shrink();
-
-                        return Row(
-                          mainAxisSize: MainAxisSize.min,
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(review.text,
+                          style: GoogleFonts.inter(
+                              fontSize: 13, color: AppColors.ink, height: 1.5)),
+                      if (translation != null) ...[
+                        const Divider(height: 16),
+                        Text(translation,
+                            style: GoogleFonts.inter(
+                                fontSize: 12,
+                                color: AppColors.warmGrey,
+                                fontStyle: FontStyle.italic)),
+                      ] else if (reviewProvider.isTranslating(review.id, locale)) ...[
+                        const SizedBox(height: 8),
+                        const SizedBox(
+                          height: 14,
+                          width: 14,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: AppColors.teal),
+                        ),
+                      ] else if (reviewProvider.translationFailed(review.id, locale)) ...[
+                        const SizedBox(height: 8),
+                        Row(
                           children: [
-                            const SizedBox(width: 4),
-                            PopupMenuButton<String>(
-                              icon: const Icon(Icons.more_vert,
-                                  size: 18, color: AppColors.warmGrey),
-                              onSelected: (value) async {
-                                if (value == 'edit') {
-                                  Navigator.pushNamed(
-                                      context, RouteNames.kEditReview,
-                                      arguments: review);
-                                } else if (value == 'delete') {
-                                  final confirmed = await showDialog<bool>(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                      title: Text('Delete Review',
-                                          style: GoogleFonts.fraunces(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              color: AppColors.ink)),
-                                      content: Text(
-                                          'Are you sure you want to delete this review?',
-                                          style: GoogleFonts.inter(
-                                              fontSize: 14,
-                                              color: AppColors.warmGrey)),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, false),
-                                          child: const Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, true),
-                                          child: Text('Delete',
-                                              style: GoogleFonts.inter(
-                                                  color: Colors.red)),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  if (confirmed == true && context.mounted) {
-                                    await context
-                                        .read<ReviewProvider>()
-                                        .deleteReview(
-                                            restaurantId: r.id,
-                                            reviewId: review.id);
-                                  }
-                                } else if (value == 'score_plus' && isAdmin) {
-                                  await context
-                                      .read<UserProvider>()
-                                      .adjustScore(review.authorId, 10);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('+10 points awarded')));
-                                  }
-                                } else if (value == 'score_minus' && isAdmin) {
-                                  await context
-                                      .read<UserProvider>()
-                                      .adjustScore(review.authorId, -10);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text('-10 points removed')));
-                                  }
-                                }
-                              },
-                              itemBuilder: (_) => [
-                                if (isOwner) ...[
-                                  PopupMenuItem(
-                                    value: 'edit',
-                                    child: Text('Edit',
-                                        style: GoogleFonts.inter(fontSize: 14)),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 'delete',
-                                    child: Text('Delete',
-                                        style: GoogleFonts.inter(
-                                            fontSize: 14, color: Colors.red)),
-                                  ),
-                                ],
-                                if (isAdmin) ...[
-                                  PopupMenuItem(
-                                    value: 'score_plus',
-                                    child: Text('+10 Points',
-                                        style: GoogleFonts.inter(
-                                            fontSize: 14, color: Colors.green)),
-                                  ),
-                                  PopupMenuItem(
-                                    value: 'score_minus',
-                                    child: Text('-10 Points',
-                                        style: GoogleFonts.inter(
-                                            fontSize: 14, color: Colors.orange)),
-                                  ),
-                                ],
-                              ],
+                            Expanded(
+                              child: Text(
+                                reviewProvider.error != null
+                                    ? 'Error: ${reviewProvider.error}'
+                                    : 'Translation failed — tap to retry',
+                                style: GoogleFonts.inter(
+                                    fontSize: 11,
+                                    color: AppColors.terracotta),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () => reviewProvider.translate(
+                                restaurantId: r.id,
+                                reviewId: review.id,
+                                text: review.text,
+                                targetLang: locale,
+                              ),
+                              child: const Icon(Icons.refresh,
+                                  size: 14, color: AppColors.teal),
                             ),
                           ],
-                        );
-                      }),
+                        ),
+                      ] else ...[
+                        const SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: () => reviewProvider.translate(
+                            restaurantId: r.id,
+                            reviewId: review.id,
+                            text: review.text,
+                            targetLang: locale,
+                          ),
+                          child: Text('Translate',
+                              style: GoogleFonts.inter(
+                                  fontSize: 11,
+                                  color: AppColors.teal,
+                                  decoration: TextDecoration.underline)),
+                        ),
+                      ],
                     ],
                   ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Text(review.text,
-                  style: GoogleFonts.inter(
-                      fontSize: 13, color: AppColors.ink, height: 1.5)),
-              if (translation != null) ...[
-                const Divider(height: 16),
-                Text(translation,
-                    style: GoogleFonts.inter(
-                        fontSize: 12,
-                        color: AppColors.warmGrey,
-                        fontStyle: FontStyle.italic)),
-              ] else if (reviewProvider.isTranslating(review.id, locale)) ...[
-                const SizedBox(height: 8),
-                const SizedBox(
-                  height: 14,
-                  width: 14,
-                  child: CircularProgressIndicator(
-                      strokeWidth: 2, color: AppColors.teal),
                 ),
-              ] else if (reviewProvider.translationFailed(review.id, locale)) ...[
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () => reviewProvider.translate(
-                    restaurantId: r.id,
-                    reviewId: review.id,
-                    text: review.text,
-                    targetLang: locale,
+                const SizedBox(width: 8),
+                // ── Right: 3-dots (top) + like (bottom) ──
+                SizedBox(
+                  width: 32,
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // 3-dot menu — top-right
+                    Builder(builder: (context) {
+                      final currentUid = context.read<AuthProvider>().user?.uid;
+                      final isOwner = review.authorId == currentUid;
+                      const adminUid = 'ADMIN_UID_PLACEHOLDER';
+                      final isAdmin = currentUid == adminUid;
+
+                      if (!isOwner && !isAdmin) return const SizedBox.shrink();
+
+                      return PopupMenuButton<String>(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(Icons.more_vert,
+                            size: 18, color: AppColors.warmGrey),
+                        onSelected: (value) async {
+                          if (value == 'edit') {
+                            Navigator.pushNamed(
+                                context, RouteNames.kEditReview,
+                                arguments: review);
+                          } else if (value == 'delete') {
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Delete Review',
+                                    style: GoogleFonts.fraunces(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.ink)),
+                                content: Text(
+                                    'Are you sure you want to delete this review?',
+                                    style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        color: AppColors.warmGrey)),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: Text('Delete',
+                                        style: GoogleFonts.inter(
+                                            color: Colors.red)),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (confirmed == true && context.mounted) {
+                              await context
+                                  .read<ReviewProvider>()
+                                  .deleteReview(
+                                      restaurantId: r.id,
+                                      reviewId: review.id);
+                            }
+                          } else if (value == 'score_plus' && isAdmin) {
+                            await context
+                                .read<UserProvider>()
+                                .adjustScore(review.authorId, 10);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('+10 points awarded')));
+                            }
+                          } else if (value == 'score_minus' && isAdmin) {
+                            await context
+                                .read<UserProvider>()
+                                .adjustScore(review.authorId, -10);
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('-10 points removed')));
+                            }
+                          }
+                        },
+                        itemBuilder: (_) => [
+                          if (isOwner) ...[
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Text('Edit',
+                                  style: GoogleFonts.inter(fontSize: 14)),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Text('Delete',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: Colors.red)),
+                            ),
+                          ],
+                          if (isAdmin) ...[
+                            PopupMenuItem(
+                              value: 'score_plus',
+                              child: Text('+10 Points',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: Colors.green)),
+                            ),
+                            PopupMenuItem(
+                              value: 'score_minus',
+                              child: Text('-10 Points',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 14, color: Colors.orange)),
+                            ),
+                          ],
+                        ],
+                      );
+                    }),
+                    // Like button — bottom-right
+                    Builder(builder: (context) {
+                      final uid = context.read<AuthProvider>().user?.uid ?? '';
+                      final liked = review.hasLiked(uid);
+                      return GestureDetector(
+                        onTap: () => reviewProvider.upvote(
+                            restaurantId: r.id,
+                            reviewId: review.id,
+                            uid: uid),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              liked
+                                  ? Icons.thumb_up
+                                  : Icons.thumb_up_outlined,
+                              size: 14,
+                              color: liked
+                                  ? AppColors.terracotta
+                                  : AppColors.warmGrey,
+                            ),
+                            const SizedBox(height: 2),
+                            Text('${review.upvotes}',
+                                style: GoogleFonts.inter(
+                                    fontSize: 12,
+                                    color: liked
+                                        ? AppColors.terracotta
+                                        : AppColors.warmGrey)),
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
                   ),
-                  child: Text('Translation failed — tap to retry',
-                      style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: AppColors.terracotta,
-                          decoration: TextDecoration.underline)),
-                ),
-              ] else ...[
-                const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () => reviewProvider.translate(
-                    restaurantId: r.id,
-                    reviewId: review.id,
-                    text: review.text,
-                    targetLang: locale,
-                  ),
-                  child: Text('Translate',
-                      style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: AppColors.teal,
-                          decoration: TextDecoration.underline)),
                 ),
               ],
-            ],
+            ),
           ),
         );
       }).toList(),
@@ -575,21 +614,147 @@ class _AiSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final aiProvider = context.watch<AiProvider>();
     final summary = aiProvider.summaryFor(restaurantId);
+    final requested = aiProvider.hasBeenRequested(restaurantId);
 
+    // Not yet requested — show the prompt button
+    if (!requested) {
+      return _AiSummaryPrompt(
+        onTap: () => context.read<AiProvider>().loadSummary(restaurantId),
+      );
+    }
+
+    // Generating
     if (aiProvider.isGenerating) {
       return Shimmer.fromColors(
         baseColor: const Color(0xFFE0D9D0),
         highlightColor: const Color(0xFFF5EFE6),
         child: Container(
-          height: 120,
-          margin: const EdgeInsets.all(16),
+          height: 140,
+          margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+              color: Colors.white, borderRadius: BorderRadius.circular(16)),
         ),
       );
     }
+
+    // Error
+    if (aiProvider.hasError(restaurantId)) {
+      return Container(
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: Colors.red.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.red.withOpacity(0.1)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.error_outline, size: 16, color: Colors.redAccent),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'AI summary unavailable right now.',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => aiProvider.loadSummary(restaurantId),
+              child: const Icon(Icons.refresh, size: 18, color: AppColors.teal),
+            ),
+          ],
+        ),
+      );
+    }
+
     if (summary == null) return const SizedBox.shrink();
     return _AiSummaryContent(summary: summary);
+  }
+}
+
+class _AiSummaryPrompt extends StatelessWidget {
+  final VoidCallback onTap;
+  const _AiSummaryPrompt({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.teal.withOpacity(0.12),
+              AppColors.sageGreen.withOpacity(0.08),
+            ],
+          ),
+          border: Border.all(color: AppColors.teal.withOpacity(0.25)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.teal.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  size: 20,
+                  color: AppColors.teal,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'AI Summary',
+                      style: GoogleFonts.fraunces(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Tap to summarise reviews with Gemini',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppColors.warmGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.teal,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Generate',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -600,7 +765,7 @@ class _AiSummaryContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.teal.withOpacity(0.08),
@@ -614,37 +779,95 @@ class _AiSummaryContent extends StatelessWidget {
             children: [
               const Icon(Icons.auto_awesome, size: 14, color: AppColors.teal),
               const SizedBox(width: 6),
-              Text('AI Summary',
+              Text('AI SUMMARY',
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700,
-                      fontSize: 11,
+                      fontSize: 10,
                       color: AppColors.teal,
-                      letterSpacing: 0.8)),
+                      letterSpacing: 1.2)),
+              const Spacer(),
+              Text('Powered by Gemini',
+                  style: GoogleFonts.inter(
+                      fontSize: 9,
+                      color: AppColors.teal.withOpacity(0.6))),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(summary.vibeOneLiner,
               style: GoogleFonts.fraunces(
-                  fontSize: 14, fontStyle: FontStyle.italic, color: AppColors.ink)),
-          const SizedBox(height: 8),
+                  fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink, height: 1.4)),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 6,
+            runSpacing: 6,
             children: summary.topAspects
-                .map((a) => Chip(
-                      label: Text(a,
-                          style: GoogleFonts.inter(fontSize: 11)),
-                      padding: EdgeInsets.zero,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                .map((a) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: AppColors.teal.withOpacity(0.1)),
+                      ),
+                      child: Text(a,
+                          style: GoogleFonts.inter(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.teal)),
                     ))
                 .toList(),
           ),
+          const SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.restaurant_menu, size: 14, color: AppColors.warmGrey),
+              const SizedBox(width: 8),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink),
+                    children: [
+                      const TextSpan(text: 'Try: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                      TextSpan(text: summary.mainDish),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.access_time, size: 14, color: AppColors.warmGrey),
+              const SizedBox(width: 8),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink),
+                    children: [
+                      const TextSpan(text: 'Best time: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                      TextSpan(text: summary.bestTime),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           if (summary.caveats.isNotEmpty) ...[
             const SizedBox(height: 6),
-            Text('Watch out: ${summary.caveats.join(', ')}',
-                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_amber_rounded, size: 14, color: AppColors.terracotta),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Watch out: ${summary.caveats.join(', ')}',
+                      style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink)),
+                ),
+              ],
+            ),
           ],
-          Text('Best time: ${summary.bestTime}',
-              style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
         ],
       ),
     );

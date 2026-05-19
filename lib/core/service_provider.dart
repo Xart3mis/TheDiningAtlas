@@ -35,6 +35,7 @@ import '../providers/onboarding_provider.dart';
 import '../providers/notification_provider.dart';
 import '../providers/ai_provider.dart';
 import '../providers/auth_provider.dart';
+import '../providers/geofence_provider.dart';
 
 class ServiceProvider {
   static List<SingleChildWidget> getProviders() {
@@ -49,6 +50,7 @@ class ServiceProvider {
     final notificationService = FcmNotificationService();
     final aiService = GeminiAiService();
     final subscriptionService = FirestoreSubscriptionService();
+    final geofenceProvider = GeofenceProvider(notificationService, locationService);
 
     return [
       // Base Interfaces
@@ -75,8 +77,9 @@ class ServiceProvider {
       ChangeNotifierProvider(create: (_) => TripProvider(tripService)),
       ChangeNotifierProvider(
           create: (_) => ChatProvider(chatService, aiService, notificationService, userService)),
+      ChangeNotifierProvider(create: (_) => geofenceProvider),
       ChangeNotifierProvider(
-          create: (_) => SavedPlacesProvider(userService, notificationService, restaurantService)),
+          create: (_) => SavedPlacesProvider(userService, restaurantService, geofenceProvider)),
       ChangeNotifierProvider(
           create: (_) => OnboardingProvider(userService, aiService)),
       ChangeNotifierProvider(

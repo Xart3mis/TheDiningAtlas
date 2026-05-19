@@ -261,23 +261,71 @@ class _MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chatProvider = context.watch<ChatProvider>();
+    final locale = Localizations.localeOf(context).languageCode;
+    final translation = chatProvider.translationFor(message.id, locale);
+
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        constraints:
-            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: isMe ? AppColors.terracotta : AppColors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
-          ],
-        ),
-        child: Text(message.text,
-            style: GoogleFonts.inter(
-                color: isMe ? Colors.white : AppColors.ink, fontSize: 14)),
+      child: Column(
+        crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(bottom: 4),
+            constraints:
+                BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: isMe ? AppColors.terracotta : AppColors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(16),
+                topRight: const Radius.circular(16),
+                bottomLeft: Radius.circular(isMe ? 16 : 4),
+                bottomRight: Radius.circular(isMe ? 4 : 16),
+              ),
+              boxShadow: const [
+                BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(message.text,
+                    style: GoogleFonts.inter(
+                        color: isMe ? Colors.white : AppColors.ink, fontSize: 14)),
+                if (translation != null) ...[
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: Divider(color: Colors.white24, height: 1),
+                  ),
+                  Text(translation,
+                      style: GoogleFonts.inter(
+                          color: isMe ? Colors.white70 : AppColors.warmGrey,
+                          fontSize: 12,
+                          fontStyle: FontStyle.italic)),
+                ],
+              ],
+            ),
+          ),
+          if (!isMe && translation == null)
+            Padding(
+              padding: const EdgeInsets.only(left: 4, bottom: 8),
+              child: GestureDetector(
+                onTap: () => chatProvider.translateMessage(
+                  messageId: message.id,
+                  text: message.text,
+                  targetLang: locale,
+                ),
+                child: Text('Translate',
+                    style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: AppColors.teal,
+                        fontWeight: FontWeight.w600)),
+              ),
+            )
+          else
+            const SizedBox(height: 8),
+        ],
       ),
     );
   }

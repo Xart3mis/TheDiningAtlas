@@ -5,6 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/notification_provider.dart';
+import '../../providers/geofence_provider.dart';
 import '../../core/constants/route_names.dart';
 import 'login_screen.dart';
 
@@ -40,13 +41,22 @@ class _AuthenticatedGate extends StatefulWidget {
 
 class _AuthenticatedGateState extends State<_AuthenticatedGate> {
   _GateState _state = _GateState.loading;
+  late final GeofenceProvider _geofenceProvider;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _init();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _geofenceProvider = context.read<GeofenceProvider>();
+      await _init();
+      _geofenceProvider.start();
     });
+  }
+
+  @override
+  void dispose() {
+    _geofenceProvider.stop();
+    super.dispose();
   }
 
   Future<void> _init() async {

@@ -133,6 +133,7 @@ class ReviewProvider extends ChangeNotifier {
 
     _translationErrors.remove(key);
     _translating.add(key);
+    _error = null;
     notifyListeners();
 
     try {

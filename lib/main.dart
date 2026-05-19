@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
@@ -44,6 +45,9 @@ final mainShellKey = GlobalKey<_MainShellState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox<String>('restaurant_feed'); // key: cityId → JSON array
+  await Hive.openBox<String>('saved_ids');       // key: uid → JSON array of IDs
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -198,6 +202,7 @@ class _MainShellState extends State<MainShell> {
       ),
       floatingActionButton: _currentIndex <= 1
           ? FloatingActionButton(
+              heroTag: 'fab_add_place',
               onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
               backgroundColor: AppColors.terracotta,
               child: const Icon(Icons.add_location_alt, color: Colors.white),

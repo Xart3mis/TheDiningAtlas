@@ -82,6 +82,26 @@ class FirestoreUserService implements IUserService {
   }
 
   @override
+  Future<Map<String, bool>> fetchSavedPlaceFlags(String uid) async {
+    final snap = await _userDoc(uid)
+        .collection(AppConstants.kColSavedPlaces)
+        .get();
+    return {
+      for (final doc in snap.docs)
+        doc.id: (doc.data()['reminderEnabled'] as bool?) ?? false,
+    };
+  }
+
+  @override
+  Future<void> updateReminderEnabled(
+      String uid, String placeId, bool enabled) async {
+    await _userDoc(uid)
+        .collection(AppConstants.kColSavedPlaces)
+        .doc(placeId)
+        .update({'reminderEnabled': enabled});
+  }
+
+  @override
   Future<int> savedPlaceCount(String uid) async {
     final snap = await _userDoc(uid).collection(AppConstants.kColSavedPlaces).count().get();
     return snap.count ?? 0;

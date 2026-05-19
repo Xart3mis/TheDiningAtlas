@@ -11,6 +11,8 @@ abstract class IUserService {
   Future<List<String>> fetchSavedPlaceIds(String uid);
   Future<void> savePlace({required String uid, required String placeId, required bool reminderEnabled});
   Future<void> unsavePlace({required String uid, required String placeId});
+  Future<Map<String, bool>> fetchSavedPlaceFlags(String uid);
+  Future<void> updateReminderEnabled(String uid, String placeId, bool enabled);
   Future<int> savedPlaceCount(String uid);
   Future<void> updateFcmToken(String uid, String token);
   Future<void> updateCountry(String uid, String countryId);
