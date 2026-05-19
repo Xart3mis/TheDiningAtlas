@@ -146,6 +146,7 @@ class _TripPlacePickerScreenState extends State<TripPlacePickerScreen> {
       statusLabel: 'Planned',
       statusColor: Colors.green,
       tileColor: r.tileColor,
+      imageUrl: r.mediaUrls.isNotEmpty ? r.mediaUrls.first : null,
     );
     try {
       await tripProvider.addSpot(

@@ -40,6 +40,7 @@ class TripSpotModel {
   final String statusLabel;
   final Color statusColor;
   final Color tileColor;
+  final String? imageUrl;
 
   const TripSpotModel({
     required this.id,
@@ -50,6 +51,7 @@ class TripSpotModel {
     required this.neighborhood,
     required this.statusLabel,
     this.statusColor = Colors.green,
-    this.tileColor = const Color(0xFF2E5B52), // AppColors.teal
+    this.tileColor = const Color(0xFF2E5B52),
+    this.imageUrl,
   });
 }
