@@ -106,17 +106,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                         itemBuilder: (_, i) {
                           final msg = messages[i];
                           final isMe = msg.senderId == myUid;
-                          final translation =
-                              chatProvider.translationFor(msg.id, 'en');
                           return _MessageBubble(
                             message: msg,
                             isMe: isMe,
-                            translation: translation,
-                            onTranslate: () => chatProvider.translateMessage(
-                              messageId: msg.id,
-                              text: msg.text,
-                              targetLang: 'en',
-                            ),
                           );
                         },
                       );
@@ -133,13 +125,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
 class _MessageBubble extends StatelessWidget {
   final MessageModel message;
   final bool isMe;
-  final String? translation;
-  final VoidCallback onTranslate;
   const _MessageBubble({
     required this.message,
     required this.isMe,
-    this.translation,
-    required this.onTranslate,
   });
 
   @override
@@ -164,24 +152,6 @@ class _MessageBubble extends StatelessWidget {
             Text(message.text,
                 style: GoogleFonts.inter(
                     color: isMe ? Colors.white : AppColors.ink, fontSize: 14)),
-            if (translation != null) ...[
-              const Divider(height: 12),
-              Text(translation!,
-                  style: GoogleFonts.inter(
-                      color: isMe ? Colors.white70 : AppColors.warmGrey,
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic)),
-            ] else if (!isMe) ...[
-              const SizedBox(height: 6),
-              GestureDetector(
-                onTap: onTranslate,
-                child: Text('Translate',
-                    style: GoogleFonts.inter(
-                        fontSize: 11,
-                        color: AppColors.teal,
-                        decoration: TextDecoration.underline)),
-              ),
-            ],
           ],
         ),
       ),

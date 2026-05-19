@@ -528,6 +528,21 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                   child: CircularProgressIndicator(
                       strokeWidth: 2, color: AppColors.teal),
                 ),
+              ] else if (reviewProvider.translationFailed(review.id, locale)) ...[
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () => reviewProvider.translate(
+                    restaurantId: r.id,
+                    reviewId: review.id,
+                    text: review.text,
+                    targetLang: locale,
+                  ),
+                  child: Text('Translation failed — tap to retry',
+                      style: GoogleFonts.inter(
+                          fontSize: 11,
+                          color: AppColors.terracotta,
+                          decoration: TextDecoration.underline)),
+                ),
               ] else ...[
                 const SizedBox(height: 8),
                 GestureDetector(

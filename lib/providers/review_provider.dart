@@ -11,6 +11,7 @@ class ReviewProvider extends ChangeNotifier {
   final Map<String, List<ReviewModel>> _reviews = {};
   final Map<String, String> _translations = {}; // key: 'reviewId_lang'
   final Set<String> _translating = {};
+  final Set<String> _translationErrors = {}; // keys that failed translation
   bool _isLoading = false;
   String? _error;
 
@@ -20,6 +21,8 @@ class ReviewProvider extends ChangeNotifier {
   String? translationFor(String reviewId, String lang) => _translations['${reviewId}_$lang'];
   bool isTranslating(String reviewId, String targetLang) =>
       _translating.contains('${reviewId}_$targetLang');
+  bool translationFailed(String reviewId, String targetLang) =>
+      _translationErrors.contains('${reviewId}_$targetLang');
 
   Future<void> loadReviews(String restaurantId) async {
     _isLoading = true;
@@ -128,6 +131,7 @@ class ReviewProvider extends ChangeNotifier {
     final key = '${reviewId}_$targetLang';
     if (_translations.containsKey(key) || _translating.contains(key)) return;
 
+    _translationErrors.remove(key);
     _translating.add(key);
     notifyListeners();
 
@@ -141,12 +145,13 @@ class ReviewProvider extends ChangeNotifier {
       }
 
       final translated = await _aiService.translate(text: text, targetLang: targetLang);
-      await _reviewService.cacheTranslation(
+      _translations[key] = translated; // store in memory first
+      _reviewService.cacheTranslation( // fire-and-forget; don't block on Firestore write
         restaurantId: restaurantId, reviewId: reviewId,
         targetLang: targetLang, translatedText: translated,
-      );
-      _translations[key] = translated;
+      ).catchError((_) {}); // cache failure is non-fatal
     } catch (e) {
+      _translationErrors.add(key);
       _error = e.toString();
     } finally {
       _translating.remove(key);
@@ -157,6 +162,7 @@ class ReviewProvider extends ChangeNotifier {
   void reset() {
     _reviews.clear();
     _translations.clear();
+    _translationErrors.clear();
     _error = null;
     notifyListeners();
   }

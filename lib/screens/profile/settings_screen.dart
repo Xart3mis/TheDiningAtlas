@@ -24,7 +24,6 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     final user = userProvider.user;
-    final currentMode = user?.chatPrivacy.mode ?? 'public';
 
     return Scaffold(
       appBar: AppBar(
