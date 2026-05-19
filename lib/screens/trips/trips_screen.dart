@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -316,11 +317,38 @@ class _SpotCard extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          const StripeTile(
-                            color: AppColors.teal,
-                            width: 56,
-                            height: 56,
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: SizedBox(
+                              width: 56,
+                              height: 56,
+                              child: spot.imageUrl != null
+                                  ? CachedNetworkImage(
+                                      imageUrl: spot.imageUrl!,
+                                      fit: BoxFit.cover,
+                                      placeholder: (_, __) => StripeTile(
+                                        color: spot.tileColor,
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                      ),
+                                      errorWidget: (_, __, ___) => StripeTile(
+                                        color: spot.tileColor,
+                                        width: 56,
+                                        height: 56,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(8)),
+                                      ),
+                                    )
+                                  : StripeTile(
+                                      color: spot.tileColor,
+                                      width: 56,
+                                      height: 56,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8)),
+                                    ),
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(

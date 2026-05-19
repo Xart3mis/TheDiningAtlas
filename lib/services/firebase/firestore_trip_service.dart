@@ -45,6 +45,7 @@ class FirestoreTripService implements ITripService {
             name: sd['name'] ?? '',
             neighborhood: sd['neighborhood'] ?? '',
             statusLabel: sd['statusLabel'] ?? '',
+            imageUrl: sd['imageUrl'] as String?,
           );
         }).toList();
 
@@ -115,6 +116,7 @@ class FirestoreTripService implements ITripService {
       'name': spot.name,
       'neighborhood': spot.neighborhood,
       'statusLabel': spot.statusLabel,
+      if (spot.imageUrl != null) 'imageUrl': spot.imageUrl,
     });
   }
 
