@@ -77,8 +77,11 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 12),
                   itemCount: restaurants.length,
-                  itemBuilder: (_, i) =>
-                      _SavedPlaceCard(restaurant: restaurants[i]),
+                  itemBuilder: (_, i) => _SavedPlaceCard(
+                    restaurant: restaurants[i],
+                    reminderEnabled:
+                        savedProvider.reminderEnabled(restaurants[i].id),
+                  ),
                 ),
     );
   }
@@ -86,7 +89,11 @@ class _SavedPlacesScreenState extends State<SavedPlacesScreen> {
 
 class _SavedPlaceCard extends StatelessWidget {
   final RestaurantModel restaurant;
-  const _SavedPlaceCard({required this.restaurant});
+  final bool reminderEnabled;
+  const _SavedPlaceCard({
+    required this.restaurant,
+    required this.reminderEnabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +156,24 @@ class _SavedPlaceCard extends StatelessWidget {
                   ],
                 ),
               ),
+            ),
+            IconButton(
+              icon: Icon(
+                reminderEnabled
+                    ? Icons.notifications_active
+                    : Icons.notifications_none,
+                color: reminderEnabled
+                    ? AppColors.terracotta
+                    : AppColors.warmGrey,
+                size: 20,
+              ),
+              onPressed: () async {
+                final uid =
+                    context.read<AuthProvider>().user?.uid ?? '';
+                await context
+                    .read<SavedPlacesProvider>()
+                    .toggleReminder(uid, restaurant.id);
+              },
             ),
             IconButton(
               icon: const Icon(Icons.bookmark,
