@@ -202,6 +202,7 @@ class _MainShellState extends State<MainShell> {
       ),
       floatingActionButton: _currentIndex <= 1
           ? FloatingActionButton(
+              heroTag: 'fab_add_place',
               onPressed: () => Navigator.pushNamed(context, RouteNames.kAddPlace),
               backgroundColor: AppColors.terracotta,
               child: const Icon(Icons.add_location_alt, color: Colors.white),
