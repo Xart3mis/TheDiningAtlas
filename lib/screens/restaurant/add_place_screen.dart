@@ -114,7 +114,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
         dish: _dishController.text.trim(),
         mediaUrls: [],
         contributorId: isGuest ? 'guest_user' : auth.user!.uid,
-        status: 'pending',
+        status: 'approved',
         avgRating: 0,
         reviewCount: 0,
         saveCount: 0,
@@ -127,7 +127,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
       await context.read<RestaurantProvider>().addRestaurant(restaurant);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Place submitted! It will be reviewed shortly.')));
+            content: Text('Place added!')));
         Navigator.pop(context);
       }
     } catch (e) {

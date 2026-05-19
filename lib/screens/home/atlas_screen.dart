@@ -157,6 +157,23 @@ class _AtlasScreenState extends State<AtlasScreen> {
                       size: 18, color: AppColors.ink),
                 ),
               ),
+              // Bell / alerts button
+              GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, RouteNames.kNotifications),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  margin: const EdgeInsets.only(right: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.parchment,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.lightGrey),
+                  ),
+                  child: const Icon(Icons.notifications_outlined,
+                      size: 18, color: AppColors.ink),
+                ),
+              ),
               // Avatar / profile
               GestureDetector(
                 onTap: () => MainShell.switchTab(5),

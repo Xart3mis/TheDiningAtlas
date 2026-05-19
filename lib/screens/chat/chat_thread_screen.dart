@@ -5,6 +5,8 @@ import '../../theme/app_theme.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../models/chat_model.dart';
+import '../../models/user_model.dart';
+import '../../services/interfaces/i_user_service.dart';
 
 class ChatThreadScreen extends StatefulWidget {
   final String otherUid;
@@ -24,19 +26,36 @@ class ChatThreadScreen extends StatefulWidget {
 class _ChatThreadScreenState extends State<ChatThreadScreen> {
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
+  ChatPrivacy? _otherPrivacy;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    Future.microtask(() async {
       if (!mounted) return;
       final uid = context.read<AuthProvider>().user?.uid;
       if (uid == null) return;
-      context.read<ChatProvider>().openChat(
+
+      // Load recipient privacy, current user profile, and open chat together
+      final userService = context.read<IUserService>();
+      final results = await Future.wait([
+        userService.fetchUser(widget.otherUid),
+        userService.fetchUser(uid),
+      ]);
+      if (!mounted) return;
+      final currentUser = results[1];
+      await context.read<ChatProvider>().openChat(
             currentUid: uid,
             otherUid: widget.otherUid,
             placeId: widget.placeId,
+            currentUserName: currentUser?.displayName,
           );
+
+      if (!mounted) return;
+      final otherUser = results[0] as UserModel?;
+      setState(() {
+        _otherPrivacy = otherUser?.chatPrivacy;
+      });
     });
   }
 
@@ -47,12 +66,90 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     super.dispose();
   }
 
+  /// Returns null when messaging is allowed, or a human-readable reason when blocked.
+  String? _blockedReason() {
+    final privacy = _otherPrivacy;
+    if (privacy == null) return null; // still loading — optimistically allow
+    switch (privacy.mode) {
+      case 'private':
+        return '${widget.otherName} is not accepting messages right now.';
+      case 'scheduled':
+        if (!_isWithinSchedule(privacy)) {
+          final start = _fmtTime(privacy.scheduleStart);
+          final end = _fmtTime(privacy.scheduleEnd);
+          final days = _fmtDays(privacy.scheduleDays);
+          return '${widget.otherName} only accepts messages $days, $start – $end.';
+        }
+        return null;
+      default:
+        return null;
+    }
+  }
+
+  bool _isWithinSchedule(ChatPrivacy privacy) {
+    final now = DateTime.now();
+    final dayKey = const ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+        [now.weekday - 1]; // DateTime.monday == 1
+    if (privacy.scheduleDays.isNotEmpty &&
+        !privacy.scheduleDays.contains(dayKey)) {
+      return false;
+    }
+    final start = _parseHhmm(privacy.scheduleStart);
+    final end = _parseHhmm(privacy.scheduleEnd);
+    if (start == null || end == null) return true; // times not configured yet
+    final nowMinutes = now.hour * 60 + now.minute;
+    final startMinutes = start[0] * 60 + start[1];
+    final endMinutes = end[0] * 60 + end[1];
+    if (endMinutes > startMinutes) {
+      return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+    }
+    // Overnight window (e.g. 22:00 – 02:00)
+    return nowMinutes >= startMinutes || nowMinutes < endMinutes;
+  }
+
+  List<int>? _parseHhmm(String? hhmm) {
+    if (hhmm == null) return null;
+    final p = hhmm.split(':');
+    if (p.length != 2) return null;
+    final h = int.tryParse(p[0]);
+    final m = int.tryParse(p[1]);
+    if (h == null || m == null) return null;
+    return [h, m];
+  }
+
+  String _fmtTime(String? hhmm) {
+    final p = _parseHhmm(hhmm);
+    if (p == null) return '?';
+    final h = p[0];
+    final m = p[1].toString().padLeft(2, '0');
+    final period = h < 12 ? 'AM' : 'PM';
+    final h12 = h == 0 ? 12 : (h > 12 ? h - 12 : h);
+    return '$h12:$m $period';
+  }
+
+  String _fmtDays(List<String> days) {
+    if (days.isEmpty) return 'every day';
+    const labels = {
+      'mon': 'Mon',
+      'tue': 'Tue',
+      'wed': 'Wed',
+      'thu': 'Thu',
+      'fri': 'Fri',
+      'sat': 'Sat',
+      'sun': 'Sun',
+    };
+    return days.map((d) => labels[d] ?? d).join(', ');
+  }
+
   void _send() {
+    if (_blockedReason() != null) return;
     final text = _controller.text.trim();
     if (text.isEmpty) return;
     final auth = context.read<AuthProvider>();
     final isGuest = auth.user == null;
-    context.read<ChatProvider>().sendMessage(senderId: isGuest ? 'guest_user' : auth.user!.uid, text: text);
+    context
+        .read<ChatProvider>()
+        .sendMessage(senderId: isGuest ? 'guest_user' : auth.user!.uid, text: text);
     _controller.clear();
     Future.delayed(const Duration(milliseconds: 100), () {
       if (_scrollController.hasClients) {
@@ -71,6 +168,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
     final auth = context.read<AuthProvider>();
     final isGuest = auth.user == null;
     final myUid = isGuest ? 'guest_user' : auth.user!.uid;
+    final blockedReason = _blockedReason();
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +179,9 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
           children: [
             Text(widget.otherName,
                 style: GoogleFonts.fraunces(
-                    fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.ink)),
             Text('Local contributor',
                 style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
           ],
@@ -105,25 +205,49 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
                         itemCount: messages.length,
                         itemBuilder: (_, i) {
                           final msg = messages[i];
-                          final isMe = msg.senderId == myUid;
-                          final translation =
-                              chatProvider.translationFor(msg.id, 'en');
                           return _MessageBubble(
                             message: msg,
-                            isMe: isMe,
-                            translation: translation,
-                            onTranslate: () => chatProvider.translateMessage(
-                              messageId: msg.id,
-                              text: msg.text,
-                              targetLang: 'en',
-                            ),
+                            isMe: msg.senderId == myUid,
                           );
                         },
                       );
                     },
                   ),
           ),
-          _ChatInputBar(controller: _controller, onSend: _send),
+          if (blockedReason != null)
+            _PrivacyBanner(reason: blockedReason)
+          else
+            _ChatInputBar(controller: _controller, onSend: _send),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+
+class _PrivacyBanner extends StatelessWidget {
+  final String reason;
+  const _PrivacyBanner({required this.reason});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+      decoration: BoxDecoration(
+        color: AppColors.cream,
+        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4)],
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.lock_outline, size: 18, color: AppColors.warmGrey),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(reason,
+                style: GoogleFonts.inter(
+                    fontSize: 13, color: AppColors.warmGrey)),
+          ),
         ],
       ),
     );
@@ -133,14 +257,7 @@ class _ChatThreadScreenState extends State<ChatThreadScreen> {
 class _MessageBubble extends StatelessWidget {
   final MessageModel message;
   final bool isMe;
-  final String? translation;
-  final VoidCallback onTranslate;
-  const _MessageBubble({
-    required this.message,
-    required this.isMe,
-    this.translation,
-    required this.onTranslate,
-  });
+  const _MessageBubble({required this.message, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
@@ -158,32 +275,9 @@ class _MessageBubble extends StatelessWidget {
             BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(message.text,
-                style: GoogleFonts.inter(
-                    color: isMe ? Colors.white : AppColors.ink, fontSize: 14)),
-            if (translation != null) ...[
-              const Divider(height: 12),
-              Text(translation!,
-                  style: GoogleFonts.inter(
-                      color: isMe ? Colors.white70 : AppColors.warmGrey,
-                      fontSize: 12,
-                      fontStyle: FontStyle.italic)),
-            ] else if (!isMe) ...[
-              const SizedBox(height: 6),
-              GestureDetector(
-                onTap: onTranslate,
-                child: Text('Translate',
-                    style: GoogleFonts.inter(
-                        fontSize: 11,
-                        color: AppColors.teal,
-                        decoration: TextDecoration.underline)),
-              ),
-            ],
-          ],
-        ),
+        child: Text(message.text,
+            style: GoogleFonts.inter(
+                color: isMe ? Colors.white : AppColors.ink, fontSize: 14)),
       ),
     );
   }

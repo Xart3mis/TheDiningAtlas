@@ -6,7 +6,6 @@ import '../../providers/auth_provider.dart';
 import '../../providers/trip_provider.dart';
 import '../../providers/seed_data_provider.dart';
 import '../../models/trip_model.dart';
-import '../../core/constants/route_names.dart';
 
 class PlanTripScreen extends StatefulWidget {
   const PlanTripScreen({super.key});
@@ -97,7 +96,7 @@ class _PlanTripScreenState extends State<PlanTripScreen> {
 
       await context.read<TripProvider>().createTrip(uid, trip);
       if (mounted) {
-        Navigator.pushReplacementNamed(context, RouteNames.kMain);
+        Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {

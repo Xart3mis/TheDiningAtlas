@@ -74,7 +74,7 @@ class ServiceProvider {
       ChangeNotifierProvider(create: (_) => UserProvider(userService)),
       ChangeNotifierProvider(create: (_) => TripProvider(tripService)),
       ChangeNotifierProvider(
-          create: (_) => ChatProvider(chatService, aiService)),
+          create: (_) => ChatProvider(chatService, aiService, notificationService, userService)),
       ChangeNotifierProvider(
           create: (_) => SavedPlacesProvider(userService, notificationService, restaurantService)),
       ChangeNotifierProvider(

@@ -92,6 +92,32 @@ class FcmNotificationService implements INotificationService {
   }
 
   @override
+  Future<void> sendChatNotification({
+    required String recipientUid,
+    required String senderName,
+    required String messagePreview,
+    required String chatId,
+  }) async {
+    // Persist to Firestore so the inbox badge + notification list update
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(recipientUid)
+        .collection('notifications')
+        .add({
+      'title': senderName,
+      'body': messagePreview,
+      'type': 'chat',
+      'relatedId': chatId,
+      'createdAt': FieldValue.serverTimestamp(),
+      'read': false,
+    });
+
+    // Also show a local notification (covers same-device foreground testing
+    // and the case where the recipient hasn't set up a Cloud Function yet)
+    await showLocalNotification(title: senderName, body: messagePreview);
+  }
+
+  @override
   Future<void> seedDemoNotifications(String uid) async {
     final col = FirebaseFirestore.instance
         .collection('users')
