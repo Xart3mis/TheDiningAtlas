@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../core/constants/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/shared_widgets.dart';
 import '../../models/restaurant_model.dart';
@@ -26,6 +27,7 @@ class RestaurantDetailScreen extends StatefulWidget {
 class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   String _activeTab = 'Overview';
   final _tabs = ['Overview', 'Reviews', 'Photos'];
+  bool _descExpanded = false;
 
   @override
   void initState() {
@@ -33,7 +35,6 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
     Future.microtask(() {
       if (!mounted) return;
       context.read<ReviewProvider>().loadReviews(widget.restaurant.id);
-      context.read<AiProvider>().loadSummary(widget.restaurant.id);
       final auth = context.read<AuthProvider>();
       if (auth.user != null) {
         context.read<SavedPlacesProvider>().loadSaved(auth.user!.uid);
@@ -214,20 +215,26 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
   }
 
   Widget _buildTagline(RestaurantModel r) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        border: Border(left: BorderSide(color: AppColors.terracotta, width: 3)),
-        color: AppColors.parchment,
-        borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
+    final text = r.description.isNotEmpty ? r.description : r.tagline;
+    return GestureDetector(
+      onTap: () => setState(() => _descExpanded = !_descExpanded),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
+          border: Border(left: BorderSide(color: AppColors.terracotta, width: 3)),
+          color: AppColors.parchment,
+          borderRadius: BorderRadius.horizontal(right: Radius.circular(8)),
+        ),
+        child: Text(text,
+            style: GoogleFonts.fraunces(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+                color: AppColors.ink,
+                height: 1.5),
+            maxLines: _descExpanded ? null : 3,
+            overflow: _descExpanded ? TextOverflow.visible : TextOverflow.ellipsis),
       ),
-      child: Text(r.tagline,
-          style: GoogleFonts.fraunces(
-              fontSize: 15,
-              fontStyle: FontStyle.italic,
-              color: AppColors.ink,
-              height: 1.5)),
     );
   }
 
@@ -368,8 +375,9 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                     ],
                   ),
                   const Spacer(),
-                  Row(
+                  Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Builder(builder: (context) {
                         final uid = context.read<AuthProvider>().user?.uid ?? '';
@@ -377,14 +385,15 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                         return GestureDetector(
                           onTap: () => reviewProvider.upvote(
                               restaurantId: r.id, reviewId: review.id, uid: uid),
-                          child: Row(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
                                 liked ? Icons.thumb_up : Icons.thumb_up_outlined,
                                 size: 14,
                                 color: liked ? AppColors.terracotta : AppColors.warmGrey,
                               ),
-                              const SizedBox(width: 4),
+                              const SizedBox(height: 2),
                               Text('${review.upvotes}',
                                   style: GoogleFonts.inter(
                                       fontSize: 12,
@@ -402,10 +411,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
 
                         if (!isOwner && !isAdmin) return const SizedBox.shrink();
 
-                        return Row(
+                        return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const SizedBox(width: 4),
+                            const SizedBox(height: 4),
                             PopupMenuButton<String>(
                               icon: const Icon(Icons.more_vert,
                                   size: 18, color: AppColors.warmGrey),
@@ -585,48 +594,34 @@ class _AiSummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final aiProvider = context.watch<AiProvider>();
     final summary = aiProvider.summaryFor(restaurantId);
+    final requested = aiProvider.hasBeenRequested(restaurantId);
 
+    // Not yet requested — show the prompt button
+    if (!requested) {
+      return _AiSummaryPrompt(
+        onTap: () => context.read<AiProvider>().loadSummary(restaurantId),
+      );
+    }
+
+    // Generating
     if (aiProvider.isGenerating) {
       return Shimmer.fromColors(
         baseColor: const Color(0xFFE0D9D0),
         highlightColor: const Color(0xFFF5EFE6),
         child: Container(
-          height: 120,
+          height: 140,
           margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(12)),
+              color: Colors.white, borderRadius: BorderRadius.circular(16)),
         ),
       );
     }
 
-    if (aiProvider.hasTooFewReviews(restaurantId)) {
-      return Container(
-        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: AppColors.parchment,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGrey.withOpacity(0.4)),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.info_outline, size: 16, color: AppColors.warmGrey),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'Need 5+ reviews to generate an AI summary.',
-                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
+    // Error
     if (aiProvider.hasError(restaurantId)) {
       return Container(
         margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Colors.red.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
@@ -653,6 +648,93 @@ class _AiSummaryCard extends StatelessWidget {
 
     if (summary == null) return const SizedBox.shrink();
     return _AiSummaryContent(summary: summary);
+  }
+}
+
+class _AiSummaryPrompt extends StatelessWidget {
+  final VoidCallback onTap;
+  const _AiSummaryPrompt({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.teal.withOpacity(0.12),
+              AppColors.sageGreen.withOpacity(0.08),
+            ],
+          ),
+          border: Border.all(color: AppColors.teal.withOpacity(0.25)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.teal.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  size: 20,
+                  color: AppColors.teal,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'AI Summary',
+                      style: GoogleFonts.fraunces(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.ink,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Tap to summarise reviews with Gemini',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppColors.warmGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.teal,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'Generate',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

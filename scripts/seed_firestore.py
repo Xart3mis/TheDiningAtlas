@@ -62,6 +62,12 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "--contributors",
+        default=None,
+        help="Path to contributors.json config (global default, per-country, per-venue overrides).",
+    )
+
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Print generated documents.",
@@ -83,8 +89,10 @@ def main() -> None:
     with seed_path.open(encoding="utf-8") as handle:
         seed = json.load(handle)
 
+    contributors = load_contributors(args.contributors)
+
     if args.dry_run:
-        cities, restaurants = build_documents(seed)
+        cities, restaurants = build_documents(seed, contributors)
 
         validate_metadata(seed, cities, restaurants)
 
@@ -101,7 +109,7 @@ def main() -> None:
         clear_collection(db, "cities")
         clear_collection(db, "restaurants")
 
-    cities, restaurants = build_documents(seed)
+    cities, restaurants = build_documents(seed, contributors)
 
     validate_metadata(seed, cities, restaurants)
 
@@ -138,6 +146,7 @@ def initialize_firebase(project_id: str | None, credentials_path: str | None):
 
 def build_documents(
     seed: dict,
+    contributors: dict | None = None,
 ) -> tuple[list[tuple[str, dict]], list[tuple[str, dict]]]:
 
     metadata = seed.get("metadata", {})
@@ -195,6 +204,7 @@ def build_documents(
                     country_code=country_code,
                     generated_at=generated_at,
                     metadata=metadata,
+                    contributors=contributors,
                 )
 
                 restaurants.append((restaurant_id, restaurant_doc))
@@ -212,6 +222,7 @@ def restaurant_document(
     country_code: str,
     generated_at: datetime,
     metadata: dict,
+    contributors: dict | None = None,
 ) -> dict:
 
     venue_type = venue.get("type", "").strip()
@@ -319,7 +330,9 @@ def restaurant_document(
         "status": "approved",
         "source": "seed",
 
-        "contributorId": f"seed:{country_code.lower()}",
+        "contributorId": resolve_contributor_id(
+            contributors, restaurant_id, country_code
+        ),
 
         "createdAt": generated_at,
         "updatedAt": firestore.SERVER_TIMESTAMP,
@@ -327,6 +340,37 @@ def restaurant_document(
     }
 
     return clean_document(document)
+
+
+def load_contributors(path: str | None) -> dict | None:
+    if path is None:
+        return None
+    config_path = Path(path)
+    if not config_path.exists():
+        raise FileNotFoundError(f"Contributors file not found: {config_path}")
+    with config_path.open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def resolve_contributor_id(
+    contributors: dict | None,
+    restaurant_id: str,
+    country_code: str,
+) -> str:
+    if contributors:
+        venues = contributors.get("venues") or {}
+        if restaurant_id in venues:
+            return venues[restaurant_id]
+
+        countries = contributors.get("countries") or {}
+        code_upper = country_code.upper()
+        if code_upper in countries:
+            return countries[code_upper]
+
+        if contributors.get("default"):
+            return contributors["default"]
+
+    return f"seed:{country_code.lower()}"
 
 
 def clear_collection(db, collection_name: str) -> None:
