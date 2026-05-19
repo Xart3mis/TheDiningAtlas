@@ -40,7 +40,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.cream,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
+        leading: BackButton(color: AppColors.ink),
         title: Text('Notifications',
             style: GoogleFonts.fraunces(
                 fontSize: 18,
