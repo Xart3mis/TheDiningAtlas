@@ -107,6 +107,16 @@ class SavedPlacesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reset() {
+    _savedIds = {};
+    _savedRestaurants = [];
+    _reminders = {};
+    _isLoading = false;
+    _loaded = false;
+    _error = null;
+    notifyListeners();
+  }
+
   Future<void> toggleSave(
       {required String uid, required RestaurantModel restaurant}) async {
     _error = null;
