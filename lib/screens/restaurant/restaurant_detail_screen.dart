@@ -55,11 +55,10 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
           SliverToBoxAdapter(child: _buildTabs()),
           if (_activeTab == 'Overview') ...[
             SliverToBoxAdapter(child: _buildTagline(r)),
+            SliverToBoxAdapter(child: _AiSummaryCard(restaurantId: r.id)),
             SliverToBoxAdapter(child: _buildInfoGrid(r)),
             SliverToBoxAdapter(child: _buildActions(r)),
           ] else if (_activeTab == 'Reviews') ...[
-            SliverToBoxAdapter(
-                child: _AiSummaryCard(restaurantId: r.id)),
             SliverToBoxAdapter(child: _buildReviewsList(r)),
           ],
           const SliverToBoxAdapter(child: SizedBox(height: 40)),
@@ -530,18 +529,29 @@ class _RestaurantDetailScreenState extends State<RestaurantDetailScreen> {
                 ),
               ] else if (reviewProvider.translationFailed(review.id, locale)) ...[
                 const SizedBox(height: 8),
-                GestureDetector(
-                  onTap: () => reviewProvider.translate(
-                    restaurantId: r.id,
-                    reviewId: review.id,
-                    text: review.text,
-                    targetLang: locale,
-                  ),
-                  child: Text('Translation failed — tap to retry',
-                      style: GoogleFonts.inter(
-                          fontSize: 11,
-                          color: AppColors.terracotta,
-                          decoration: TextDecoration.underline)),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        reviewProvider.error != null 
+                          ? 'Error: ${reviewProvider.error}' 
+                          : 'Translation failed — tap to retry',
+                        style: GoogleFonts.inter(
+                            fontSize: 11,
+                            color: AppColors.terracotta),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () => reviewProvider.translate(
+                        restaurantId: r.id,
+                        reviewId: review.id,
+                        text: review.text,
+                        targetLang: locale,
+                      ),
+                      child: const Icon(Icons.refresh, size: 14, color: AppColors.teal),
+                    ),
+                  ],
                 ),
               ] else ...[
                 const SizedBox(height: 8),
@@ -582,12 +592,65 @@ class _AiSummaryCard extends StatelessWidget {
         highlightColor: const Color(0xFFF5EFE6),
         child: Container(
           height: 120,
-          margin: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(12)),
         ),
       );
     }
+
+    if (aiProvider.hasTooFewReviews(restaurantId)) {
+      return Container(
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppColors.parchment,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.lightGrey.withOpacity(0.4)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline, size: 16, color: AppColors.warmGrey),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Need 5+ reviews to generate an AI summary.',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (aiProvider.hasError(restaurantId)) {
+      return Container(
+        margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.red.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.red.withOpacity(0.1)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.error_outline, size: 16, color: Colors.redAccent),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'AI summary unavailable right now.',
+                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => aiProvider.loadSummary(restaurantId),
+              child: const Icon(Icons.refresh, size: 18, color: AppColors.teal),
+            ),
+          ],
+        ),
+      );
+    }
+
     if (summary == null) return const SizedBox.shrink();
     return _AiSummaryContent(summary: summary);
   }
@@ -600,7 +663,7 @@ class _AiSummaryContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(20, 16, 20, 0),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.teal.withOpacity(0.08),
@@ -614,37 +677,95 @@ class _AiSummaryContent extends StatelessWidget {
             children: [
               const Icon(Icons.auto_awesome, size: 14, color: AppColors.teal),
               const SizedBox(width: 6),
-              Text('AI Summary',
+              Text('AI SUMMARY',
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700,
-                      fontSize: 11,
+                      fontSize: 10,
                       color: AppColors.teal,
-                      letterSpacing: 0.8)),
+                      letterSpacing: 1.2)),
+              const Spacer(),
+              Text('Powered by Gemini',
+                  style: GoogleFonts.inter(
+                      fontSize: 9,
+                      color: AppColors.teal.withOpacity(0.6))),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Text(summary.vibeOneLiner,
               style: GoogleFonts.fraunces(
-                  fontSize: 14, fontStyle: FontStyle.italic, color: AppColors.ink)),
-          const SizedBox(height: 8),
+                  fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink, height: 1.4)),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 6,
+            runSpacing: 6,
             children: summary.topAspects
-                .map((a) => Chip(
-                      label: Text(a,
-                          style: GoogleFonts.inter(fontSize: 11)),
-                      padding: EdgeInsets.zero,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                .map((a) => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: AppColors.teal.withOpacity(0.1)),
+                      ),
+                      child: Text(a,
+                          style: GoogleFonts.inter(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.teal)),
                     ))
                 .toList(),
           ),
+          const SizedBox(height: 14),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.restaurant_menu, size: 14, color: AppColors.warmGrey),
+              const SizedBox(width: 8),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink),
+                    children: [
+                      const TextSpan(text: 'Try: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                      TextSpan(text: summary.mainDish),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(Icons.access_time, size: 14, color: AppColors.warmGrey),
+              const SizedBox(width: 8),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink),
+                    children: [
+                      const TextSpan(text: 'Best time: ', style: TextStyle(fontWeight: FontWeight.w600)),
+                      TextSpan(text: summary.bestTime),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           if (summary.caveats.isNotEmpty) ...[
             const SizedBox(height: 6),
-            Text('Watch out: ${summary.caveats.join(', ')}',
-                style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_amber_rounded, size: 14, color: AppColors.terracotta),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Watch out: ${summary.caveats.join(', ')}',
+                      style: GoogleFonts.inter(fontSize: 12, color: AppColors.ink)),
+                ),
+              ],
+            ),
           ],
-          Text('Best time: ${summary.bestTime}',
-              style: GoogleFonts.inter(fontSize: 12, color: AppColors.warmGrey)),
         ],
       ),
     );

@@ -10,14 +10,22 @@ class AiProvider extends ChangeNotifier {
   AiProvider(this._aiService, this._reviewService);
 
   final Map<String, PlaceSummaryModel?> _summaries = {};
+  final Set<String> _tooFewReviews = {};
+  final Set<String> _errors = {};
   bool _isGenerating = false;
 
   PlaceSummaryModel? summaryFor(String restaurantId) => _summaries[restaurantId];
   bool get isGenerating => _isGenerating;
+  bool hasTooFewReviews(String restaurantId) => _tooFewReviews.contains(restaurantId);
+  bool hasError(String restaurantId) => _errors.contains(restaurantId);
 
   Future<void> loadSummary(String restaurantId) async {
-    if (_summaries.containsKey(restaurantId)) return;
+    if (_summaries.containsKey(restaurantId) || 
+        _tooFewReviews.contains(restaurantId) ||
+        _errors.contains(restaurantId)) return;
+        
     _isGenerating = true;
+    _errors.remove(restaurantId);
     notifyListeners();
     try {
       // Check Firestore cache first
@@ -40,7 +48,7 @@ class AiProvider extends ChangeNotifier {
       // Cache is stale or missing — generate fresh
       final reviews = await _reviewService.fetchReviews(restaurantId, limit: 50);
       if (reviews.length < 5) {
-        _summaries[restaurantId] = null;
+        _tooFewReviews.add(restaurantId);
         return;
       }
       final summary = await _aiService.summarizeReviews(
@@ -50,7 +58,7 @@ class AiProvider extends ChangeNotifier {
       await _aiService.cacheSummary(restaurantId, summary);
       _summaries[restaurantId] = summary;
     } catch (_) {
-      _summaries[restaurantId] = null;
+      _errors.add(restaurantId);
     } finally {
       _isGenerating = false;
       notifyListeners();
