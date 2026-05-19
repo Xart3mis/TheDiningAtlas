@@ -62,7 +62,8 @@ Preserve the reviewer's personal tone, enthusiasm, and any cultural references c
 Return ONLY the translated text, no explanation.
 Text: $text
 ''';
-    return await _generate(prompt);
+    final raw = await _generate(prompt);
+    return raw.trim().replaceAll('```', '').trim();
   }
 
   @override
