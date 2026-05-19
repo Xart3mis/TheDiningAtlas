@@ -24,6 +24,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = context.watch<UserProvider>();
     final user = userProvider.user;
+    final privacy = user?.chatPrivacy ?? const ChatPrivacy(mode: 'public');
 
     return Scaffold(
       appBar: AppBar(
@@ -91,27 +92,28 @@ class SettingsScreen extends StatelessWidget {
             title: Text('Public — Anyone can message me',
                 style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
             value: 'public',
-            groupValue: currentMode,
+            groupValue: privacy.mode,
             activeColor: AppColors.terracotta,
-            onChanged: (v) => _updateChatMode(context, v!, user),
+            onChanged: (v) => _updateChatMode(context, v!, user, privacy),
           ),
           RadioListTile<String>(
             title: Text('Private — No messages',
                 style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
             value: 'private',
-            groupValue: currentMode,
+            groupValue: privacy.mode,
             activeColor: AppColors.terracotta,
-            onChanged: (v) => _updateChatMode(context, v!, user),
+            onChanged: (v) => _updateChatMode(context, v!, user, privacy),
           ),
           RadioListTile<String>(
             title: Text('Scheduled — Set availability hours',
                 style: GoogleFonts.inter(fontSize: 14, color: AppColors.ink)),
             value: 'scheduled',
-            groupValue: currentMode,
+            groupValue: privacy.mode,
             activeColor: AppColors.terracotta,
-            onChanged: (v) => _updateChatMode(context, v!, user),
+            onChanged: (v) => _updateChatMode(context, v!, user, privacy),
           ),
-
+          if (privacy.mode == 'scheduled')
+            _ScheduleEditor(privacy: privacy, user: user),
           const Divider(),
           const _SectionHeader(title: 'Subscription'),
           ListTile(
@@ -123,7 +125,6 @@ class SettingsScreen extends StatelessWidget {
             trailing: const Icon(Icons.chevron_right, color: AppColors.warmGrey),
             onTap: () => Navigator.pushNamed(context, RouteNames.kPremiumUpgrade),
           ),
-
           const Divider(),
           const _SectionHeader(title: 'Account'),
           ListTile(
@@ -132,7 +133,6 @@ class SettingsScreen extends StatelessWidget {
                     fontSize: 14, fontWeight: FontWeight.w600, color: Colors.red)),
             onTap: () async {
               final navigator = Navigator.of(context);
-              // Reset all user-scoped state BEFORE sign-out
               context.read<UserProvider>().reset();
               context.read<ChatProvider>().reset();
               context.read<SavedPlacesProvider>().reset();
@@ -148,11 +148,187 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _updateChatMode(BuildContext context, String mode, UserModel? user) {
+  void _updateChatMode(
+      BuildContext context, String mode, UserModel? user, ChatPrivacy current) {
     if (user == null) return;
-    context.read<UserProvider>().updateChatPrivacy(ChatPrivacy(mode: mode));
+    // Keep existing schedule fields when toggling back to 'scheduled'
+    context.read<UserProvider>().updateChatPrivacy(ChatPrivacy(
+          mode: mode,
+          scheduleStart: current.scheduleStart,
+          scheduleEnd: current.scheduleEnd,
+          scheduleDays: current.scheduleDays,
+        ));
   }
 }
+
+// ---------------------------------------------------------------------------
+// Schedule editor — shown only when mode == 'scheduled'
+// ---------------------------------------------------------------------------
+
+class _ScheduleEditor extends StatelessWidget {
+  final ChatPrivacy privacy;
+  final UserModel? user;
+
+  static const _days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+  static const _labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+  const _ScheduleEditor({required this.privacy, required this.user});
+
+  String _fmt(String? hhmm) {
+    if (hhmm == null) return 'Not set';
+    final parts = hhmm.split(':');
+    if (parts.length != 2) return hhmm;
+    final h = int.tryParse(parts[0]) ?? 0;
+    final m = parts[1].padLeft(2, '0');
+    final period = h < 12 ? 'AM' : 'PM';
+    final h12 = h == 0 ? 12 : (h > 12 ? h - 12 : h);
+    return '$h12:$m $period';
+  }
+
+  Future<void> _pickTime(BuildContext context, bool isStart) async {
+    final current = isStart ? privacy.scheduleStart : privacy.scheduleEnd;
+    TimeOfDay initial = TimeOfDay.now();
+    if (current != null) {
+      final p = current.split(':');
+      if (p.length == 2) {
+        initial = TimeOfDay(
+            hour: int.tryParse(p[0]) ?? 0, minute: int.tryParse(p[1]) ?? 0);
+      }
+    }
+    final picked = await showTimePicker(context: context, initialTime: initial);
+    if (picked == null || !context.mounted) return;
+    final hhmm =
+        '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+    context.read<UserProvider>().updateChatPrivacy(ChatPrivacy(
+          mode: privacy.mode,
+          scheduleStart: isStart ? hhmm : privacy.scheduleStart,
+          scheduleEnd: isStart ? privacy.scheduleEnd : hhmm,
+          scheduleDays: privacy.scheduleDays,
+        ));
+  }
+
+  void _toggleDay(BuildContext context, String day) {
+    final days = List<String>.from(privacy.scheduleDays);
+    days.contains(day) ? days.remove(day) : days.add(day);
+    context.read<UserProvider>().updateChatPrivacy(ChatPrivacy(
+          mode: privacy.mode,
+          scheduleStart: privacy.scheduleStart,
+          scheduleEnd: privacy.scheduleEnd,
+          scheduleDays: days,
+        ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Time range row
+          Row(
+            children: [
+              Expanded(
+                child: _TimeTile(
+                  label: 'From',
+                  time: _fmt(privacy.scheduleStart),
+                  onTap: () => _pickTime(context, true),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _TimeTile(
+                  label: 'Until',
+                  time: _fmt(privacy.scheduleEnd),
+                  onTap: () => _pickTime(context, false),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Day toggles
+          Text('Available days',
+              style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.warmGrey)),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(7, (i) {
+              final day = _days[i];
+              final selected = privacy.scheduleDays.contains(day);
+              return GestureDetector(
+                onTap: () => _toggleDay(context, day),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  width: 36,
+                  height: 36,
+                  decoration: BoxDecoration(
+                    color: selected ? AppColors.terracotta : AppColors.cream,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                        color: selected
+                            ? AppColors.terracotta
+                            : AppColors.warmGrey.withOpacity(0.4)),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(_labels[i],
+                      style: GoogleFonts.inter(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: selected ? Colors.white : AppColors.ink)),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimeTile extends StatelessWidget {
+  final String label;
+  final String time;
+  final VoidCallback onTap;
+  const _TimeTile(
+      {required this.label, required this.time, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: AppColors.cream,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.warmGrey.withOpacity(0.4)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label,
+                style: GoogleFonts.inter(
+                    fontSize: 11, color: AppColors.warmGrey)),
+            const SizedBox(height: 2),
+            Text(time,
+                style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.ink)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Shared profile widgets
+// ---------------------------------------------------------------------------
 
 class _ProfileAvatarTile extends StatelessWidget {
   final UserModel? user;
