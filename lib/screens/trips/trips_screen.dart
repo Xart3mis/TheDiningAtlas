@@ -40,9 +40,12 @@ class _TripsScreenState extends State<TripsScreen> {
     int spotCount = 0;
     if (tripProvider.trips.isNotEmpty) {
       final trip = tripProvider.trips.first;
-      currentDay = trip.days.isNotEmpty
-          ? trip.days[_selectedDayIndex % trip.days.length]
-          : null;
+      if (trip.days.isNotEmpty) {
+        if (_selectedDayIndex >= trip.days.length) {
+          _selectedDayIndex = 0;
+        }
+        currentDay = trip.days[_selectedDayIndex];
+      }
       spotCount = currentDay?.spots.length ?? 0;
     }
 
@@ -69,7 +72,12 @@ class _TripsScreenState extends State<TripsScreen> {
                 child: _buildDaySelector(tripProvider.trips.first)),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (_, i) => _SpotCard(spot: currentDay!.spots[i]),
+                (_, i) {
+                  if (currentDay == null || i >= currentDay.spots.length) {
+                    return const SizedBox.shrink();
+                  }
+                  return _SpotCard(spot: currentDay.spots[i]);
+                },
                 childCount: spotCount,
               ),
             ),
